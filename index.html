@@ -1,313 +1,462 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5SG0HC6MBN"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-5SG0HC6MBN');
-    </script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>بطولة القحمة الرمضانية 28 - النهائي الكبير</title>
-    
-    <meta name="google-site-verification" content="OW252jrJC6EhalNrLRFKoEr2VA7hblIx5NfCzw5CP34" />
-    <meta name="description" content="الموقع والتطبيق الشامل لبطولة القحمة الرمضانية 28 - البث المباشر للنتيجة لحظة بلحظة.">
-    <meta name="author" content="إياد عسيري">
-
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <style>
-        /* ========= ستايل الذهب الملكي المعتمد ========= */
-        :root { 
-            --gold-main: #d4af37; --gold-light: #f3e5ab; --gold-dark: #aa8c2c; 
-            --gold-grad: linear-gradient(135deg, #aa8c2c 0%, #d4af37 50%, #f3e5ab 100%);
-            --black-bg: #0a0a0a; --black-card: #141414; --glass-border: rgba(212, 175, 55, 0.15); 
-            --text-main: #f8fafc; --text-muted: #a0a0a0; --green-neon: #10b981;
-        }
-        
-        html { background-color: var(--black-bg); touch-action: manipulation; scroll-behavior: smooth; }
-        body { 
-            margin: 0; padding: 0; min-height: 100vh;
-            background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #0f0f0f, #0a0a0a);
-            background-size: 400% 400%; animation: gradientBG 20s ease infinite;
-            color: var(--text-main); font-family: 'Cairo', sans-serif; line-height: 1.6; font-size: 0.9rem; 
-            -webkit-tap-highlight-color: transparent;
-        }
-        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        /* شاشة التحميل الملكية */
-        #preloader { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #000; z-index: 99999; display: flex; justify-content: center; align-items: center; 
-            transition: opacity 0.25s ease-out, visibility 0.25s ease-out; 
-        }
-        #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-        .preloader-logo { 
-            width: 130px; filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5)); 
-            animation: gentlePulse 2s ease-in-out infinite; 
-        }
-        @keyframes gentlePulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.8)); } }
-
-        /* ========= ستايلات عامة وتنسيق التصميم الجديد الملكي ========= */
-        .container { max-width: 900px; margin: auto; padding: 12px; min-height: 100vh; display: flex; flex-direction: column; }
-        
-        header { 
-            text-align: center; padding: 20px 0; background: linear-gradient(to bottom, rgba(20, 20, 20, 0.9), rgba(10, 10, 10, 0.9)); 
-            border: 1px solid var(--glass-border); border-top: none; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; 
-            margin-bottom: 20px; margin-top: -12px; position: relative; overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-        }
-        .logo-img { width: 90px; height: auto; display: block; margin: 0 auto 8px; filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.2)); }
-        header h1 { font-weight: 900; margin: 0; font-size: 1.3rem; color: var(--gold-light); text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3); }
-        .stadium-tag { color: var(--gold-main); font-size: 0.8rem; font-weight: 900; margin-top: 5px; display: block; letter-spacing: 1px; text-shadow: 0 0 8px rgba(212,175,55,0.5); }
-        
-        .info-bar { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-        .stat-badge { background: var(--black-card); border: 1px solid var(--glass-border); box-shadow: 0 5px 15px rgba(0,0,0,0.5); padding: 5px 12px; border-radius: 30px; font-size: 0.7rem; font-weight: 700; color: var(--gold-light); display: inline-flex; align-items: center; gap: 5px; }
-        .dot-red { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; animation: redPulse 1.5s infinite; border-radius: 50%; display: inline-block; width: 8px; height: 8px; margin: 0 4px; }
-        @keyframes redPulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
-
-        /* ======= تنسيق الكرت الجديد كلياً ليتطابق مع الصورة المطلوبة ======= */
-        .champions-card { 
-            border-radius: 25px; position: relative; overflow: hidden; text-align: center;
-            padding: 30px 15px; margin-top: 5px; border: 1px solid rgba(212,175,55,0.3); 
-            background: linear-gradient(180deg, #111 0%, #050505 100%); 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 30px rgba(212,175,55,0.05);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-
-        /* تنسيق الصف الأفقي الرئيسي للشعارات والنتيجة */
-        .match-main-row {
-            display: flex; justify-content: space-between; align-items: center;
-            width: 100%; max-width: 400px; /* تحديد عرض معقول ومتناسق */
-            position: relative; z-index: 2; margin-bottom: 20px;
-        }
-
-        /* تنسيق صندوق كل فريق (شعار + اسم) */
-        .team-box {
-            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px;
-        }
-        .team-logo-royal { 
-            width: 70px; height: 70px; object-fit: contain; 
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.8)); 
-        }
-        .team-name-royal { 
-            font-size: 1rem; font-weight: 900; color: var(--gold-light); 
-            text-shadow: 0 2px 5px #000; white-space: nowrap;
-        }
-
-        /* تنسيق منطقة النتيجة والوقت في المنتصف */
-        .score-time-center {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            flex: 1.3; /* إعطاء مساحة أكبر قليلاً للوسط */
-            gap: 12px;
-        }
-
-        /* الوميض الهادئ خلف النتيجة */
-        .score-glow-bg {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            width: 120px; height: 120px; background: radial-gradient(circle, rgba(212,175,55,0.3) 0%, transparent 70%); 
-            z-index: 0; pointer-events: none;
-        }
-
-        /* تنسيق أرقام النتيجة الملكية */
-        .score-numbers-royal {
-            font-size: 2.8rem; font-weight: 900; color: #fff; letter-spacing: 5px;
-            text-shadow: 0 0 20px rgba(212,175,55,0.8), 0 0 10px #000;
-            font-family: sans-serif; position: relative; z-index: 2;
-        }
-
-        /* تنسيق الوقت/الحالة "الآن" الملكية */
-        .time-now-badge {
-            background: var(--gold-grad); color: #000; 
-            padding: 4px 15px; border-radius: 20px; font-weight: 900; font-size: 0.75rem;
-            box-shadow: 0 4px 10px rgba(212,175,55,0.4); white-space: nowrap; 
-            position: relative; z-index: 2; display: flex; align-items: center; gap: 5px;
-        }
-        .dot-blink { width: 6px; height: 6px; background: #dc2626; border-radius: 50%; animation: blinkBRed 1s infinite alternate; }
-        @keyframes blinkBRed { from { opacity: 1; } to { opacity: 0.3; } }
-
-        /* منطقة التفاعلات الجماهيرية تحت النتيجة */
-        .poll-container { 
-            background: rgba(20,20,20,0.6); border: 1px solid var(--glass-border); 
-            border-radius: 15px; padding: 15px; margin-top: 15px; width: 100%; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; z-index: 2;
-        }
-        .poll-title { font-size: 0.8rem; color: var(--gold-light); font-weight: 900; margin: 0 0 12px 0; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .poll-btns { display: flex; gap: 10px; justify-content: center; }
-        .poll-btn { 
-            background: var(--black-card); border: 1px solid rgba(212,175,55,0.3); color: var(--text-muted); 
-            font-size: 0.8rem; padding: 8px 0; flex: 1; border-radius: 8px; font-family: 'Cairo'; 
-            font-weight: 700; cursor: pointer; transition: 0.3s; 
-        }
-        .poll-btn:hover, .poll-btn:active { background: var(--gold-grad); color: #000; border-color: var(--gold-main); }
-        .poll-results-live { display: none; margin-top: 10px; }
-        .power-bar-bg { background: #222; border-radius: 10px; overflow: hidden; height: 6px; margin-bottom: 8px; width: 100%; border: 1px solid rgba(255,255,255,0.1); }
-        .power-bar-fill { background: var(--gold-grad); height: 100%; border-radius: 10px; transition: width 0.8s ease-out; }
-
-        /* الفوتر الملكي */
-        .footer { text-align: center; padding: 30px 12px 15px; background: linear-gradient(to top, rgba(10, 10, 10, 0.9), transparent); margin-top: auto; border-top: 1px solid var(--glass-border); }
-        .social-mini { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
-        .social-btn { padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 0.65rem; font-weight: 700; color: #000; background: var(--gold-grad); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 2px 5px rgba(212,175,55,0.2); }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#102d43">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Landside T4">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Landside T4 | مركز عمليات الفرز</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f6f8;color:#182e3d;font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+header{background:#102d43;color:#fff;padding:17px 15px 13px}
+.wrap{max-width:850px;margin:auto}
+header .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+h1{font-size:18px;margin:0 0 4px}
+header p{font-size:11px;color:#b8ccd9;margin:0}
+.live{color:#b3f3d8;font-size:11px;white-space:nowrap}
+#clock{font-size:11px;color:#b8ccd9;margin-top:8px}
+main{max-width:850px;margin:auto;padding:10px 10px 28px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.kpi{background:#fff;border:1px solid #e2e9ed;border-radius:10px;padding:9px 3px;text-align:center}
+.kpi b{font-size:21px;display:block;color:#163c54}
+.kpi span{font-size:10px;color:#677987}
+.nextbar{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #e2e9ed;border-radius:10px;padding:8px 11px;margin-top:6px;font-size:11px;color:#466174}
+.nextbar b{color:#102d43;font-size:12px;direction:ltr}
+.panel{background:#fff;border:1px solid #e3eaf0;border-radius:12px;margin-top:10px;padding:12px}
+.panelhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+h2{font-size:14px;margin:0}
+.sub{font-size:10px;color:#718391}
+.form{display:grid;grid-template-columns:1fr 1fr 80px;gap:7px;align-items:end}
+.field label{display:block;font-size:10px;color:#647785;margin-bottom:4px}
+.field input{width:100%;min-width:0;padding:10px 8px;border:1px solid #d4dfe6;border-radius:8px;background:#fff;color:#173346;direction:ltr;text-align:center;font-size:15px}
+.add{width:100%;margin-top:8px;background:#0e735d;color:#fff;border-radius:8px;padding:10px;font-weight:750}
+.flightgroup{border:1px solid #dce6ed;border-radius:10px;overflow:hidden;margin-top:8px}
+.grouphead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px;background:#edf3f7}
+.grouphead strong{font-size:16px;direction:ltr;display:inline-block}
+.groupmeta{color:#637989;font-size:10px;margin-top:3px}
+.groupcount{font-size:11px;font-weight:750;color:#1e506d;white-space:nowrap}
+.busgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:6px}
+.bus{border:1px solid #e2e9ee;border-radius:8px;background:#fff;min-width:0;overflow:hidden}
+.bus.late{border-right:3px solid #d34a40}
+.bus.normal{border-right:3px solid #5a7d9a}
+.bus.early{border-right:3px solid #198761}
+.busline{display:flex;align-items:center;justify-content:space-between;gap:3px;padding:7px 7px 3px}
+.busline b{font-size:12px}
+.pax{font-size:11px;color:#466174;font-weight:700}
+.times{display:flex;gap:4px;padding:3px 6px 6px}
+.time{flex:1;min-width:0;background:#f2f5f8;border-radius:5px;padding:5px 3px;text-align:center}
+.time.livebox{background:#e9f5fa}
+.time small{display:block;font-size:9px;color:#718492}
+.time strong{display:block;font-size:11px;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tags{display:flex;gap:4px;flex-wrap:wrap;padding:0 6px 5px}
+.tag{font-size:9px;padding:2px 6px;border-radius:4px;display:inline-block;font-weight:700}
+.tag.late{background:#ffebe8;color:#b2352d}
+.tag.normal{background:#eaeff4;color:#3d566b}
+.tag.early{background:#e4f5ec;color:#126b4b}
+.tag.shared{background:#fff0d4;color:#815000}
+.more{display:block;width:calc(100% - 12px);margin:0 6px 6px;background:#f2f5f8;color:#39596e;padding:5px;border-radius:5px;font-size:10px}
+.details{padding:0 7px 8px;font-size:10px;color:#546c7e}
+.details p{margin:4px 0}
+.details .actions{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.details button{padding:6px 6px;border-radius:6px;background:#eaf0f5;color:#1d4b67;font-size:10px;font-weight:600}
+.details button.go{background:#e2f3eb;color:#126547}
+.details button.del{background:#fff0ef;color:#a8332b}
+.extra{background:#f5f8fb;padding:5px;margin-top:4px;border-radius:5px;display:flex;justify-content:space-between;align-items:center;gap:4px}
+.extra button{background:#ffe5e5;color:#a11;border-radius:4px;padding:1px 5px;font-size:11px}
+.groupfoot{padding:0 6px 7px}
+.groupfoot button{width:100%;background:#f0f8f5;color:#0d7057;border:1px dashed #a2d1bf;border-radius:7px;padding:7px;font-size:11px;font-weight:700}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap}
+.toolbar button{background:#e9f1f6;color:#1a516c;border-radius:7px;padding:7px 10px;font-size:11px;font-weight:600}
+.toolbar button.primary{background:#123e59;color:#fff}
+.departedrow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid #e7edf1;font-size:11px}
+.departedmeta{font-size:10px;color:#697c8a;margin-top:2px}
+.departedrow button{background:#edf3f7;border-radius:6px;padding:6px 8px;color:#214c65;font-size:10px;font-weight:600}
+.departedrow button.del{background:#fff0ef;color:#a8332b}
+.notice{color:#087659;font-size:11px;margin:8px 0 0;font-weight:700}
+.preview{white-space:pre-wrap;line-height:1.7;font-size:11px;background:#f4f7f9;border-radius:8px;padding:9px;max-height:190px;overflow:auto;margin-top:8px}
+.tools{display:flex;gap:6px;flex-wrap:wrap}
+.tools button,.tools label{background:#eef3f6;color:#27516b;padding:8px 10px;border-radius:7px;font-size:11px;cursor:pointer;font-weight:600}
+.tools input{display:none}
+.shift{display:flex;justify-content:space-between;gap:5px;font-size:11px;color:#5d7483;padding:7px 0;border-top:1px solid #edf0f2}
+.shift b{color:#1a4158}
+details summary{cursor:pointer;color:#235570;font-size:11px;font-weight:600}
+.empty{text-align:center;padding:14px 4px;color:#8a9ba6;font-size:11px}
+@media(min-width:640px){.busgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.form{grid-template-columns:1fr 1fr 110px}.kpi b{font-size:24px}}
+@media(max-width:340px){.times{flex-direction:column}.busline b{font-size:11px}.kpi span{font-size:9px}}
+</style>
 </head>
 <body>
-
-    <div id="preloader">
-        <img src="https://i.ibb.co/Xf7761W2/5-B1-AD85-D-E147-422-B-953-C-0518-D83-FF042.png" alt="شعار البطولة" class="preloader-logo" crossorigin="anonymous">
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Landside Operations — T4</h1>
+        <p>مطار الملك عبدالعزيز · عمليات الساحات الخارجية · فرز الباصات بالصالة 4</p>
+      </div>
+      <span class="live">● مباشر</span>
     </div>
+    <div id="clock"></div>
+  </div>
+</header>
 
-    <div class="container">
-        <header id="main-header">
-            <img src="https://i.ibb.co/Xf7761W2/5-B1-AD85-D-E147-422-B-953-C-0518-D83-FF042.png" class="logo-img" crossorigin="anonymous">
-            <h1>بطولة القحمة الرمضانية 28</h1>
-            <span class="stadium-tag">البث المباشر للنتيجة 📡</span>
-        </header>
-        
-        <div class="info-bar">
-            <div class="stat-badge"><span class="dot-red"></span> مباشر الآت <span id="weather-box" style="display:flex; align-items:center; gap:5px;">القحمة: 26°C ⛅</span></div>
-        </div>
+<main>
+  <!-- لوحة المراقبة -->
+  <div class="kpis">
+    <div class="kpi"><b id="kbus">0</b><span>باص حالي</span></div>
+    <div class="kpi"><b id="kpax">0</b><span>راكب حالي</span></div>
+    <div class="kpi"><b id="kflight">0</b><span>رحلة</span></div>
+    <div class="kpi"><b id="klate">0</b><span>محضر متأخر</span></div>
+  </div>
+  <div class="nextbar">
+    <span>أقرب رحلة للإقلاع:</span>
+    <b id="nextflight">—</b>
+  </div>
 
-        <div id="today-match-area">
-            <div class="champions-card">
-                
-                <div class="match-main-row">
-                    <div class="team-box">
-                        <img src="https://i.ibb.co/6803h0K5/42-ED8497-6490-449-A-B56-A-658189568953.png" alt="شعار الفيصلي" class="team-logo-royal" crossorigin="anonymous">
-                        <span class="team-name-royal">الفيصلي</span>
-                    </div>
-                    
-                    <div class="score-time-center">
-                        <div class="score-glow-bg"></div>
-                        <div class="score-numbers-royal" id="live-score-display">
-                            0 - 0
-                        </div>
-                        <div class="time-now-badge">
-                            <span class="dot-blink"></span> يلعب الآن
-                        </div>
-                    </div>
-
-                    <div class="team-box">
-                        <img src="https://i.ibb.co/RGGP0BDJ/56-A88516-0-B1-E-4-E26-A8-F1-609-AC13-C968-D.png" alt="شعار الوسام" class="team-logo-royal" crossorigin="anonymous">
-                        <span class="team-name-royal">الوسام</span>
-                    </div>
-                </div>
-
-                <div style="position:relative; z-index:2; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.1), transparent); padding:8px; border-radius:8px; border-top: 1px solid rgba(212,175,55,0.2); margin-top: 10px; width: 100%;">
-                    <span style="font-size:0.75rem; color:var(--gold-light); font-weight:700; display:block; text-align:center;">ليلة الحسم.. من يرفع كأس البطولة الرمضانية؟🏆</span>
-                </div>
-            </div>
-
-            <div class="poll-container" id="poll-widget">
-                <div class="poll-title">📊 شجع فريقك الآن! (مباشر)</div>
-                <div class="poll-btns" id="poll-buttons">
-                    <button class="poll-btn" onclick="submitPoll('faisaly')">الفيصلي 🦅</button>
-                    <button class="poll-btn" onclick="submitPoll('wesam')">الوسام ⚔️</button>
-                </div>
-                <div class="poll-results-live" id="poll-results-live"></div>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p style="font-weight:900; margin-bottom:2px; font-size:0.7rem; color:var(--gold-main);">👨‍💻 إعداد وبرمجة والتصميم الملكي: إياد عسيري</p>
-            <div class="social-mini"><a href="https://wa.me/966534987428" class="social-btn">واتساب المبرمج</a></div>
-            <p style="font-size:0.6rem; color:var(--text-muted); max-width: 700px; margin: 15px auto 0; line-height: 1.5; opacity: 0.6;">التحديث فوري للنتيجة الجية من الفايربيس بفضل الله.</p>
-        </div>
+  <!-- تسجيل باص (3 خانات فقط) -->
+  <section class="panel">
+    <div class="panelhead">
+      <h2>تسجيل باص</h2>
+      <span class="sub">إضافة سريعة</span>
     </div>
+    <form id="entry">
+      <div class="form">
+        <div class="field"><label for="flight">رقم الرحلة</label><input id="flight" placeholder="SV123" maxlength="14" autocapitalize="characters" required></div>
+        <div class="field"><label for="time">وقت الإقلاع</label><input id="time" type="time" required></div>
+        <div class="field"><label for="pax">الركاب</label><input id="pax" type="number" min="1" max="150" inputmode="numeric" placeholder="48" required></div>
+      </div>
+      <button class="add" type="submit">+ تسجيل الباص</button>
+    </form>
+    <div id="notice" class="notice" aria-live="polite"></div>
+  </section>
+
+  <!-- الباصات الموجودة بالأعلى -->
+  <section class="panel">
+    <div class="panelhead">
+      <h2>الباصات في الفرز</h2>
+      <span class="sub">مجمعة حسب الرحلة</span>
+    </div>
+    <div id="active"></div>
+  </section>
+
+  <!-- إحصائيات الشفت -->
+  <section class="panel">
+    <div class="panelhead"><h2>إحصائيات الشفت</h2></div>
+    <div class="shift"><span>إجمالي الباصات المسجلة</span><b id="shiftbus">0</b></div>
+    <div class="shift"><span>إجمالي الركاب المسجلين</span><b id="shiftpax">0</b></div>
+    <div class="shift"><span>الباصات المشتركة</span><b id="shiftshared">0</b></div>
+    <div class="shift"><span>الباصات المغادرة</span><b id="shiftdone">0</b></div>
+  </section>
+
+  <!-- تقرير واتساب والنسخ الاحتياطي -->
+  <section class="panel">
+    <div class="panelhead">
+      <h2>تقرير المشرف (واتساب)</h2>
+      <div class="toolbar">
+        <button id="copy" type="button">نسخ</button>
+        <button id="share" type="button" class="primary">مشاركة</button>
+        <button id="backup" type="button">نسخة احتياطية</button>
+        <label style="background:#e9f1f6;color:#1a516c;border-radius:7px;padding:7px 10px;font-size:11px;font-weight:600;cursor:pointer">استعادة<input type="file" id="restorefile" accept=".json,application/json" style="display:none"></label>
+      </div>
+    </div>
+    <details>
+      <summary>معاينة التقرير</summary>
+      <div id="preview" class="preview"></div>
+    </details>
+  </section>
+
+  <!-- الباصات المغادرة في آخر الصفحة -->
+  <section class="panel">
+    <div class="panelhead">
+      <h2>الباصات المغادرة</h2>
+      <span class="sub" id="donecount">0 باص</span>
+    </div>
+    <div id="done"></div>
+  </section>
+</main>
 
 <script>
-// إخفاء الـ preloader بأناقة
-window.onload = function() { 
-    setTimeout(() => {
-        const preloader = document.getElementById('preloader');
-        preloader.classList.add('hidden');
-    }, 1200);
+(()=>{'use strict';
+const KEY='landside-t4-personal-v1', $=id=>document.getElementById(id);
+let buses=[];
+try{
+  const v=JSON.parse(localStorage.getItem(KEY)||'[]');
+  if(Array.isArray(v))buses=v;
+}catch(e){}
+
+const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+function parts(d){return Object.fromEntries(fmt.formatToParts(d).filter(x=>x.type!=='literal').map(x=>[x.type,Number(x.value)]))}
+
+function departure(t, refMs){
+  const base=refMs?new Date(Number(refMs)):new Date();
+  const p=parts(base),[h,m]=String(t||'00:00').split(':').map(Number);
+  let d=Date.UTC(p.year,p.month-1,p.day,h-3,m);
+  if(d<base.getTime()-60000)d+=86400000;
+  return d;
+}
+
+function created(b){return Number(b.createdAt)||Number(String(b.id).slice(0,13))||Date.now()}
+function dep(b){return Number(b.departure)||departure(b.time,created(b))}
+function mins(ms){const n=Math.max(0,Math.floor(ms/60000));return Math.floor(n/60)+'س '+(n%60)+'د'}
+function until(b){const d=dep(b)-Date.now();return d<=0?'حان الإقلاع':mins(d)}
+
+// التصنيف ثابت لحظة وصول الباص للفرز ولا يتغير بمرور الوقت:
+// أقل من 5 ساعات (< 18,000,000 مللي ثانية) = محضر متأخر (late)
+// من 5 إلى 6 ساعات شاملاً الحدين (18,000,000 إلى 21,600,000) = محضر عادي (normal)
+// أكثر من 6 ساعات (> 21,600,000) = محضر مبكر (early)
+function classification(b){
+  const diff=dep(b)-created(b);
+  if(diff<18000000)return 'late';
+  if(diff>21600000)return 'early';
+  return 'normal';
+}
+
+function classLabel(c){
+  if(c==='late')return 'محضر متأخر';
+  if(c==='early')return 'محضر مبكر';
+  return 'محضر عادي';
+}
+
+function total(b){return Number(b.pax||0)+(Array.isArray(b.extra)?b.extra:[]).reduce((a,x)=>a+Number(x.pax||0),0)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(buses));return true}catch(e){alert('تعذر حفظ البيانات. تحقق من إعدادات المتصفح.');return false}}
+function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
+function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
+function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
+function formatArTime(ms){return new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',timeStyle:'short'}).format(new Date(ms))}
+
+function busCard(b,i){
+  const c=classification(b),extras=Array.isArray(b.extra)?b.extra:[];
+  return `<article class="bus ${c}">
+    <div class="busline"><b>باص ${i+1}</b><span class="pax">${total(b)} راكب</span></div>
+    <div class="times">
+      <div class="time"><small>التحضير · ثابت</small><strong>${mins(dep(b)-created(b))}</strong></div>
+      <div class="time livebox"><small>الانتظار بالفرز</small><strong data-wait="${esc(b.id)}">${mins(Date.now()-created(b))}</strong></div>
+    </div>
+    <div class="tags">
+      <span class="tag ${c}">${classLabel(c)}</span>
+      ${extras.length?`<span class="tag shared">مشترك (${extras.length+1})</span>`:''}
+    </div>
+    <button class="more" data-action="toggle" data-id="${esc(b.id)}">التفاصيل والإجراءات ▾</button>
+    <div class="details" id="detail-${esc(b.id)}" hidden>
+      <p>وقت الوصول: <b>${formatArTime(created(b))}</b></p>
+      <p>ركاب ${esc(b.flight)}: <b>${Number(b.pax)||0}</b>${extras.length?` · الإجمالي: <b>${total(b)}</b>`:''}</p>
+      ${extras.map((x,j)=>`<div class="extra"><span>مشترك: <b>${esc(x.flight)}</b> · ${esc(x.time)} · ${Number(x.pax)||0} راكب</span><button data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}">×</button></div>`).join('')}
+      <div class="actions">
+        <button data-action="addextra" data-id="${esc(b.id)}">+ رحلة مشتركة</button>
+        <button class="go" data-action="done" data-id="${esc(b.id)}">غادر الفرز</button>
+        <button class="del" data-action="delete" data-id="${esc(b.id)}">حذف</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function render(){
+  const active=buses.filter(b=>!b.done),done=buses.filter(b=>b.done),groups=groupBy(active);
+  $('kbus').textContent=active.length;
+  $('kpax').textContent=active.reduce((a,b)=>a+total(b),0);
+  $('kflight').textContent=new Set(active.flatMap(b=>[b.flight,...(b.extra||[]).map(x=>x.flight)])).size;
+  $('klate').textContent=active.filter(b=>classification(b)==='late').length;
+
+  $('shiftbus').textContent=buses.length;
+  $('shiftpax').textContent=buses.reduce((a,b)=>a+total(b),0);
+  $('shiftshared').textContent=buses.filter(b=>(b.extra||[]).length>0).length;
+  $('shiftdone').textContent=done.length;
+  $('donecount').textContent=done.length+' باص';
+
+  $('active').innerHTML=groups.length?groups.map(g=>{
+    const b=g[0],p=g.reduce((a,x)=>a+total(x),0);
+    return `<div class="flightgroup">
+      <div class="grouphead">
+        <div>
+          <strong>${esc(b.flight)}</strong>
+          <div class="groupmeta">الإقلاع ${esc(b.time)} · ${g.length} باص · إجمالي ${p} راكب</div>
+        </div>
+        <span class="groupcount" data-live="${esc(b.id)}">${until(b)}</span>
+      </div>
+      <div class="busgrid">${g.map((x,i)=>busCard(x,i)).join('')}</div>
+      <div class="groupfoot"><button data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص لنفس الرحلة</button></div>
+    </div>`;
+  }).join(''):'<div class="empty">لا توجد باصات في الفرز حاليًا</div>';
+
+  $('done').innerHTML=done.length?done.slice().reverse().map(b=>{
+    const waitMs=(b.doneAt?new Date(b.doneAt).getTime():Date.now())-created(b);
+    const extras=Array.isArray(b.extra)?b.extra:[];
+    return `<div class="departedrow">
+      <div>
+        <div><b>${esc(b.flight)}</b> · ${total(b)} راكب · إقلاع ${esc(b.time)} ${extras.length?`<span class="tag shared">مشترك</span>`:''}</div>
+        <div class="departedmeta">وصول: ${formatArTime(created(b))} · مغادرة: ${b.doneAt?formatArTime(b.doneAt):'—'} · الانتظار: ${mins(waitMs)}</div>
+      </div>
+      <div style="display:flex;gap:4px">
+        <button data-action="restore" data-id="${esc(b.id)}">تراجع</button>
+        <button class="del" data-action="delete" data-id="${esc(b.id)}">حذف</button>
+      </div>
+    </div>`;
+  }).join(''):'<div class="empty">لا توجد باصات مغادرة</div>';
+
+  $('preview').textContent=report();
+  tick();
+}
+
+function tick(){
+  const lookup=new Map(buses.map(b=>[String(b.id),b]));
+  document.querySelectorAll('[data-live]').forEach(el=>{const b=lookup.get(el.dataset.live);if(b)el.textContent=until(b)});
+  document.querySelectorAll('[data-wait]').forEach(el=>{const b=lookup.get(el.dataset.wait);if(b)el.textContent=mins((b.done&&b.doneAt?new Date(b.doneAt).getTime():Date.now())-created(b))});
+
+  const active=buses.filter(b=>!b.done);
+  const upcoming=active.flatMap(b=>[
+    {flight:b.flight,dep:dep(b)},
+    ...(b.extra||[]).map(x=>({flight:x.flight,dep:Number(x.departure)||departure(x.time,created(b))}))
+  ]).filter(x=>x.dep>Date.now()).sort((a,b)=>a.dep-b.dep);
+  $('nextflight').textContent=upcoming.length?`${upcoming[0].flight} (${mins(upcoming[0].dep-Date.now())})`:'—';
+
+  $('clock').textContent=new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'medium'}).format(new Date());
+}
+
+// تقرير واتساب منسق وبدون عداد الوقت المتبقي للإقلاع
+function report(){
+  const a=buses.filter(b=>!b.done),done=buses.filter(b=>b.done),groups=groupBy(a);
+  const sharedActive=a.filter(b=>(b.extra||[]).length>0).length;
+  const lines=[
+    'تقرير عمليات الساحات الخارجية | منطقة الفرز 4',
+    new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date()),
+    '',
+    'الباصات الحالية: '+a.length,
+    'إجمالي الركاب: '+a.reduce((n,b)=>n+total(b),0),
+    'عدد الرحلات: '+new Set(a.flatMap(b=>[b.flight,...(b.extra||[]).map(x=>x.flight)])).size,
+    'الباصات المشتركة: '+sharedActive,
+    'الباصات المغادرة: '+done.length
+  ];
+  for(const g of groups){
+    const f=g[0];
+    lines.push('','الرحلة: '+f.flight+' | وقت الإقلاع: '+f.time,'عدد الباصات: '+g.length+' | إجمالي الركاب: '+g.reduce((n,b)=>n+total(b),0));
+    g.forEach((b,i)=>{
+      const ex=Array.isArray(b.extra)?b.extra:[];
+      if(!ex.length){
+        lines.push('• باص '+(i+1)+': '+b.pax+' راكب');
+      }else{
+        lines.push('• باص '+(i+1)+' (مشترك - إجمالي '+total(b)+' راكب):');
+        lines.push('   - رحلة '+b.flight+' (إقلاع '+b.time+'): '+b.pax+' راكب');
+        ex.forEach(x=>lines.push('   - رحلة مشتركة '+x.flight+' (إقلاع '+x.time+'): '+x.pax+' راكب'));
+      }
+    });
+  }
+  return '\u200f'+lines.join('\n\u200f');
+}
+
+$('entry').addEventListener('submit',e=>{
+  e.preventDefault();
+  const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
+  if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){
+    alert('تحقق من رقم الرحلة والوقت وعدد الركاب');return;
+  }
+  const now=Date.now();
+  const b={id:newId(),flight,time,pax,departure:departure(time,now),createdAt:now,done:false,extra:[]};
+  buses.push(b);
+  if(!save()){buses.pop();return}
+  e.target.reset();
+  $('notice').textContent='✓ تم تسجيل باص '+flight;
+  setTimeout(()=>{if($('notice'))$('notice').textContent=''},3000);
+  render();
+});
+
+$('flight').addEventListener('input',()=>{
+  const f=$('flight').value.trim().toUpperCase().replace(/\s+/g,'');
+  const b=buses.find(b=>!b.done&&b.flight===f);
+  if(b&&!$('time').value)$('time').value=b.time;
+});
+
+function action(e){
+  const btn=e.target.closest('button[data-action]');
+  if(!btn)return;
+  const a=btn.dataset.action,b=buses.find(b=>String(b.id)===btn.dataset.id);
+  if(!b)return;
+  if(a==='toggle'){
+    const el=document.getElementById('detail-'+b.id);
+    if(el)el.hidden=!el.hidden;
+    return;
+  }
+  if(a==='addsame'){
+    const val=prompt('عدد ركاب الباص الجديد للرحلة '+b.flight+' (إقلاع '+b.time+'):');
+    if(val===null)return;
+    const pax=Number(val.trim());
+    if(!Number.isInteger(pax)||pax<1||pax>150){alert('أدخل عدد ركاب صحيح');return}
+    const now=Date.now();
+    buses.push({id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:now,done:false,extra:[]});
+  }
+  else if(a==='addextra'){
+    const f=prompt('رقم الرحلة المشتركة (مثال SV456 أو صالة1 / حجاج):');
+    if(f===null)return;
+    const flight=f.trim().toUpperCase().replace(/\s+/g,'');
+    if(!/^[A-Z0-9-\u0600-\u06FF]{2,18}$/.test(flight)){alert('رقم الرحلة غير صحيح');return}
+    const time=prompt('وقت إقلاع الرحلة المشتركة (HH:MM):');
+    if(time===null)return;
+    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){alert('وقت غير صحيح، اكتبه بصيغة 15:30');return}
+    const val=prompt('عدد ركاب الرحلة المشتركة في نفس الباص:');
+    if(val===null)return;
+    const pax=Number(val.trim());
+    if(!Number.isInteger(pax)||pax<1||pax>150){alert('عدد ركاب غير صحيح');return}
+    (b.extra||(b.extra=[])).push({flight,time:time.trim(),pax,departure:departure(time.trim(),created(b)),createdAt:Date.now()});
+  }
+  else if(a==='removeextra'){
+    if(!confirm('حذف الرحلة المشتركة؟'))return;
+    b.extra.splice(Number(btn.dataset.index),1);
+  }
+  else if(a==='done'){
+    b.done=true;
+    b.doneAt=new Date().toISOString();
+  }
+  else if(a==='restore'){
+    b.done=false;
+    delete b.doneAt;
+  }
+  else if(a==='delete'){
+    if(!confirm('حذف هذا الباص نهائيًا؟'))return;
+    buses=buses.filter(x=>x!==b);
+  }
+  const old=localStorage.getItem(KEY);
+  if(!save()){try{buses=JSON.parse(old||'[]')}catch(e){}return}
+  render();
+}
+
+$('active').addEventListener('click',action);
+$('done').addEventListener('click',action);
+
+async function copy(){
+  try{await navigator.clipboard.writeText(report());alert('تم نسخ التقرير')}
+  catch(e){prompt('انسخ التقرير:',report())}
+}
+$('copy').onclick=copy;
+$('share').onclick=async()=>{
+  if(navigator.share){try{await navigator.share({text:report()})}catch(e){}}
+  else await copy();
 };
+$('backup').onclick=()=>{
+  const blob=new Blob([JSON.stringify(buses,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='landside-t4-backup.json';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+};
+$('restorefile').addEventListener('change',async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{
+    const v=JSON.parse(await f.text());
+    if(!Array.isArray(v)||!v.every(b=>b&&typeof b==='object'&&typeof b.flight==='string'&&typeof b.time==='string'))throw Error();
+    if(!confirm('سيتم استبدال البيانات الحالية بالنسخة المختارة. هل أنت متأكد؟'))return;
+    const old=buses;buses=v;
+    if(!save()){buses=old;return}
+    render();alert('تمت استعادة النسخة بنجاح');
+  }catch(err){alert('ملف النسخة غير صالح')}
+  finally{e.target.value=''}
+});
+
+render();
+setInterval(tick,1000);
+})();
 </script>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-  import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-
-  // مفاتيح الفايربيس (جلبها من ملفك الأصلي)
-  const p1 = "AIzaSyDMSL"; const p2 = "sTOf_zy8Ec"; const p3 = "sL-YZJPsUk"; const p4 = "8JHZVaT18";
-  const firebaseConfig = {
-    apiKey: p1 + p2 + p3 + p4,
-    authDomain: "eyad-a12a5.firebaseapp.com",
-    databaseURL: "https://eyad-a12a5-default-rtdb.firebaseio.com",
-    projectId: "eyad-a12a5"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  
-  // 📡 جلب النتيجة الحية من الفايربيس (تأكد من وجود المسار live_match_score)
-  const liveScoreRef = ref(db, 'live_match_score');
-  onValue(liveScoreRef, (snapshot) => {
-      const data = snapshot.val();
-      const scoreDisplay = document.getElementById('live-score-display');
-      
-      if (data && scoreDisplay) {
-          // جلب الأهداف أو وضع صفر إذا لم تكن موجودة
-          let f_score = data.faisaly !== undefined ? data.faisaly : 0;
-          let w_score = data.wesam !== undefined ? data.wesam : 0;
-          
-          // تحديث النتيجة على الشاشة فوراً
-          scoreDisplay.innerText = f_score + " - " + w_score;
-      }
-  });
-
-  // 📊 نظام التشجيع المباشر (للتجربة من الفايربيس)
-  const pollRef = ref(db, 'poll_live_results'); // المسار في الفايربيس
-  onValue(pollRef, (snapshot) => {
-      let data = snapshot.val() || { faisaly: 0, wesam: 0 };
-      let fCount = data.faisaly || 0;
-      let wCount = data.wesam || 0;
-      let total = fCount + wCount;
-      if (total === 0) total = 1; 
-      
-      let fPercent = Math.round((fCount / total) * 100);
-      let wPercent = Math.round((wCount / total) * 100);
-
-      const liveResultsDiv = document.getElementById('poll-results-live');
-      if(liveResultsDiv) {
-          liveResultsDiv.innerHTML = `
-            <div style="margin-bottom:10px; text-align:right;">
-                <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:700; color:var(--gold-light); margin-bottom:4px;">
-                    <span>الفيصلي 🦅</span> <span>${fPercent}% (${fCount})</span>
-                </div>
-                <div class="power-bar-bg"><div class="power-bar-fill" style="width: ${fPercent}%;"></div></div>
-            </div>
-            <div style="text-align:right;">
-                <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:700; color:#fff; margin-bottom:4px;">
-                    <span>الوسام ⚔️</span> <span>${wPercent}% (${wCount})</span>
-                </div>
-                <div class="power-bar-bg"><div class="power-bar-fill" style="background:#fff; width: ${wPercent}%;"></div></div>
-            </div>
-          `;
-      }
-  });
-
-  // كود إرسال التصويت (يعمل لمرة واحدة لكل جهاز للتجربة)
-  window.submitPoll = function(team) {
-      if(localStorage.getItem('pollVotedLiveRoyal')) return; // منع التكرار
-      document.getElementById('poll-buttons').style.display = 'none'; // إخفاء الأزرار
-      document.getElementById('poll-results-live').style.display = 'block'; // إظهار النتائج
-      localStorage.setItem('pollVotedLiveRoyal', 'true'); // تخزين التصويت
-
-      // تحديث الفايربيس (المسار poll_live_results/team)
-      const teamRef = ref(db, `poll_live_results/${team}`);
-      runTransaction(teamRef, (current) => {
-          return (current || 0) + 1; // زيادة التصويت بـ 1
-      });
-  };
-
-</script>
-
 </body>
 </html>
