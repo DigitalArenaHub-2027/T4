@@ -3,195 +3,249 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#102d43">
+<meta name="theme-color" content="#0a192f">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Landside T4">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Landside T4 | مركز عمليات الفرز</title>
+<title>Landside T4 | Executive Dashboard</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f3f6f8;color:#182e3d;font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif}
-button,input{font:inherit}
-button{cursor:pointer;border:0}
-header{background:#102d43;color:#fff;padding:17px 15px 13px}
-.wrap{max-width:850px;margin:auto}
-header .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-h1{font-size:18px;margin:0 0 4px}
-header p{font-size:11px;color:#b8ccd9;margin:0}
-.live{color:#b3f3d8;font-size:11px;white-space:nowrap}
-#clock{font-size:11px;color:#b8ccd9;margin-top:8px}
-main{max-width:850px;margin:auto;padding:10px 10px 28px}
-.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.kpi{background:#fff;border:1px solid #e2e9ed;border-radius:10px;padding:9px 3px;text-align:center}
-.kpi b{font-size:21px;display:block;color:#163c54}
-.kpi span{font-size:10px;color:#677987}
-.nextbar{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #e2e9ed;border-radius:10px;padding:8px 11px;margin-top:6px;font-size:11px;color:#466174}
-.nextbar b{color:#102d43;font-size:12px;direction:ltr}
-.panel{background:#fff;border:1px solid #e3eaf0;border-radius:12px;margin-top:10px;padding:12px}
-.panelhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
-h2{font-size:14px;margin:0}
-.sub{font-size:10px;color:#718391}
-.form{display:grid;grid-template-columns:1fr 1fr 80px;gap:7px;align-items:end}
-.field label{display:block;font-size:10px;color:#647785;margin-bottom:4px}
-.field input{width:100%;min-width:0;padding:10px 8px;border:1px solid #d4dfe6;border-radius:8px;background:#fff;color:#173346;direction:ltr;text-align:center;font-size:15px}
-.add{width:100%;margin-top:8px;background:#0e735d;color:#fff;border-radius:8px;padding:10px;font-weight:750}
-.flightgroup{border:1px solid #dce6ed;border-radius:10px;overflow:hidden;margin-top:8px}
-.grouphead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px;background:#edf3f7}
-.grouphead strong{font-size:16px;direction:ltr;display:inline-block}
-.groupmeta{color:#637989;font-size:10px;margin-top:3px}
-.groupcount{font-size:11px;font-weight:750;color:#1e506d;white-space:nowrap}
-.busgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:6px}
-.bus{border:1px solid #e2e9ee;border-radius:8px;background:#fff;min-width:0;overflow:hidden}
-.bus.late{border-right:3px solid #d34a40}
-.bus.normal{border-right:3px solid #5a7d9a}
-.bus.early{border-right:3px solid #198761}
-.busline{display:flex;align-items:center;justify-content:space-between;gap:3px;padding:7px 7px 3px}
-.busline b{font-size:12px}
-.pax{font-size:11px;color:#466174;font-weight:700}
-.times{display:flex;gap:4px;padding:3px 6px 6px}
-.time{flex:1;min-width:0;background:#f2f5f8;border-radius:5px;padding:5px 3px;text-align:center}
-.time.livebox{background:#e9f5fa}
-.time small{display:block;font-size:9px;color:#718492}
-.time strong{display:block;font-size:11px;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.tags{display:flex;gap:4px;flex-wrap:wrap;padding:0 6px 5px}
-.tag{font-size:9px;padding:2px 6px;border-radius:4px;display:inline-block;font-weight:700}
-.tag.late{background:#ffebe8;color:#b2352d}
-.tag.normal{background:#eaeff4;color:#3d566b}
-.tag.early{background:#e4f5ec;color:#126b4b}
-.tag.shared{background:#fff0d4;color:#815000}
-.more{display:block;width:calc(100% - 12px);margin:0 6px 6px;background:#f2f5f8;color:#39596e;padding:5px;border-radius:5px;font-size:10px}
-.details{padding:0 7px 8px;font-size:10px;color:#546c7e}
-.details p{margin:4px 0}
-.details .actions{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
-.details button{padding:6px 6px;border-radius:6px;background:#eaf0f5;color:#1d4b67;font-size:10px;font-weight:600}
-.details button.go{background:#e2f3eb;color:#126547}
-.details button.del{background:#fff0ef;color:#a8332b}
-.extra{background:#f5f8fb;padding:5px;margin-top:4px;border-radius:5px;display:flex;justify-content:space-between;align-items:center;gap:4px}
-.extra button{background:#ffe5e5;color:#a11;border-radius:4px;padding:1px 5px;font-size:11px}
-.groupfoot{padding:0 6px 7px}
-.groupfoot button{width:100%;background:#f0f8f5;color:#0d7057;border:1px dashed #a2d1bf;border-radius:7px;padding:7px;font-size:11px;font-weight:700}
-.toolbar{display:flex;gap:6px;flex-wrap:wrap}
-.toolbar button{background:#e9f1f6;color:#1a516c;border-radius:7px;padding:7px 10px;font-size:11px;font-weight:600}
-.toolbar button.primary{background:#123e59;color:#fff}
-.departedrow{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-top:1px solid #e7edf1;font-size:11px}
-.departedmeta{font-size:10px;color:#697c8a;margin-top:2px}
-.departedrow button{background:#edf3f7;border-radius:6px;padding:6px 8px;color:#214c65;font-size:10px;font-weight:600}
-.departedrow button.del{background:#fff0ef;color:#a8332b}
-.notice{color:#087659;font-size:11px;margin:8px 0 0;font-weight:700}
-.preview{white-space:pre-wrap;line-height:1.7;font-size:11px;background:#f4f7f9;border-radius:8px;padding:9px;max-height:190px;overflow:auto;margin-top:8px}
-.tools{display:flex;gap:6px;flex-wrap:wrap}
-.tools button,.tools label{background:#eef3f6;color:#27516b;padding:8px 10px;border-radius:7px;font-size:11px;cursor:pointer;font-weight:600}
-.tools input{display:none}
-.shift{display:flex;justify-content:space-between;gap:5px;font-size:11px;color:#5d7483;padding:7px 0;border-top:1px solid #edf0f2}
-.shift b{color:#1a4158}
-details summary{cursor:pointer;color:#235570;font-size:11px;font-weight:600}
-.empty{text-align:center;padding:14px 4px;color:#8a9ba6;font-size:11px}
-@media(min-width:640px){.busgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.form{grid-template-columns:1fr 1fr 110px}.kpi b{font-size:24px}}
-@media(max-width:340px){.times{flex-direction:column}.busline b{font-size:11px}.kpi span{font-size:9px}}
+/* --- المتغيرات والألوان الفاخرة --- */
+:root {
+  --primary: #0a192f;
+  --primary-light: #112240;
+  --accent: #00b4d8;
+  --bg: #f4f7f6;
+  --card: #ffffff;
+  --text-main: #1d2d35;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  
+  --late: #ef4444; /* أحمر */
+  --late-bg: #fef2f2;
+  --early: #10b981; /* أخضر */
+  --early-bg: #ecfdf5;
+  --normal: #3b82f6; /* أزرق */
+  --normal-bg: #eff6ff;
+  --shared: #f59e0b; /* برتقالي */
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding-bottom: 40px; -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; outline: none; }
+button { cursor: pointer; border: 0; transition: all 0.2s ease; }
+
+/* --- الهيدر الفاخر (رأس الصفحة) --- */
+header {
+  background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+  color: #fff;
+  padding: 45px 20px 30px;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  box-shadow: 0 10px 30px rgba(10, 25, 47, 0.15);
+  position: relative;
+  z-index: 10;
+}
+.wrap { max-width: 800px; margin: auto; }
+.header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.header-title h1 { font-size: 24px; font-weight: 800; margin: 0 0 6px; letter-spacing: -0.5px; }
+.header-title p { font-size: 12px; color: #94a3b8; margin: 0; font-weight: 500; }
+.live-badge { display: flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.live-badge::before { content: ""; width: 6px; height: 6px; background: #34d399; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 4px rgba(52, 211, 153, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); } }
+#clock { font-size: 11px; color: #94a3b8; margin-top: 12px; font-weight: 500; }
+
+/* --- المحتوى والتخطيط --- */
+main { max-width: 800px; margin: -20px auto 0; padding: 0 16px; position: relative; z-index: 20; }
+
+/* --- مؤشرات الأداء (KPIs) --- */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.kpi { background: var(--card); border-radius: 18px; padding: 16px 8px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid rgba(255,255,255,0.8); }
+.kpi b { font-size: 24px; display: block; color: var(--primary); font-weight: 800; margin-bottom: 4px; }
+.kpi span { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+
+/* --- الأقسام (Panels) --- */
+.panel { background: var(--card); border-radius: 22px; padding: 20px; box-shadow: 0 6px 24px rgba(0,0,0,0.03); margin-bottom: 16px; border: 1px solid #f1f5f9; }
+.panelhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.panelhead h2 { font-size: 16px; margin: 0; color: var(--primary); font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.panelhead h2::before { content: ""; width: 4px; height: 16px; background: var(--accent); border-radius: 4px; }
+.sub { font-size: 11px; color: var(--text-muted); font-weight: 600; background: #f8fafc; padding: 4px 10px; border-radius: 12px; }
+
+/* --- نموذج الإدخال --- */
+.form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+.field label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+.field input { width: 100%; padding: 14px 10px; border: 1.5px solid #e2e8f0; border-radius: 12px; background: #f8fafc; color: var(--primary); text-align: center; font-size: 16px; font-weight: 700; transition: all 0.2s; direction: ltr; }
+.field input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.15); }
+.add-btn { width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff; border-radius: 14px; padding: 16px; font-size: 15px; font-weight: 800; box-shadow: 0 6px 16px rgba(10, 25, 47, 0.2); }
+.add-btn:active { transform: translateY(2px); box-shadow: 0 2px 8px rgba(10, 25, 47, 0.2); }
+
+/* --- كروت الرحلات والباصات --- */
+.flightgroup { background: #fff; border-radius: 18px; border: 1px solid var(--border); overflow: hidden; margin-top: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); }
+.grouphead { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: #f8fafc; border-bottom: 1px solid var(--border); }
+.grouphead strong { font-size: 18px; color: var(--primary); direction: ltr; font-weight: 800; letter-spacing: 0.5px; display: block; margin-bottom: 3px; }
+.groupmeta { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+.groupcount { background: #fff; border: 1px solid var(--border); color: var(--primary); padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 800; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+
+.busgrid { padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.bus { border-radius: 14px; background: #fff; border: 1px solid #edf2f7; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.02); position: relative; }
+.bus.late { border-right: 5px solid var(--late); }
+.bus.early { border-right: 5px solid var(--early); }
+.bus.normal { border-right: 5px solid var(--normal); }
+
+.busline { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px dashed #f1f5f9; }
+.busline b { font-size: 14px; font-weight: 800; color: var(--primary); }
+.pax { font-size: 12px; font-weight: 700; color: var(--text-muted); background: #f8fafc; padding: 4px 8px; border-radius: 8px; }
+
+.times { display: flex; gap: 8px; padding: 12px 14px; }
+.time { flex: 1; background: #f8fafc; border-radius: 10px; padding: 8px; text-align: center; }
+.time.livebox { background: var(--normal-bg); color: var(--normal); }
+.bus.late .time.livebox { background: var(--late-bg); color: var(--late); }
+.bus.early .time.livebox { background: var(--early-bg); color: var(--early); }
+.time small { display: block; font-size: 10px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
+.time strong { display: block; font-size: 13px; font-weight: 800; direction: ltr; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 12px; }
+.tag { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; }
+.tag.late { background: var(--late-bg); color: var(--late); }
+.tag.early { background: var(--early-bg); color: var(--early); }
+.tag.normal { background: var(--normal-bg); color: var(--normal); }
+.tag.shared { background: #fffbeb; color: var(--shared); border: 1px solid #fef3c7; }
+
+.more { width: calc(100% - 28px); margin: 0 14px 12px; background: #f1f5f9; color: var(--text-muted); padding: 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+.details { padding: 0 14px 14px; font-size: 11px; color: #475569; }
+.details p { margin: 6px 0; font-weight: 500; }
+.extra { background: #f8fafc; padding: 8px 10px; margin-top: 6px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; border: 1px solid #f1f5f9; }
+.extra button { background: #fee2e2; color: #ef4444; width: 24px; height: 24px; border-radius: 6px; font-weight: 800; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.actions button { flex: 1; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+.actions button.btn-shared { background: #fffbeb; color: #b45309; }
+.actions button.go { background: #ecfdf5; color: #047857; border: 1px solid #d1fae5; }
+.actions button.del { background: #fef2f2; color: #b91c1c; flex: 0.5; }
+
+.groupfoot { padding: 12px 16px; background: #fafafa; border-top: 1px solid var(--border); }
+.groupfoot button { width: 100%; background: #fff; color: var(--primary); border: 1px dashed #cbd5e1; border-radius: 12px; padding: 12px; font-size: 12px; font-weight: 700; }
+
+/* --- الإحصائيات والأدوات --- */
+.shift { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.shift:last-child { border-bottom: none; padding-bottom: 0; }
+.shift b { font-size: 14px; color: var(--primary); font-weight: 800; }
+
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; }
+.toolbar button, .toolbar label { flex: 1; text-align: center; background: #f1f5f9; color: var(--primary); padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.toolbar button.primary-btn { background: var(--primary); color: #fff; }
+
+.departedrow { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+.departedrow:last-child { border-bottom: none; }
+.departed-info { display: flex; flex-direction: column; gap: 4px; }
+.departed-title { font-size: 12px; font-weight: 800; color: var(--primary); }
+.departed-meta { font-size: 10px; color: var(--text-muted); font-weight: 600; }
+.departed-actions button { background: #f1f5f9; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; color: var(--primary); margin-right: 4px; }
+.departed-actions button.del { background: #fee2e2; color: #ef4444; }
+
+.preview { white-space: pre-wrap; font-size: 12px; line-height: 1.8; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-top: 12px; max-height: 200px; overflow: auto; font-family: monospace; color: #334155; }
+details summary { font-size: 12px; font-weight: 700; color: var(--accent); cursor: pointer; padding: 8px 0; outline: none; }
+.empty { text-align: center; padding: 30px 10px; color: #94a3b8; font-size: 13px; font-weight: 600; }
+.notice { color: var(--early); font-size: 12px; font-weight: 700; text-align: center; margin-top: 8px; height: 18px; }
+
+@media(max-width: 380px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
+
 <header>
   <div class="wrap">
-    <div class="top">
-      <div>
-        <h1>Landside Operations — T4</h1>
-        <p>مطار الملك عبدالعزيز · عمليات الساحات الخارجية · فرز الباصات بالصالة 4</p>
+    <div class="header-top">
+      <div class="header-title">
+        <h1>Landside T4</h1>
+        <p>مطار الملك عبدالعزيز · الفرز 4 · عمليات الساحات</p>
       </div>
-      <span class="live">● مباشر</span>
+      <div class="live-badge">مباشر</div>
     </div>
     <div id="clock"></div>
   </div>
 </header>
 
 <main>
-  <!-- لوحة المراقبة -->
+  <!-- مؤشرات الأداء -->
   <div class="kpis">
-    <div class="kpi"><b id="kbus">0</b><span>باص حالي</span></div>
-    <div class="kpi"><b id="kpax">0</b><span>راكب حالي</span></div>
-    <div class="kpi"><b id="kflight">0</b><span>رحلة</span></div>
-    <div class="kpi"><b id="klate">0</b><span>محضر متأخر</span></div>
-  </div>
-  <div class="nextbar">
-    <span>أقرب رحلة للإقلاع:</span>
-    <b id="nextflight">—</b>
+    <div class="kpi"><b id="kbus">0</b><span>باص بالفرز</span></div>
+    <div class="kpi"><b id="kpax">0</b><span>إجمالي الركاب</span></div>
+    <div class="kpi"><b id="kflight">0</b><span>رحلة نشطة</span></div>
+    <div class="kpi"><b id="klate">0</b><span>تأخير تحضير</span></div>
   </div>
 
-  <!-- تسجيل باص (3 خانات فقط) -->
+  <!-- نموذج التسجيل -->
   <section class="panel">
     <div class="panelhead">
-      <h2>تسجيل باص</h2>
-      <span class="sub">إضافة سريعة</span>
+      <h2>تسجيل باص جديد</h2>
+      <span class="sub" id="nextflight">—</span>
     </div>
     <form id="entry">
-      <div class="form">
-        <div class="field"><label for="flight">رقم الرحلة</label><input id="flight" placeholder="SV123" maxlength="14" autocapitalize="characters" required></div>
-        <div class="field"><label for="time">وقت الإقلاع</label><input id="time" type="time" required></div>
-        <div class="field"><label for="pax">الركاب</label><input id="pax" type="number" min="1" max="150" inputmode="numeric" placeholder="48" required></div>
+      <div class="form-row">
+        <div class="field"><label>رقم الرحلة</label><input id="flight" placeholder="SV123" maxlength="14" autocapitalize="characters" required></div>
+        <div class="field"><label>الإقلاع</label><input id="time" type="time" required></div>
+        <div class="field"><label>الركاب</label><input id="pax" type="number" min="1" max="150" inputmode="numeric" placeholder="48" required></div>
       </div>
-      <button class="add" type="submit">+ تسجيل الباص</button>
+      <button type="submit" class="add-btn">تأكيد وتسجيل الباص</button>
+      <div id="notice" class="notice"></div>
     </form>
-    <div id="notice" class="notice" aria-live="polite"></div>
   </section>
 
-  <!-- الباصات الموجودة بالأعلى -->
+  <!-- الباصات النشطة -->
   <section class="panel">
     <div class="panelhead">
-      <h2>الباصات في الفرز</h2>
-      <span class="sub">مجمعة حسب الرحلة</span>
+      <h2>لوحة المراقبة (الباصات الحالية)</h2>
     </div>
     <div id="active"></div>
   </section>
 
   <!-- إحصائيات الشفت -->
   <section class="panel">
-    <div class="panelhead"><h2>إحصائيات الشفت</h2></div>
+    <div class="panelhead"><h2>ملخص العمليات (الشفت)</h2></div>
     <div class="shift"><span>إجمالي الباصات المسجلة</span><b id="shiftbus">0</b></div>
     <div class="shift"><span>إجمالي الركاب المسجلين</span><b id="shiftpax">0</b></div>
     <div class="shift"><span>الباصات المشتركة</span><b id="shiftshared">0</b></div>
-    <div class="shift"><span>الباصات المغادرة</span><b id="shiftdone">0</b></div>
+    <div class="shift"><span>الباصات التي غادرت</span><b id="shiftdone">0</b></div>
   </section>
 
-  <!-- تقرير واتساب والنسخ الاحتياطي -->
+  <!-- تقرير واتساب والأدوات -->
   <section class="panel">
-    <div class="panelhead">
-      <h2>تقرير المشرف (واتساب)</h2>
-      <div class="toolbar">
-        <button id="copy" type="button">نسخ</button>
-        <button id="share" type="button" class="primary">مشاركة</button>
-        <button id="backup" type="button">نسخة احتياطية</button>
-        <label style="background:#e9f1f6;color:#1a516c;border-radius:7px;padding:7px 10px;font-size:11px;font-weight:600;cursor:pointer">استعادة<input type="file" id="restorefile" accept=".json,application/json" style="display:none"></label>
-      </div>
+    <div class="panelhead"><h2>إدارة التقارير والبيانات</h2></div>
+    <div class="toolbar" style="margin-bottom: 12px;">
+      <button id="copy" type="button">نسخ التقرير</button>
+      <button id="share" type="button" class="primary-btn">مشاركة للواتساب</button>
     </div>
-    <details>
-      <summary>معاينة التقرير</summary>
+    <div class="toolbar">
+      <button id="backup" type="button">حفظ نسخة احتياطية</button>
+      <label>استعادة نسخة<input type="file" id="restorefile" accept=".json,application/json"></label>
+    </div>
+    <details style="margin-top: 16px;">
+      <summary>عرض معاينة تقرير المشرف ▾</summary>
       <div id="preview" class="preview"></div>
     </details>
   </section>
 
-  <!-- الباصات المغادرة في آخر الصفحة -->
+  <!-- الباصات المغادرة -->
   <section class="panel">
     <div class="panelhead">
-      <h2>الباصات المغادرة</h2>
-      <span class="sub" id="donecount">0 باص</span>
+      <h2>سجل المغادرة</h2>
+      <span class="sub" id="donecount">0</span>
     </div>
     <div id="done"></div>
   </section>
 </main>
 
+<!-- نفس الكود البرمجي المعتمد مسبقاً للحفاظ على جميع وظائفك وبياناتك -->
 <script>
 (()=>{'use strict';
 const KEY='landside-t4-personal-v1', $=id=>document.getElementById(id);
 let buses=[];
-try{
-  const v=JSON.parse(localStorage.getItem(KEY)||'[]');
-  if(Array.isArray(v))buses=v;
-}catch(e){}
+try{ const v=JSON.parse(localStorage.getItem(KEY)||'[]'); if(Array.isArray(v))buses=v; }catch(e){}
 
 const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
 function parts(d){return Object.fromEntries(fmt.formatToParts(d).filter(x=>x.type!=='literal').map(x=>[x.type,Number(x.value)]))}
-
 function departure(t, refMs){
   const base=refMs?new Date(Number(refMs)):new Date();
   const p=parts(base),[h,m]=String(t||'00:00').split(':').map(Number);
@@ -205,26 +259,16 @@ function dep(b){return Number(b.departure)||departure(b.time,created(b))}
 function mins(ms){const n=Math.max(0,Math.floor(ms/60000));return Math.floor(n/60)+'س '+(n%60)+'د'}
 function until(b){const d=dep(b)-Date.now();return d<=0?'حان الإقلاع':mins(d)}
 
-// التصنيف ثابت لحظة وصول الباص للفرز ولا يتغير بمرور الوقت:
-// أقل من 5 ساعات (< 18,000,000 مللي ثانية) = محضر متأخر (late)
-// من 5 إلى 6 ساعات شاملاً الحدين (18,000,000 إلى 21,600,000) = محضر عادي (normal)
-// أكثر من 6 ساعات (> 21,600,000) = محضر مبكر (early)
 function classification(b){
   const diff=dep(b)-created(b);
   if(diff<18000000)return 'late';
   if(diff>21600000)return 'early';
   return 'normal';
 }
-
-function classLabel(c){
-  if(c==='late')return 'محضر متأخر';
-  if(c==='early')return 'محضر مبكر';
-  return 'محضر عادي';
-}
-
+function classLabel(c){ return c==='late'?'محضر متأخر':c==='early'?'محضر مبكر':'محضر عادي'; }
 function total(b){return Number(b.pax||0)+(Array.isArray(b.extra)?b.extra:[]).reduce((a,x)=>a+Number(x.pax||0),0)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(buses));return true}catch(e){alert('تعذر حفظ البيانات. تحقق من إعدادات المتصفح.');return false}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(buses));return true}catch(e){alert('تعذر الحفظ.');return false}}
 function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
@@ -232,28 +276,28 @@ function formatArTime(ms){return new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia
 
 function busCard(b,i){
   const c=classification(b),extras=Array.isArray(b.extra)?b.extra:[];
-  return `<article class="bus ${c}">
+  return `<div class="bus ${c}">
     <div class="busline"><b>باص ${i+1}</b><span class="pax">${total(b)} راكب</span></div>
     <div class="times">
-      <div class="time"><small>التحضير · ثابت</small><strong>${mins(dep(b)-created(b))}</strong></div>
+      <div class="time"><small>وقت التحضير</small><strong>${mins(dep(b)-created(b))}</strong></div>
       <div class="time livebox"><small>الانتظار بالفرز</small><strong data-wait="${esc(b.id)}">${mins(Date.now()-created(b))}</strong></div>
     </div>
     <div class="tags">
       <span class="tag ${c}">${classLabel(c)}</span>
       ${extras.length?`<span class="tag shared">مشترك (${extras.length+1})</span>`:''}
     </div>
-    <button class="more" data-action="toggle" data-id="${esc(b.id)}">التفاصيل والإجراءات ▾</button>
+    <button class="more" data-action="toggle" data-id="${esc(b.id)}">عرض الإجراءات والتفاصيل ▾</button>
     <div class="details" id="detail-${esc(b.id)}" hidden>
-      <p>وقت الوصول: <b>${formatArTime(created(b))}</b></p>
-      <p>ركاب ${esc(b.flight)}: <b>${Number(b.pax)||0}</b>${extras.length?` · الإجمالي: <b>${total(b)}</b>`:''}</p>
-      ${extras.map((x,j)=>`<div class="extra"><span>مشترك: <b>${esc(x.flight)}</b> · ${esc(x.time)} · ${Number(x.pax)||0} راكب</span><button data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}">×</button></div>`).join('')}
+      <p>وقت الوصول الفعلي: <b>${formatArTime(created(b))}</b></p>
+      <p>ركاب ${esc(b.flight)}: <b>${Number(b.pax)||0}</b>${extras.length?` · إجمالي الباص: <b>${total(b)}</b>`:''}</p>
+      ${extras.map((x,j)=>`<div class="extra"><span><b>${esc(x.flight)}</b> · إقلاع ${esc(x.time)} · ${Number(x.pax)||0} راكب</span><button data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}">×</button></div>`).join('')}
       <div class="actions">
-        <button data-action="addextra" data-id="${esc(b.id)}">+ رحلة مشتركة</button>
-        <button class="go" data-action="done" data-id="${esc(b.id)}">غادر الفرز</button>
+        <button class="btn-shared" data-action="addextra" data-id="${esc(b.id)}">+ رحلة مشتركة</button>
+        <button class="go" data-action="done" data-id="${esc(b.id)}">غادر الفرز ✓</button>
         <button class="del" data-action="delete" data-id="${esc(b.id)}">حذف</button>
       </div>
     </div>
-  </article>`;
+  </div>`;
 }
 
 function render(){
@@ -267,7 +311,7 @@ function render(){
   $('shiftpax').textContent=buses.reduce((a,b)=>a+total(b),0);
   $('shiftshared').textContent=buses.filter(b=>(b.extra||[]).length>0).length;
   $('shiftdone').textContent=done.length;
-  $('donecount').textContent=done.length+' باص';
+  $('donecount').textContent=done.length+' باص غادر';
 
   $('active').innerHTML=groups.length?groups.map(g=>{
     const b=g[0],p=g.reduce((a,x)=>a+total(x),0);
@@ -275,29 +319,29 @@ function render(){
       <div class="grouphead">
         <div>
           <strong>${esc(b.flight)}</strong>
-          <div class="groupmeta">الإقلاع ${esc(b.time)} · ${g.length} باص · إجمالي ${p} راكب</div>
+          <div class="groupmeta">إقلاع ${esc(b.time)} · ${g.length} باص · ${p} راكب</div>
         </div>
-        <span class="groupcount" data-live="${esc(b.id)}">${until(b)}</span>
+        <div class="groupcount" data-live="${esc(b.id)}">${until(b)}</div>
       </div>
       <div class="busgrid">${g.map((x,i)=>busCard(x,i)).join('')}</div>
-      <div class="groupfoot"><button data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص لنفس الرحلة</button></div>
+      <div class="groupfoot"><button data-action="addsame" data-id="${esc(b.id)}">+ تسجيل باص جديد لنفس الرحلة</button></div>
     </div>`;
-  }).join(''):'<div class="empty">لا توجد باصات في الفرز حاليًا</div>';
+  }).join(''):'<div class="empty">لا توجد أي باصات في منطقة الفرز حالياً.</div>';
 
   $('done').innerHTML=done.length?done.slice().reverse().map(b=>{
     const waitMs=(b.doneAt?new Date(b.doneAt).getTime():Date.now())-created(b);
     const extras=Array.isArray(b.extra)?b.extra:[];
     return `<div class="departedrow">
-      <div>
-        <div><b>${esc(b.flight)}</b> · ${total(b)} راكب · إقلاع ${esc(b.time)} ${extras.length?`<span class="tag shared">مشترك</span>`:''}</div>
-        <div class="departedmeta">وصول: ${formatArTime(created(b))} · مغادرة: ${b.doneAt?formatArTime(b.doneAt):'—'} · الانتظار: ${mins(waitMs)}</div>
+      <div class="departed-info">
+        <div class="departed-title">${esc(b.flight)} <span style="color:#64748b;font-weight:600">· ${total(b)} راكب · إقلاع ${esc(b.time)}</span> ${extras.length?`<span class="tag shared">مشترك</span>`:''}</div>
+        <div class="departed-meta">وصول: ${formatArTime(created(b))} · مغادرة: ${b.doneAt?formatArTime(b.doneAt):'—'} · الانتظار: ${mins(waitMs)}</div>
       </div>
-      <div style="display:flex;gap:4px">
+      <div class="departed-actions">
         <button data-action="restore" data-id="${esc(b.id)}">تراجع</button>
         <button class="del" data-action="delete" data-id="${esc(b.id)}">حذف</button>
       </div>
     </div>`;
-  }).join(''):'<div class="empty">لا توجد باصات مغادرة</div>';
+  }).join(''):'<div class="empty">لم يغادر أي باص حتى الآن.</div>';
 
   $('preview').textContent=report();
   tick();
@@ -313,36 +357,38 @@ function tick(){
     {flight:b.flight,dep:dep(b)},
     ...(b.extra||[]).map(x=>({flight:x.flight,dep:Number(x.departure)||departure(x.time,created(b))}))
   ]).filter(x=>x.dep>Date.now()).sort((a,b)=>a.dep-b.dep);
-  $('nextflight').textContent=upcoming.length?`${upcoming[0].flight} (${mins(upcoming[0].dep-Date.now())})`:'—';
+  $('nextflight').textContent=upcoming.length?`أقرب رحلة: ${upcoming[0].flight} (${mins(upcoming[0].dep-Date.now())})`:'';
 
-  $('clock').textContent=new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'medium'}).format(new Date());
+  $('clock').textContent=new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'full',timeStyle:'short'}).format(new Date());
 }
 
-// تقرير واتساب منسق وبدون عداد الوقت المتبقي للإقلاع
 function report(){
   const a=buses.filter(b=>!b.done),done=buses.filter(b=>b.done),groups=groupBy(a);
   const sharedActive=a.filter(b=>(b.extra||[]).length>0).length;
   const lines=[
-    'تقرير عمليات الساحات الخارجية | منطقة الفرز 4',
-    new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date()),
+    '📋 *تقرير عمليات الساحات الخارجية | الفرز T4*',
+    '🕒 ' + new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date()),
     '',
-    'الباصات الحالية: '+a.length,
-    'إجمالي الركاب: '+a.reduce((n,b)=>n+total(b),0),
-    'عدد الرحلات: '+new Set(a.flatMap(b=>[b.flight,...(b.extra||[]).map(x=>x.flight)])).size,
-    'الباصات المشتركة: '+sharedActive,
-    'الباصات المغادرة: '+done.length
+    '📊 *ملخص العمليات:*',
+    '• الباصات المتواجدة: ' + a.length,
+    '• إجمالي الركاب: ' + a.reduce((n,b)=>n+total(b),0),
+    '• عدد الرحلات: ' + new Set(a.flatMap(b=>[b.flight,...(b.extra||[]).map(x=>x.flight)])).size,
+    '• الباصات المشتركة: ' + sharedActive,
+    '• الباصات المغادرة: ' + done.length,
+    '',
+    '🚌 *تفاصيل الباصات الحالية:*'
   ];
   for(const g of groups){
     const f=g[0];
-    lines.push('','الرحلة: '+f.flight+' | وقت الإقلاع: '+f.time,'عدد الباصات: '+g.length+' | إجمالي الركاب: '+g.reduce((n,b)=>n+total(b),0));
+    lines.push('','✈️ الرحلة: *'+f.flight+'* | الإقلاع: '+f.time,'عدد الباصات: '+g.length+' | إجمالي الركاب: '+g.reduce((n,b)=>n+total(b),0));
     g.forEach((b,i)=>{
       const ex=Array.isArray(b.extra)?b.extra:[];
       if(!ex.length){
-        lines.push('• باص '+(i+1)+': '+b.pax+' راكب');
+        lines.push('  - باص '+(i+1)+': '+b.pax+' راكب');
       }else{
-        lines.push('• باص '+(i+1)+' (مشترك - إجمالي '+total(b)+' راكب):');
-        lines.push('   - رحلة '+b.flight+' (إقلاع '+b.time+'): '+b.pax+' راكب');
-        ex.forEach(x=>lines.push('   - رحلة مشتركة '+x.flight+' (إقلاع '+x.time+'): '+x.pax+' راكب'));
+        lines.push('  - باص '+(i+1)+' (مشترك - إجمالي '+total(b)+' راكب):');
+        lines.push('     • رحلة '+b.flight+' (إقلاع '+b.time+'): '+b.pax+' راكب');
+        ex.forEach(x=>lines.push('     • رحلة مشتركة '+x.flight+' (إقلاع '+x.time+'): '+x.pax+' راكب'));
       }
     });
   }
@@ -353,14 +399,13 @@ $('entry').addEventListener('submit',e=>{
   e.preventDefault();
   const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
   if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){
-    alert('تحقق من رقم الرحلة والوقت وعدد الركاب');return;
+    alert('تأكد من رقم الرحلة والوقت وعدد الركاب');return;
   }
   const now=Date.now();
-  const b={id:newId(),flight,time,pax,departure:departure(time,now),createdAt:now,done:false,extra:[]};
-  buses.push(b);
+  buses.push({id:newId(),flight,time,pax,departure:departure(time,now),createdAt:now,done:false,extra:[]});
   if(!save()){buses.pop();return}
   e.target.reset();
-  $('notice').textContent='✓ تم تسجيل باص '+flight;
+  $('notice').textContent='تم تسجيل الباص بنجاح ✓';
   setTimeout(()=>{if($('notice'))$('notice').textContent=''},3000);
   render();
 });
@@ -382,23 +427,19 @@ function action(e){
     return;
   }
   if(a==='addsame'){
-    const val=prompt('عدد ركاب الباص الجديد للرحلة '+b.flight+' (إقلاع '+b.time+'):');
+    const val=prompt('تسجيل باص جديد للرحلة '+b.flight+'\nأدخل عدد الركاب:');
     if(val===null)return;
     const pax=Number(val.trim());
-    if(!Number.isInteger(pax)||pax<1||pax>150){alert('أدخل عدد ركاب صحيح');return}
-    const now=Date.now();
-    buses.push({id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:now,done:false,extra:[]});
+    if(!Number.isInteger(pax)||pax<1||pax>150){alert('عدد الركاب غير صحيح');return}
+    buses.push({id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[]});
   }
   else if(a==='addextra'){
-    const f=prompt('رقم الرحلة المشتركة (مثال SV456 أو صالة1 / حجاج):');
-    if(f===null)return;
+    const f=prompt('رقم الرحلة المشتركة:');if(f===null)return;
     const flight=f.trim().toUpperCase().replace(/\s+/g,'');
     if(!/^[A-Z0-9-\u0600-\u06FF]{2,18}$/.test(flight)){alert('رقم الرحلة غير صحيح');return}
-    const time=prompt('وقت إقلاع الرحلة المشتركة (HH:MM):');
-    if(time===null)return;
-    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){alert('وقت غير صحيح، اكتبه بصيغة 15:30');return}
-    const val=prompt('عدد ركاب الرحلة المشتركة في نفس الباص:');
-    if(val===null)return;
+    const time=prompt('وقت إقلاع الرحلة المشتركة (مثال 15:30):');if(time===null)return;
+    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){alert('وقت غير صحيح');return}
+    const val=prompt('عدد ركاب هذه الرحلة في الباص:');if(val===null)return;
     const pax=Number(val.trim());
     if(!Number.isInteger(pax)||pax<1||pax>150){alert('عدد ركاب غير صحيح');return}
     (b.extra||(b.extra=[])).push({flight,time:time.trim(),pax,departure:departure(time.trim(),created(b)),createdAt:Date.now()});
@@ -407,14 +448,8 @@ function action(e){
     if(!confirm('حذف الرحلة المشتركة؟'))return;
     b.extra.splice(Number(btn.dataset.index),1);
   }
-  else if(a==='done'){
-    b.done=true;
-    b.doneAt=new Date().toISOString();
-  }
-  else if(a==='restore'){
-    b.done=false;
-    delete b.doneAt;
-  }
+  else if(a==='done'){ b.done=true; b.doneAt=new Date().toISOString(); }
+  else if(a==='restore'){ b.done=false; delete b.doneAt; }
   else if(a==='delete'){
     if(!confirm('حذف هذا الباص نهائيًا؟'))return;
     buses=buses.filter(x=>x!==b);
@@ -427,35 +462,27 @@ function action(e){
 $('active').addEventListener('click',action);
 $('done').addEventListener('click',action);
 
-async function copy(){
-  try{await navigator.clipboard.writeText(report());alert('تم نسخ التقرير')}
-  catch(e){prompt('انسخ التقرير:',report())}
-}
+async function copy(){ try{await navigator.clipboard.writeText(report());alert('تم النسخ')}catch(e){prompt('انسخ التقرير:',report())} }
 $('copy').onclick=copy;
-$('share').onclick=async()=>{
-  if(navigator.share){try{await navigator.share({text:report()})}catch(e){}}
-  else await copy();
-};
+$('share').onclick=async()=>{ if(navigator.share){try{await navigator.share({text:report()})}catch(e){}}else await copy(); };
 $('backup').onclick=()=>{
   const blob=new Blob([JSON.stringify(buses,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download='landside-t4-backup.json';a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),3000);
+  a.href=url;a.download='landside-t4-backup.json';a.click(); setTimeout(()=>URL.revokeObjectURL(url),3000);
 };
 $('restorefile').addEventListener('change',async e=>{
   const f=e.target.files[0];if(!f)return;
   try{
     const v=JSON.parse(await f.text());
     if(!Array.isArray(v)||!v.every(b=>b&&typeof b==='object'&&typeof b.flight==='string'&&typeof b.time==='string'))throw Error();
-    if(!confirm('سيتم استبدال البيانات الحالية بالنسخة المختارة. هل أنت متأكد؟'))return;
+    if(!confirm('سيتم استعادة البيانات السابقة بالكامل. تأكيد؟'))return;
     const old=buses;buses=v;
     if(!save()){buses=old;return}
-    render();alert('تمت استعادة النسخة بنجاح');
-  }catch(err){alert('ملف النسخة غير صالح')}
+    render();alert('تم استعادة البيانات بنجاح.');
+  }catch(err){alert('ملف النسخة غير صحيح.')}
   finally{e.target.value=''}
 });
 
-render();
-setInterval(tick,1000);
+render(); setInterval(tick,1000);
 })();
 </script>
 </body>
