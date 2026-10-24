@@ -7,24 +7,24 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Landside T4">
-<!-- الأيقونة يتم توليدها برمجياً في الأسفل لتكون شكل باص مع كلمة T4 -->
+<!-- الأيقونة يتم توليدها برمجياً لتعطي شكل باص عند التثبيت -->
 <link id="dynamic-favicon" rel="apple-touch-icon" href="">
 <title>Landside T4 | النظام الرسمي لإدارة الفرز</title>
 <style>
-/* المتغيرات الرسمية والاحترافية */
+/* المتغيرات الرسمية */
 :root {
   --bg-color: #f1f5f9;
   --surface: #ffffff;
-  --primary: #0b1b3d; /* كحلي ملكي عميق */
+  --primary: #0b1b3d;
   --primary-light: #1e3a8a;
   --text-main: #0f172a;
   --text-muted: #64748b;
   --border: #e2e8f0;
-  --late: #b91c1c; /* أحمر رسمي */
+  --late: #b91c1c;
   --late-bg: #fef2f2;
-  --early: #047857; /* أخضر رسمي */
+  --early: #047857;
   --early-bg: #ecfdf5;
-  --normal: #1d4ed8; /* أزرق رسمي */
+  --normal: #1d4ed8;
   --normal-bg: #eff6ff;
   --shared: #b45309;
   --shared-bg: #fffbeb;
@@ -35,7 +35,7 @@ body { margin: 0; background: var(--bg-color); color: var(--text-main); -webkit-
 button, input { outline: none; border: none; font: inherit; }
 button { cursor: pointer; transition: 0.2s ease; }
 
-/* رأس الصفحة (Header) */
+/* رأس الصفحة */
 header { background: var(--primary); color: #fff; padding: 45px 20px 25px; position: relative; box-shadow: 0 4px 20px rgba(11,27,61,0.15); border-bottom: 4px solid #cbd5e1; }
 .header-wrap { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: flex-end; }
 .header-titles h1 { font-size: 22px; font-weight: 800; margin: 0 0 6px; letter-spacing: -0.5px; text-transform: uppercase; }
@@ -47,34 +47,35 @@ header { background: var(--primary); color: #fff; padding: 45px 20px 25px; posit
 /* الحاوية */
 main { max-width: 800px; margin: 15px auto 0; padding: 0 15px; }
 
-/* الإحصائيات (KPIs) */
+/* الإحصائيات */
 .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
 .kpi-card { background: var(--surface); border: 1px solid var(--border); padding: 16px 8px; text-align: center; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
 .kpi-card b { display: block; font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
 .kpi-card span { font-size: 10px; color: var(--text-muted); font-weight: 700; }
 
-/* اللوحات (Panels) */
+/* اللوحات */
 .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.03); }
 .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--bg-color); padding-bottom: 12px; margin-bottom: 16px; }
 .panel-header h2 { font-size: 15px; font-weight: 800; margin: 0; color: var(--primary); }
 .panel-badge { font-size: 11px; font-weight: 700; color: var(--primary-light); background: var(--bg-color); padding: 4px 10px; border-radius: 6px; }
 
-/* النماذج (Forms) */
-.form-grid { display: grid; grid-template-columns: 1fr 1fr 80px; gap: 12px; margin-bottom: 15px; }
+/* نماذج الإدخال (تم تعديلها لتكون تحت بعضها لسهولة الإدخال) */
+.form-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 18px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; }
-.form-field label { font-size: 11px; font-weight: 700; color: var(--text-muted); }
-.form-field input { border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 700; text-align: center; color: var(--primary); background: #f8fafc; direction: ltr; }
-.form-field input:focus { border-color: var(--primary-light); background: #fff; }
-.btn-primary { width: 100%; background: var(--primary); color: #fff; padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 700; box-shadow: 0 4px 12px rgba(11,27,61,0.2); }
+.form-field label { font-size: 12px; font-weight: 800; color: var(--primary-light); }
+.form-field input { width: 100%; border: 2px solid #cbd5e1; border-radius: 10px; padding: 14px; font-size: 18px; font-weight: 800; text-align: center; color: var(--primary); background: #f8fafc; direction: ltr; transition: 0.2s; }
+.form-field input:focus { border-color: var(--primary-light); background: #fff; box-shadow: 0 0 0 3px rgba(30,58,138,0.1); }
+.btn-primary { width: 100%; background: var(--primary); color: #fff; padding: 16px; border-radius: 10px; font-size: 16px; font-weight: 800; box-shadow: 0 4px 12px rgba(11,27,61,0.2); }
 .btn-primary:active { transform: translateY(2px); box-shadow: none; }
-.notice { text-align: center; font-size: 11px; font-weight: 700; color: var(--early); margin-top: 8px; min-height: 16px; }
+.notice { text-align: center; font-size: 12px; font-weight: 800; color: var(--early); margin-top: 8px; min-height: 16px; }
 
 /* الرحلات والباصات */
 .flight-block { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; background: #fff; }
-.flight-head { background: #f8fafc; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-.flight-title { font-size: 18px; font-weight: 800; color: var(--primary); direction: ltr; letter-spacing: 1px; }
-.flight-info { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-top: 4px; }
-.flight-countdown { border: 1px solid #cbd5e1; background: #fff; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 800; color: var(--primary); }
+.flight-head { background: #f8fafc; padding: 14px 16px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border); }
+.flight-title { font-size: 18px; font-weight: 900; color: var(--primary); direction: ltr; letter-spacing: 1px; margin-bottom: 4px; }
+.flight-info { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
+.flight-pax-highlight { font-size: 13px; font-weight: 800; color: var(--primary-light); }
+.flight-countdown { border: 1px solid #cbd5e1; background: #fff; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 900; color: var(--primary); text-align: center; }
 
 .buses-container { padding: 12px; display: grid; grid-template-columns: 1fr; gap: 12px; }
 @media(min-width: 600px) { .buses-container { grid-template-columns: 1fr 1fr; } }
@@ -83,9 +84,9 @@ main { max-width: 800px; margin: 15px auto 0; padding: 0 15px; }
 .bus-card.early { border-right: 4px solid var(--early); }
 .bus-card.normal { border-right: 4px solid var(--normal); }
 
-.bus-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.bus-number { font-size: 14px; font-weight: 800; color: var(--primary); }
-.bus-pax { background: var(--bg-color); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; color: var(--text-main); }
+.bus-top { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.bus-number { font-size: 15px; font-weight: 900; color: var(--primary); }
+.bus-pax { font-size: 13px; font-weight: 800; color: var(--text-main); }
 
 .bus-stats { display: flex; gap: 8px; margin-bottom: 10px; }
 .stat-box { flex: 1; background: #f8fafc; border: 1px solid #f1f5f9; padding: 8px; border-radius: 6px; text-align: center; }
@@ -96,44 +97,45 @@ main { max-width: 800px; margin: 15px auto 0; padding: 0 15px; }
 .bus-card.early .stat-box.highlight { background: var(--early-bg); color: var(--early); }
 
 .bus-tags { display: flex; gap: 6px; margin-bottom: 10px; }
-.bus-tag { font-size: 9px; font-weight: 700; padding: 4px 8px; border-radius: 4px; }
+.bus-tag { font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 4px; }
 .bus-tag.late { background: var(--late-bg); color: var(--late); }
 .bus-tag.early { background: var(--early-bg); color: var(--early); }
 .bus-tag.normal { background: var(--normal-bg); color: var(--normal); }
 .bus-tag.shared { background: var(--shared-bg); color: var(--shared); border: 1px solid #fef3c7; }
 
 /* الإجراءات */
-details.actions-menu summary { font-size: 11px; font-weight: 700; color: var(--primary-light); cursor: pointer; background: var(--bg-color); padding: 8px; border-radius: 6px; text-align: center; list-style: none; }
+details.actions-menu summary { font-size: 12px; font-weight: 800; color: var(--primary-light); cursor: pointer; background: var(--bg-color); padding: 10px; border-radius: 6px; text-align: center; list-style: none; }
 details.actions-menu summary::-webkit-details-marker { display: none; }
 .action-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.action-grid button { flex: 1; padding: 10px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.action-grid button { flex: 1; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 800; }
 .btn-action { background: #fff; border: 1px solid #cbd5e1; color: var(--text-main); }
 .btn-action.success { background: var(--early-bg); border-color: #a7f3d0; color: var(--early); }
 .btn-action.danger { background: var(--late-bg); border-color: #fecaca; color: var(--late); flex: 0.5; }
 
-.shared-block { background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 8px; margin-top: 10px; font-size: 11px; font-weight: 600; color: var(--text-main); }
-.shared-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--border); }
+.shared-block { background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 8px; margin-top: 10px; font-size: 11px; font-weight: 700; color: var(--text-main); }
+.shared-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); }
 .shared-item:last-child { border: none; padding-bottom: 0; }
-.shared-item button { background: none; color: var(--late); font-weight: 800; font-size: 12px; }
+.shared-item button { background: none; color: var(--late); font-weight: 900; font-size: 14px; }
 
-.add-bus-btn { width: 100%; background: #f8fafc; color: var(--primary-light); padding: 14px; font-size: 12px; font-weight: 700; border-top: 1px solid var(--border); }
+.add-bus-btn { width: 100%; background: #f8fafc; color: var(--primary-light); padding: 16px; font-size: 14px; font-weight: 800; border-top: 1px solid var(--border); }
 .add-bus-btn:hover { background: var(--bg-color); }
 
 /* الأدوات والتقارير */
 .tools-row { display: flex; gap: 10px; margin-bottom: 12px; }
-.tools-row button, .tools-row label { flex: 1; text-align: center; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 700; background: var(--bg-color); color: var(--text-main); cursor: pointer; border: 1px solid #cbd5e1; }
+.tools-row button, .tools-row label { flex: 1; text-align: center; padding: 14px; border-radius: 8px; font-size: 13px; font-weight: 800; background: var(--bg-color); color: var(--text-main); cursor: pointer; border: 1px solid #cbd5e1; }
 .tools-row button.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
-.report-view { background: #f8fafc; border: 1px solid var(--border); padding: 16px; border-radius: 8px; font-size: 11px; line-height: 1.8; white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--text-main); max-height: 250px; overflow-y: auto; margin-top: 12px; direction: rtl; text-align: right; }
+.report-view { background: #f8fafc; border: 1px solid var(--border); padding: 16px; border-radius: 8px; font-size: 12px; line-height: 2; white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--text-main); max-height: 250px; overflow-y: auto; margin-top: 12px; direction: rtl; text-align: right; font-weight: 600; }
 
 /* المغادرة */
-.dep-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.dep-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
 .dep-row:last-child { border: none; padding-bottom: 0; }
-.dep-flight { font-size: 14px; font-weight: 800; color: var(--primary); display: block; margin-bottom: 4px; }
-.dep-details { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+.dep-info { display: flex; flex-direction: column; gap: 6px; }
+.dep-flight { font-size: 16px; font-weight: 900; color: var(--primary); }
+.dep-details { font-size: 12px; font-weight: 700; color: var(--text-muted); }
 .dep-btns { display: flex; gap: 6px; }
-.dep-btns button { padding: 8px 12px; border-radius: 6px; font-size: 10px; font-weight: 700; border: 1px solid #cbd5e1; background: #fff; color: var(--text-main); }
+.dep-btns button { padding: 10px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; border: 1px solid #cbd5e1; background: #fff; color: var(--text-main); }
 
-.empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 12px; font-weight: 600; }
+.empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 13px; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -158,7 +160,7 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
     <div class="kpi-card"><b id="klate">0</b><span>محضر متأخر</span></div>
   </div>
 
-  <!-- تسجيل باص -->
+  <!-- تسجيل باص (تحت بعض لسهولة الإدخال) -->
   <section class="panel">
     <div class="panel-header">
       <h2>تسجيل باص جديد</h2>
@@ -166,11 +168,20 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
     </div>
     <form id="entry">
       <div class="form-grid">
-        <div class="form-field"><label>رقم الرحلة</label><input id="flight" placeholder="SV123" maxlength="14" autocapitalize="characters" required></div>
-        <div class="form-field"><label>وقت الإقلاع</label><input id="time" type="time" required></div>
-        <div class="form-field"><label>الركاب</label><input id="pax" type="number" min="1" max="150" inputmode="numeric" placeholder="48" required></div>
+        <div class="form-field">
+          <label>رقم الرحلة</label>
+          <input id="flight" placeholder="SV123" maxlength="14" autocapitalize="characters" required>
+        </div>
+        <div class="form-field">
+          <label>وقت الإقلاع</label>
+          <input id="time" type="time" required>
+        </div>
+        <div class="form-field">
+          <label>عدد الركاب</label>
+          <input id="pax" type="number" min="1" max="150" inputmode="numeric" placeholder="48" required>
+        </div>
       </div>
-      <button type="submit" class="btn-primary">تسجيل البيانات</button>
+      <button type="submit" class="btn-primary">حفظ وتسجيل البيانات</button>
       <div id="notice" class="notice"></div>
     </form>
   </section>
@@ -195,7 +206,7 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
       <label>استيراد نسخة<input type="file" id="restorefile" accept=".json,application/json" style="display:none"></label>
     </div>
     <details style="margin-top:16px;">
-      <summary style="font-size:12px;font-weight:700;color:var(--primary-light);cursor:pointer;">استعراض تقرير المشرف ▾</summary>
+      <summary style="font-size:13px;font-weight:800;color:var(--primary-light);cursor:pointer;">استعراض تقرير المشرف ▾</summary>
       <div id="preview" class="report-view"></div>
     </details>
   </section>
@@ -218,28 +229,23 @@ function generateAppIcon() {
   canvas.width = 512; canvas.height = 512;
   const ctx = canvas.getContext('2d');
   
-  // الخلفية الكحلية
   ctx.fillStyle = '#0b1b3d';
   ctx.fillRect(0, 0, 512, 512);
   
-  // رسم باص مبسط (أبيض)
   ctx.fillStyle = '#ffffff';
   ctx.beginPath();
   ctx.roundRect(80, 100, 352, 200, 30);
   ctx.fill();
   
-  // النوافذ (كحلي)
   ctx.fillStyle = '#0b1b3d';
   ctx.fillRect(100, 120, 80, 70);
   ctx.fillRect(216, 120, 80, 70);
   ctx.fillRect(332, 120, 80, 70);
   
-  // العجلات (أزرق فاتح / ذهبي)
   ctx.fillStyle = '#cbd5e1';
   ctx.beginPath(); ctx.arc(160, 300, 45, 0, Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(350, 300, 45, 0, Math.PI*2); ctx.fill();
   
-  // النص T4 LANDSIDE
   ctx.fillStyle = '#ffffff';
   ctx.font = 'bold 65px -apple-system, sans-serif';
   ctx.textAlign = 'center';
@@ -293,7 +299,7 @@ function busCard(b,i){
   if(extras.length) {
     sharedHtml = `<div class="shared-block">` + extras.map((x,j)=>`
       <div class="shared-item">
-        <span>رحلة مشتركة: ${esc(x.flight)} | الركاب: ${x.pax}</span>
+        <span>مشترك: ${esc(x.flight)} (الركاب: ${x.pax})</span>
         <button data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}">✕</button>
       </div>`).join('') + `</div>`;
   }
@@ -301,7 +307,7 @@ function busCard(b,i){
   return `<div class="bus-card ${c}">
     <div class="bus-top">
       <span class="bus-number">باص رقم ${i+1}</span>
-      <span class="bus-pax">الإجمالي: ${total(b)} راكب</span>
+      <span class="bus-pax">الركاب: ${total(b)}</span>
     </div>
     <div class="bus-stats">
       <div class="stat-box"><span>التحضير</span><b>${mins(dep(b)-created(b))}</b></div>
@@ -312,12 +318,15 @@ function busCard(b,i){
       ${extras.length?`<span class="bus-tag shared">مشترك (+${extras.length})</span>`:''}
     </div>
     <details class="actions-menu">
-      <summary>الإجراءات والتفاصيل</summary>
-      <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">وقت الوصول: ${formatArTime(created(b))} | الركاب الأساسيين: ${b.pax}</div>
+      <summary>عرض الإجراءات</summary>
+      <div style="font-size:12px; color:var(--text-muted); margin-top:8px; font-weight:700;">
+        وقت الوصول: ${formatArTime(created(b))}<br>
+        الركاب (أساسي): ${b.pax}
+      </div>
       ${sharedHtml}
       <div class="action-grid">
         <button class="btn-action" data-action="addextra" data-id="${esc(b.id)}">+ رحلة مشتركة</button>
-        <button class="btn-action success" data-action="done" data-id="${esc(b.id)}">تسجيل المغادرة ✓</button>
+        <button class="btn-action success" data-action="done" data-id="${esc(b.id)}">المغادرة ✓</button>
         <button class="btn-action danger" data-action="delete" data-id="${esc(b.id)}">حذف</button>
       </div>
     </details>
@@ -336,14 +345,15 @@ function render(){
     const b=g[0], p=g.reduce((a,x)=>a+total(x),0);
     return `<div class="flight-block">
       <div class="flight-head">
-        <div>
-          <div class="flight-title">${esc(b.flight)}</div>
-          <div class="flight-info">الإقلاع: ${esc(b.time)} | العدد: ${g.length} باص | الركاب: ${p}</div>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <div class="flight-title">الرحلة: ${esc(b.flight)}</div>
+          <div class="flight-info">الإقلاع: ${esc(b.time)}</div>
+          <div class="flight-pax-highlight">إجمالي الركاب: ${p} (${g.length} باص)</div>
         </div>
         <div class="flight-countdown" data-live="${esc(b.id)}">${until(b)}</div>
       </div>
       <div class="buses-container">${g.map((x,i)=>busCard(x,i)).join('')}</div>
-      <button class="add-bus-btn" data-action="addsame" data-id="${esc(b.id)}">+ تسجيل باص جديد لنفس الرحلة</button>
+      <button class="add-bus-btn" data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص جديد لنفس الرحلة</button>
     </div>`;
   }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة في الفرز حالياً.</div>';
 
@@ -351,9 +361,11 @@ function render(){
     const waitMs=(b.doneAt?new Date(b.doneAt).getTime():Date.now())-created(b);
     const extras=Array.isArray(b.extra)?b.extra:[];
     return `<div class="dep-row">
-      <div>
-        <span class="dep-flight">${esc(b.flight)} ${extras.length?`<span class="bus-tag shared" style="font-size:9px">مشترك</span>`:''}</span>
-        <span class="dep-details">الركاب: ${total(b)} | الإقلاع: ${esc(b.time)}<br>الانتظار بالفرز: ${mins(waitMs)} | غادر: ${b.doneAt?formatArTime(b.doneAt):'—'}</span>
+      <div class="dep-info">
+        <span class="dep-flight">الرحلة: ${esc(b.flight)} ${extras.length?`<span class="bus-tag shared" style="font-size:10px">مشترك</span>`:''}</span>
+        <span class="dep-details">الركاب: ${total(b)}</span>
+        <span class="dep-details">الإقلاع: ${esc(b.time)}</span>
+        <span class="dep-details">وقت المغادرة: ${b.doneAt?formatArTime(b.doneAt):'—'} (انتظار: ${mins(waitMs)})</span>
       </div>
       <div class="dep-btns">
         <button data-action="restore" data-id="${esc(b.id)}">تراجع</button>
@@ -376,16 +388,14 @@ function tick(){
     {flight:b.flight,dep:dep(b)},
     ...(b.extra||[]).map(x=>({flight:x.flight,dep:Number(x.departure)||departure(x.time,created(b))}))
   ]).filter(x=>x.dep>Date.now()).sort((a,b)=>a.dep-b.dep);
-  $('nextflight').textContent=upcoming.length?`أقرب رحلة: ${upcoming[0].flight} (${mins(upcoming[0].dep-Date.now())})`:'—';
+  $('nextflight').textContent=upcoming.length?`الرحلة القادمة: ${upcoming[0].flight} (${mins(upcoming[0].dep-Date.now())})`:'—';
 
-  // تحديث الوقت والتاريخ بصيغة رسمية
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
   $('clock').textContent = new Intl.DateTimeFormat('ar-SA', options).format(new Date());
 }
 
 /* 
-  التقرير الرسمي - خالي تماماً من الأيقونات والصور (Emojis)
-  يعتمد على التنسيق الجدولي والترتيب الرقمي الواضح
+  التقرير الرسمي - التنسيق مرتب بحيث تكون المعلومات أسفل بعضها (تحت بعض)
 */
 function report(){
   const a=buses.filter(b=>!b.done), done=buses.filter(b=>b.done), groups=groupBy(a);
@@ -404,6 +414,7 @@ function report(){
   ];
 
   if (!groups.length) {
+    lines.push('');
     lines.push('لا توجد باصات في منطقة الفرز حالياً.');
   } else {
     for (const g of groups) {
@@ -411,34 +422,39 @@ function report(){
       const hasShared = g.some(b => b.extra && b.extra.length > 0);
 
       lines.push('');
+      lines.push(`رقم الرحلة: ${f.flight}`);
+      lines.push(`وقت الإقلاع: ${f.time}`);
       
       if (g.length === 1 && !hasShared) {
-        // باص واحد لرحلة واحدة
-        lines.push(`الرحلة: ${f.flight} | الإقلاع: ${f.time} | الركاب: ${f.pax}`);
+        // حالة: باص واحد (المعلومات تحت بعض)
+        lines.push(`عدد الركاب: ${f.pax}`);
       } 
       else if (!hasShared) {
-        // عدة باصات (تجميع أرقام الركاب بجانب بعض)
-        const paxList = g.map(b => b.pax).join(' ، ');
+        // حالة: عدة باصات لنفس الرحلة (بدون مشترك)
+        const paxList = g.map(b => b.pax).join(' + ');
         const totalPax = g.reduce((sum, b) => sum + b.pax, 0);
-        lines.push(`الرحلة: ${f.flight} | الإقلاع: ${f.time}`);
-        lines.push(`- الركاب (${g.length} باصات): ${paxList} | الإجمالي: ${totalPax}`);
+        lines.push(`عدد الباصات: ${g.length}`);
+        lines.push(`تفصيل الركاب: ${paxList}`);
+        lines.push(`إجمالي الركاب: ${totalPax}`);
       } 
       else {
-        // باصات تحتوي على رحلات مشتركة
-        lines.push(`الرحلة: ${f.flight} | الإقلاع: ${f.time} | الباصات: ${g.length}`);
+        // حالة: يوجد باصات مشتركة
+        lines.push(`عدد الباصات: ${g.length}`);
         g.forEach((b, i) => {
           const ex = Array.isArray(b.extra) ? b.extra : [];
           if (!ex.length) {
-             lines.push(`  باص ${i+1}: ${b.pax} راكب`);
+             lines.push(`- باص ${i+1}: ${b.pax} راكب`);
           } else {
-             let sharedStr = ex.map(x => `${x.flight} (${x.pax})`).join(' + ');
-             lines.push(`  باص ${i+1}: ${b.pax} راكب + مشترك [${sharedStr}] | الإجمالي: ${total(b)}`);
+             let sharedStr = ex.map(x => `${x.flight} (${x.pax} راكب)`).join(' ، ');
+             lines.push(`- باص ${i+1}: ${b.pax} راكب`);
+             lines.push(`  (مشترك مع: ${sharedStr})`);
+             lines.push(`  إجمالي الباص: ${total(b)} راكب`);
           }
         });
       }
+      lines.push('--------------------');
     }
   }
-  lines.push('----------------------------------------');
   return '\u200f' + lines.join('\n\u200f');
 }
 
