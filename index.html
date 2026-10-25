@@ -6,12 +6,10 @@
 <meta name="theme-color" content="#0b1b3d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Landside T4">
-<!-- الأيقونة التلقائية -->
+<meta name="apple-mobile-web-app-title" content="الساحات T4">
 <link id="dynamic-favicon" rel="apple-touch-icon" href="">
-<title>Landside T4 | إدارة عمليات الفرز</title>
+<title>عمليات الساحات الخارجية | منطقة الفرز T4</title>
 <style>
-/* المتغيرات (الوضع الفاتح) */
 :root {
   --bg-color: #f1f5f9;
   --surface: #ffffff;
@@ -34,7 +32,6 @@
   --btn-bg: #f8fafc;
 }
 
-/* المتغيرات (الوضع الليلي) */
 body.dark-theme {
   --bg-color: #0f172a;
   --surface: #1e293b;
@@ -63,37 +60,32 @@ button, input { outline: none; border: none; font: inherit; margin: 0; }
 button { cursor: pointer; transition: 0.2s ease; }
 svg { width: 16px; height: 16px; fill: currentColor; vertical-align: middle; margin-left: 4px; }
 
-/* رأس الصفحة */
 header { background: #0b1b3d; color: #fff; padding: 45px 20px 25px; box-shadow: 0 4px 20px rgba(11,27,61,0.15); border-bottom: 4px solid #cbd5e1; }
 .header-wrap { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: flex-end; }
-.header-titles h1 { font-size: 22px; font-weight: 800; margin: 0 0 6px; letter-spacing: -0.5px; }
-.header-titles p { font-size: 11px; color: #94a3b8; margin: 0; font-weight: 500; }
+.header-titles h1 { font-size: 20px; font-weight: 800; margin: 0 0 6px; letter-spacing: -0.5px; }
+.header-titles p { font-size: 13px; color: #94a3b8; margin: 0; font-weight: 700; }
 .theme-toggle { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; }
 .status-wrap { display: flex; align-items: center; gap: 10px; }
 #clock { font-size: 12px; font-weight: 600; margin-top: 15px; color: #cbd5e1; max-width: 800px; margin-left: auto; margin-right: auto; padding: 0 20px; }
 
 main { max-width: 800px; margin: 15px auto 0; padding: 0 15px; }
 
-/* الإحصائيات */
 .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
 .kpi-card { background: var(--surface); border: 1px solid var(--border); padding: 14px 4px; text-align: center; border-radius: 12px; }
 .kpi-card b { display: block; font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
 .kpi-card span { font-size: 10px; color: var(--text-muted); font-weight: 700; }
 
-/* اللوحات (Panels) */
 .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.02); }
 .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--bg-color); padding-bottom: 12px; margin-bottom: 16px; }
 .panel-header h2 { font-size: 15px; font-weight: 800; margin: 0; color: var(--primary); }
 .panel-badge { font-size: 11px; font-weight: 700; color: var(--primary-light); background: var(--bg-color); padding: 4px 10px; border-radius: 6px; }
 
-/* الأقسام المطوية (Details Panels) */
 details.panel summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
 details.panel summary::-webkit-details-marker { display: none; }
 details.panel:not([open]) .panel-header { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
 details.panel summary::after { content: "▼"; font-size: 10px; color: var(--text-muted); transition: 0.2s; }
 details.panel[open] summary::after { transform: rotate(180deg); }
 
-/* نموذج التسجيل الموزون 100% */
 .form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; }
 .form-field label { font-size: 12px; font-weight: 800; color: var(--text-muted); }
@@ -106,12 +98,10 @@ details.panel[open] summary::after { transform: rotate(180deg); }
 .btn-primary { width: 100%; background: #0b1b3d; color: #fff; height: 52px; border-radius: 10px; font-size: 15px; font-weight: 800; box-shadow: 0 4px 12px rgba(11,27,61,0.2); margin-top: 4px; }
 .btn-primary:active { transform: translateY(2px); box-shadow: none; }
 
-/* فلاتر سريعة */
 .filters { display: flex; gap: 8px; margin-bottom: 16px; }
 .filters button { flex: 1; padding: 10px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); font-weight: 800; font-size: 11px; }
 .filters button.active { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
 
-/* الرحلات والباصات */
 .flight-block { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; background: var(--surface); }
 .flight-head { background: var(--btn-bg); padding: 14px 16px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border); }
 .flight-title { font-size: 18px; font-weight: 900; color: var(--text-main); direction: ltr; margin-bottom: 4px; }
@@ -144,7 +134,6 @@ details.panel[open] summary::after { transform: rotate(180deg); }
 .bus-tag.normal { background: var(--normal-bg); color: var(--normal); }
 .bus-tag.shared { background: var(--shared-bg); color: var(--shared); border: 1px solid #fef3c7; }
 
-/* الإجراءات */
 details.actions-menu summary { font-size: 11px; font-weight: 800; color: var(--text-muted); cursor: pointer; background: var(--btn-bg); padding: 8px; border-radius: 6px; text-align: center; list-style: none; border: 1px solid var(--border); }
 details.actions-menu summary::-webkit-details-marker { display: none; }
 .action-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
@@ -161,13 +150,11 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
 .add-bus-btn { width: 100%; background: var(--btn-bg); color: var(--text-main); padding: 14px; font-size: 12px; font-weight: 800; border-top: 1px solid var(--border); }
 .add-bus-btn:hover { background: var(--border); }
 
-/* الأدوات والتقارير */
 .tools-row { display: flex; gap: 10px; margin-bottom: 12px; }
 .tools-row button, .tools-row label { flex: 1; text-align: center; padding: 14px; border-radius: 8px; font-size: 12px; font-weight: 800; background: var(--surface); color: var(--text-main); cursor: pointer; border: 1px solid var(--border); }
 .tools-row button.primary { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
 .report-view { background: var(--surface); border: 1px solid var(--border); padding: 16px; border-radius: 8px; font-size: 12px; line-height: 2; white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--text-main); max-height: 250px; overflow-y: auto; margin-top: 12px; direction: rtl; text-align: right; }
 
-/* المغادرة */
 .dep-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
 .dep-row:last-child { border: none; padding-bottom: 0; }
 .dep-info { display: flex; flex-direction: column; gap: 6px; }
@@ -178,11 +165,9 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
 
 .empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 12px; font-weight: 700; }
 
-/* الإشعار المنبثق (Toast) */
 .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 800; font-size: 13px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 4px 12px rgba(16,185,129,0.3); pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-/* زر الإضافة العائم (FAB) */
 .fab { position: fixed; bottom: 20px; left: 20px; width: 55px; height: 55px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 999; border: none; }
 </style>
 </head>
@@ -191,21 +176,19 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
 <header>
   <div class="header-wrap">
     <div class="header-titles">
-      <h1>Landside T4</h1>
-      <p>إدارة عمليات الساحات والفرز</p>
+      <h1>عمليات الساحات الخارجية</h1>
+      <p>منطقة الفرز T4</p>
     </div>
     <div class="status-wrap">
       <button class="theme-toggle" onclick="toggleTheme()" title="تغيير المظهر">
         <svg viewBox="0 0 24 24" style="margin:0"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
-      <div class="status-indicator">النظام متصل</div>
     </div>
   </div>
   <div id="clock">جاري التحميل...</div>
 </header>
 
 <main>
-  <!-- הعدادات -->
   <div class="kpi-grid">
     <div class="kpi-card"><b id="kbus">0</b><span>باص بالفرز</span></div>
     <div class="kpi-card"><b id="kpax">0</b><span>الركاب</span></div>
@@ -213,7 +196,6 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
     <div class="kpi-card"><b id="klate">0</b><span>تأخير تحضير</span></div>
   </div>
 
-  <!-- نموذج التسجيل الموزون -->
   <section class="panel" id="add-section">
     <div class="panel-header">
       <h2>تسجيل باص جديد</h2>
@@ -244,7 +226,6 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
     </form>
   </section>
 
-  <!-- الباصات الحالية مع الفلاتر -->
   <section class="panel">
     <div class="panel-header" style="border:none; padding:0; margin-bottom:12px;">
       <h2>لوحة المراقبة التشغيلية</h2>
@@ -257,7 +238,6 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
     <div id="active"></div>
   </section>
 
-  <!-- سجل المغادرة (مطوي لتنظيف الشاشة) -->
   <details class="panel details-panel">
     <summary class="panel-header">
       <h2>سجل الباصات المغادرة</h2>
@@ -266,7 +246,6 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
     <div id="done"></div>
   </details>
 
-  <!-- إدارة التقارير (مطوي) -->
   <details class="panel details-panel">
     <summary class="panel-header"><h2>التقارير والنسخ الاحتياطي</h2></summary>
     <div class="tools-row" style="margin-top:10px">
@@ -281,7 +260,6 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
   </details>
 </main>
 
-<!-- تنبيه توست وزر عائم -->
 <div id="toast" class="toast"></div>
 <button class="fab" onclick="window.scrollTo({top:0, behavior:'smooth'}); setTimeout(()=>document.getElementById('flight').focus(),300)">
   <svg viewBox="0 0 24 24" style="width:28px;height:28px;margin:0"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
@@ -289,7 +267,6 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
 
 <script>
 (()=>{'use strict';
-// الأيقونات بصيغة SVG رسمية
 const svgAdd = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
 const svgDepart = '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>';
 const svgDel = '<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
@@ -310,7 +287,6 @@ function generateAppIcon() {
 }
 generateAppIcon();
 
-// الإشعار المنبثق الناعم (Toast)
 window.showToast = function(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -318,13 +294,11 @@ window.showToast = function(msg) {
   setTimeout(()=>t.classList.remove('show'), 2500);
 }
 
-// أزرار زيادة/نقص الركاب
 window.adjPax = function(n) {
   const p = document.getElementById('pax');
   p.value = Math.max(1, Math.min(150, (Number(p.value)||0) + n));
 }
 
-// الوضع الليلي
 window.toggleTheme = function() {
   document.body.classList.toggle('dark-theme');
   localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
@@ -407,8 +381,6 @@ function busCard(b,i){
 
 function render(){
   const allActive = buses.filter(b=>!b.done);
-  
-  // تحديث الاقتراحات للرحلات
   $('flight-list').innerHTML = [...new Set(allActive.map(b=>b.flight))].map(f=>`<option value="${esc(f)}">`).join('');
 
   let filteredActive = allActive;
@@ -477,7 +449,7 @@ function report(){
     'إجمالي الباصات بالفرز: ' + a.length,
     'إجمالي الركاب: ' + a.reduce((n,b)=>n+total(b),0),
     'عدد الرحلات النشطة: ' + new Set(a.flatMap(b=>[b.flight,...(b.extra||[]).map(x=>x.flight)])).size,
-    'إجمالي الباصات المغادرة: ' + done.length,
+    'إجمالي الباص المغادرة: ' + done.length,
     '----------------------------------------',
     'تفاصيل الرحلات الحالية:'
   ];
@@ -573,7 +545,10 @@ $('done').addEventListener('click',action);
 
 async function copy(){ try{await navigator.clipboard.writeText(report());showToast('تم نسخ التقرير ✓')}catch(e){prompt('انسخ التقرير:',report())} }
 $('copy').onclick=copy;
-$('share').onclick=async()=>{ if(navigator.share){try{await navigator.share({text:report()})}catch(e){}}else await copy(); };
+$('share').onclick=() => {
+  const text = encodeURIComponent(report());
+  window.open('https://wa.me/u_vvw?text=' + text, '_blank');
+};
 $('backup').onclick=()=>{
   const blob=new Blob([JSON.stringify(buses,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='landside-t4-backup.json';a.click(); setTimeout(()=>URL.revokeObjectURL(url),3000);
