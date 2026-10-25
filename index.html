@@ -9,9 +9,9 @@
 <meta name="apple-mobile-web-app-title" content="Landside T4">
 <!-- الأيقونة يتم توليدها برمجياً لتعطي شكل باص عند التثبيت -->
 <link id="dynamic-favicon" rel="apple-touch-icon" href="">
-<title>Landside T4 | النظام الرسمي لإدارة الفرز</title>
+<title>Landside T4 | إدارة عمليات الفرز</title>
 <style>
-/* المتغيرات الرسمية */
+/* المتغيرات */
 :root {
   --bg-color: #f1f5f9;
   --surface: #ffffff;
@@ -32,14 +32,14 @@
 
 * { box-sizing: border-box; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 body { margin: 0; background: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 60px; }
-button, input { outline: none; border: none; font: inherit; }
+button, input { outline: none; border: none; font: inherit; margin: 0; }
 button { cursor: pointer; transition: 0.2s ease; }
 
 /* رأس الصفحة */
 header { background: var(--primary); color: #fff; padding: 45px 20px 25px; position: relative; box-shadow: 0 4px 20px rgba(11,27,61,0.15); border-bottom: 4px solid #cbd5e1; }
 .header-wrap { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: flex-end; }
 .header-titles h1 { font-size: 22px; font-weight: 800; margin: 0 0 6px; letter-spacing: -0.5px; text-transform: uppercase; }
-.header-titles p { font-size: 11px; color: #94a3b8; margin: 0; font-weight: 500; letter-spacing: 0.5px; }
+.header-titles p { font-size: 12px; color: #94a3b8; margin: 0; font-weight: 500; letter-spacing: 0.5px; }
 .status-indicator { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
 .status-indicator::before { content: ""; width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
 #clock { font-size: 12px; font-weight: 600; margin-top: 15px; color: #cbd5e1; max-width: 800px; margin-left: auto; margin-right: auto; padding: 0 20px; }
@@ -59,13 +59,27 @@ main { max-width: 800px; margin: 15px auto 0; padding: 0 15px; }
 .panel-header h2 { font-size: 15px; font-weight: 800; margin: 0; color: var(--primary); }
 .panel-badge { font-size: 11px; font-weight: 700; color: var(--primary-light); background: var(--bg-color); padding: 4px 10px; border-radius: 6px; }
 
-/* نماذج الإدخال (تم تعديلها لتكون تحت بعضها لسهولة الإدخال) */
-.form-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 18px; }
+/* نماذج الإدخال (تمت موازنة الأحجام لتطابق بعضها 100%) */
+.form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; }
 .form-field label { font-size: 12px; font-weight: 800; color: var(--primary-light); }
-.form-field input { width: 100%; border: 2px solid #cbd5e1; border-radius: 10px; padding: 14px; font-size: 18px; font-weight: 800; text-align: center; color: var(--primary); background: #f8fafc; direction: ltr; transition: 0.2s; }
+.form-field input { 
+  width: 100%; 
+  height: 52px; /* توحيد الارتفاع لكل الحقول */
+  border: 2px solid #cbd5e1; 
+  border-radius: 10px; 
+  padding: 0 14px; 
+  font-size: 17px; 
+  font-weight: 800; 
+  text-align: center; 
+  color: var(--primary); 
+  background: #f8fafc; 
+  direction: ltr; 
+  transition: 0.2s;
+  -webkit-appearance: none; /* إزالة تنسيقات الآيفون الافتراضية التي تسبب تكبير حقل الوقت */
+}
 .form-field input:focus { border-color: var(--primary-light); background: #fff; box-shadow: 0 0 0 3px rgba(30,58,138,0.1); }
-.btn-primary { width: 100%; background: var(--primary); color: #fff; padding: 16px; border-radius: 10px; font-size: 16px; font-weight: 800; box-shadow: 0 4px 12px rgba(11,27,61,0.2); }
+.btn-primary { width: 100%; background: var(--primary); color: #fff; padding: 16px; border-radius: 10px; font-size: 15px; font-weight: 800; box-shadow: 0 4px 12px rgba(11,27,61,0.2); }
 .btn-primary:active { transform: translateY(2px); box-shadow: none; }
 .notice { text-align: center; font-size: 12px; font-weight: 800; color: var(--early); margin-top: 8px; min-height: 16px; }
 
@@ -117,7 +131,7 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
 .shared-item:last-child { border: none; padding-bottom: 0; }
 .shared-item button { background: none; color: var(--late); font-weight: 900; font-size: 14px; }
 
-.add-bus-btn { width: 100%; background: #f8fafc; color: var(--primary-light); padding: 16px; font-size: 14px; font-weight: 800; border-top: 1px solid var(--border); }
+.add-bus-btn { width: 100%; background: #f8fafc; color: var(--primary-light); padding: 16px; font-size: 13px; font-weight: 800; border-top: 1px solid var(--border); }
 .add-bus-btn:hover { background: var(--bg-color); }
 
 /* الأدوات والتقارير */
@@ -144,23 +158,23 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
   <div class="header-wrap">
     <div class="header-titles">
       <h1>Landside T4</h1>
-      <p>النظام الرسمي لإدارة الساحات والفرز</p>
+      <p>إدارة عمليات الساحات والفرز</p>
     </div>
-    <div class="status-indicator">النظام متصل</div>
+    <div class="status-indicator">الشبكة متصلة</div>
   </div>
   <div id="clock">جاري التحميل...</div>
 </header>
 
 <main>
-  <!-- العدادات الرسمية -->
+  <!-- العدادات -->
   <div class="kpi-grid">
     <div class="kpi-card"><b id="kbus">0</b><span>باص بالفرز</span></div>
     <div class="kpi-card"><b id="kpax">0</b><span>إجمالي الركاب</span></div>
     <div class="kpi-card"><b id="kflight">0</b><span>رحلة نشطة</span></div>
-    <div class="kpi-card"><b id="klate">0</b><span>محضر متأخر</span></div>
+    <div class="kpi-card"><b id="klate">0</b><span>تأخير تحضير</span></div>
   </div>
 
-  <!-- تسجيل باص (تحت بعض لسهولة الإدخال) -->
+  <!-- تسجيل باص (تحت بعض وموزونة 100%) -->
   <section class="panel">
     <div class="panel-header">
       <h2>تسجيل باص جديد</h2>
@@ -196,7 +210,7 @@ details.actions-menu summary::-webkit-details-marker { display: none; }
 
   <!-- إدارة التقارير -->
   <section class="panel">
-    <div class="panel-header"><h2>التقارير وحفظ البيانات</h2></div>
+    <div class="panel-header"><h2>التقارير والنسخ الاحتياطي</h2></div>
     <div class="tools-row">
       <button id="copy" type="button">نسخ التقرير</button>
       <button id="share" type="button" class="primary">إرسال التقرير (واتساب)</button>
@@ -258,7 +272,6 @@ function generateAppIcon() {
 }
 generateAppIcon();
 
-// -- الكود البرمجي الأساسي للعمليات --
 const KEY='landside-t4-personal-v1', $=id=>document.getElementById(id);
 let buses=[];
 try{ const v=JSON.parse(localStorage.getItem(KEY)||'[]'); if(Array.isArray(v))buses=v; }catch(e){}
@@ -394,9 +407,6 @@ function tick(){
   $('clock').textContent = new Intl.DateTimeFormat('ar-SA', options).format(new Date());
 }
 
-/* 
-  التقرير الرسمي - التنسيق مرتب بحيث تكون المعلومات أسفل بعضها (تحت بعض)
-*/
 function report(){
   const a=buses.filter(b=>!b.done), done=buses.filter(b=>b.done), groups=groupBy(a);
   const d = new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'short',timeStyle:'short'}).format(new Date());
@@ -426,11 +436,9 @@ function report(){
       lines.push(`وقت الإقلاع: ${f.time}`);
       
       if (g.length === 1 && !hasShared) {
-        // حالة: باص واحد (المعلومات تحت بعض)
         lines.push(`عدد الركاب: ${f.pax}`);
       } 
       else if (!hasShared) {
-        // حالة: عدة باصات لنفس الرحلة (بدون مشترك)
         const paxList = g.map(b => b.pax).join(' + ');
         const totalPax = g.reduce((sum, b) => sum + b.pax, 0);
         lines.push(`عدد الباصات: ${g.length}`);
@@ -438,7 +446,6 @@ function report(){
         lines.push(`إجمالي الركاب: ${totalPax}`);
       } 
       else {
-        // حالة: يوجد باصات مشتركة
         lines.push(`عدد الباصات: ${g.length}`);
         g.forEach((b, i) => {
           const ex = Array.isArray(b.extra) ? b.extra : [];
