@@ -150,10 +150,8 @@ details.bus-card.early .time-box.active span, details.bus-card.early .time-box.a
 .dep-btns button { padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); }
 
 .empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 900; }
-
 .toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 4px 15px rgba(16,185,129,0.4); pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
 .fab { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 999; border: none; }
 </style>
 </head>
@@ -271,11 +269,9 @@ window.showToast = function(msg) {
   const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), 2000);
 }
-
 window.adjPax = function(n) {
   const p = document.getElementById('pax'); p.value = Math.max(1, Math.min(150, (Number(p.value)||0) + n));
 }
-
 window.toggleTheme = function() {
   document.body.classList.toggle('dark-theme');
   localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
@@ -316,9 +312,9 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// --- نظام إصدار التصريح (الورقة الرسمية من الصورة المرفقة) ---
+// --- نظام إصدار التصريح ---
 async function generatePermit(b) {
-  showToast('جاري رسم التصريح...');
+  showToast('جاري تحضير التصريح...');
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   
@@ -327,32 +323,31 @@ async function generatePermit(b) {
   img.src = "https://i.ibb.co/MDvyKFCY/D2-B69579-1-CA1-4-E0-D-B250-80-B25-B36-D42-E.png"; 
 
   img.onload = () => {
-    // نعتمد أبعاد الصورة الأصلية
     canvas.width = img.width;
     canvas.height = img.height;
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     
-    // إعداد القلم الأزرق (الحبر)
+    // إعداد القلم الأزرق (لون الحبر)
     ctx.fillStyle = '#0047AB';
-    const fontSize = Math.floor(canvas.height * 0.045); // حجم خط متناسب مع جودة الصورة
+    const fontSize = Math.floor(canvas.height * 0.040); // حجم الخط
     ctx.font = `bold ${fontSize}px monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
-    // جلب البيانات
+    // البيانات
     const dateStr = new Intl.DateTimeFormat('en-GB').format(new Date());
     const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'}).format(new Date(created(b)));
     
-    // الإحداثيات (بنسب مئوية) لتناسب أي حجم للصورة
-    // 💡 إذا كانت الكلمات مرتفعة أو منخفضة، قم بتعديل الرقم المئوي بجانب (canvas.height)
-    // 💡 إذا كانت الكلمات يمين أو يسار الخانة، قم بتعديل (0.42)
-    const columnX = canvas.width * 0.42; 
+    // ========= إحداثيات السطور =========
+    // إذا أردت تعديل ارتفاع الكلمة، قم بزيادة أو نقصان الرقم العشري (مثلاً 0.415 اجعله 0.400 ليرتفع)
+    const columnX = canvas.width * 0.38; // موضع الكلمات يمين/يسار
     
-    ctx.fillText(dateStr, columnX, canvas.height * 0.22); // التاريخ
-    ctx.fillText(b.flight, columnX, canvas.height * 0.32); // الرحلة
-    ctx.fillText(b.time, columnX, canvas.height * 0.43); // وقت الإقلاع
-    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.54); // الركاب
-    ctx.fillText(timeIn, columnX, canvas.height * 0.65); // وقت الوصول
+    ctx.fillText(dateStr, columnX, canvas.height * 0.415);              // التاريخ
+    ctx.fillText(b.flight, columnX, canvas.height * 0.472);             // الرحلة
+    ctx.fillText(b.time, columnX, canvas.height * 0.529);               // الإقلاع
+    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.586);  // الركاب
+    ctx.fillText(timeIn, columnX, canvas.height * 0.643);               // الوصول
+    // ====================================
 
     canvas.toBlob(async (blob) => {
       if (!blob) { showToast('خطأ في توليد الصورة'); return; }
@@ -369,10 +364,7 @@ async function generatePermit(b) {
       }
     }, 'image/png');
   };
-  
-  img.onerror = () => {
-    showToast('فشل تحميل الورقة الأساسية، تأكد من الاتصال بالإنترنت.');
-  };
+  img.onerror = () => { showToast('تأكد من الاتصال بالإنترنت لسحب الورقة.'); };
 }
 
 function busCard(b,i){
@@ -404,9 +396,7 @@ function busCard(b,i){
       </div>
     </summary>
     <div class="bus-actions">
-      <!-- زر إصدار التصريح (الجديد) -->
       <button style="width:100%; background:#0b1b3d; border-color:#0b1b3d; color:#fff; margin-bottom:8px" data-action="permit" data-id="${esc(b.id)}">إصدار تصريح إلكتروني (ورقة)</button>
-      
       ${sharedHtml}
       <div class="bus-action-row">
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
