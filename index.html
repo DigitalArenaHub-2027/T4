@@ -150,8 +150,10 @@ details.bus-card.early .time-box.active span, details.bus-card.early .time-box.a
 .dep-btns button { padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); }
 
 .empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 900; }
+
 .toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 4px 15px rgba(16,185,129,0.4); pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
 .fab { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 999; border: none; }
 </style>
 </head>
@@ -314,34 +316,63 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
+// --- نظام إصدار التصريح (الورقة الرسمية من الصورة المرفقة) ---
 async function generatePermit(b) {
-  showToast('جاري تجهيز التصريح...');
+  showToast('جاري رسم التصريح...');
   const canvas = document.createElement('canvas');
-  canvas.width = 1000; canvas.height = 600;
   const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, 1000, 600);
-  ctx.lineWidth = 2; ctx.strokeStyle = '#000000'; ctx.fillStyle = '#000000'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.strokeRect(20, 20, 960, 560);
-  ctx.font = 'bold 36px sans-serif'; ctx.fillText('Jedco | Jeddah Airports', 250, 70);
-  ctx.font = 'bold 24px sans-serif'; ctx.fillText('تصريح دخول منطقة مواقف مغادرة مبنى المجموعات', 500, 120); ctx.fillText('Landside - T4', 820, 70); ctx.fillText('الساحات الخارجية', 820, 110);
-  ctx.beginPath(); ctx.moveTo(20, 150); ctx.lineTo(980, 150); ctx.stroke();
-  ctx.beginPath();
-  for(let y=220; y<=500; y+=70) { ctx.moveTo(20, y); ctx.lineTo(980, y); }
-  ctx.moveTo(180, 150); ctx.lineTo(180, 580); ctx.moveTo(500, 150); ctx.lineTo(500, 500); ctx.moveTo(700, 150); ctx.lineTo(700, 500); ctx.stroke();
-  ctx.font = 'bold 20px sans-serif';
-  ctx.fillText('التاريخ Date', 100, 185); ctx.fillText('رقم الرحلة Flight No', 100, 255); ctx.fillText('وقت الإقلاع STD', 100, 325); ctx.fillText('عدد الركاب PAX', 100, 395); ctx.fillText('وقت الوصول Time IN', 100, 465); ctx.fillText('وقت المغادرة Time OUT', 600, 465); ctx.fillText('وقت التنسيق', 840, 185); ctx.fillText('وقت الموافقة', 840, 255); ctx.fillText('البوابة Zone', 840, 325); ctx.fillText('التوقيع Signature', 840, 395);
-  ctx.fillStyle = '#0047AB'; ctx.font = 'bold 38px monospace';
-  const dateStr = new Intl.DateTimeFormat('en-GB').format(new Date());
-  const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'}).format(new Date(created(b)));
-  ctx.fillText(dateStr, 340, 185); ctx.fillText(b.flight, 340, 255); ctx.fillText(b.time, 340, 325); ctx.fillText(total(b).toString(), 340, 395); ctx.fillText(timeIn, 340, 465);
-  canvas.toBlob(async (blob) => {
-    if (!blob) return;
-    const file = new File([blob], `Permit_${b.flight}.png`, { type: 'image/png' });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try { await navigator.share({ files: [file], title: 'تصريح دخول باص', text: `تصريح دخول باص لرحلة ${b.flight}` }); showToast('تم فتح قائمة المشاركة ✓'); } catch (error) {}
-    } else { const imgURL = URL.createObjectURL(blob); window.open(imgURL, '_blank'); showToast('اضغط مطولاً على الصورة لحفظها.'); }
-  }, 'image/png');
+  
+  const img = new Image();
+  img.crossOrigin = "anonymous"; 
+  img.src = "https://i.ibb.co/MDvyKFCY/D2-B69579-1-CA1-4-E0-D-B250-80-B25-B36-D42-E.png"; 
+
+  img.onload = () => {
+    // نعتمد أبعاد الصورة الأصلية
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    
+    // إعداد القلم الأزرق (الحبر)
+    ctx.fillStyle = '#0047AB';
+    const fontSize = Math.floor(canvas.height * 0.045); // حجم خط متناسب مع جودة الصورة
+    ctx.font = `bold ${fontSize}px monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    // جلب البيانات
+    const dateStr = new Intl.DateTimeFormat('en-GB').format(new Date());
+    const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'}).format(new Date(created(b)));
+    
+    // الإحداثيات (بنسب مئوية) لتناسب أي حجم للصورة
+    // 💡 إذا كانت الكلمات مرتفعة أو منخفضة، قم بتعديل الرقم المئوي بجانب (canvas.height)
+    // 💡 إذا كانت الكلمات يمين أو يسار الخانة، قم بتعديل (0.42)
+    const columnX = canvas.width * 0.42; 
+    
+    ctx.fillText(dateStr, columnX, canvas.height * 0.22); // التاريخ
+    ctx.fillText(b.flight, columnX, canvas.height * 0.32); // الرحلة
+    ctx.fillText(b.time, columnX, canvas.height * 0.43); // وقت الإقلاع
+    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.54); // الركاب
+    ctx.fillText(timeIn, columnX, canvas.height * 0.65); // وقت الوصول
+
+    canvas.toBlob(async (blob) => {
+      if (!blob) { showToast('خطأ في توليد الصورة'); return; }
+      const file = new File([blob], `Permit_${b.flight}.png`, { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try { 
+          await navigator.share({ files: [file], title: 'تصريح دخول باص' }); 
+          showToast('اختر الواتساب للمشاركة ✓'); 
+        } catch (error) {}
+      } else { 
+        const imgURL = URL.createObjectURL(blob); 
+        window.open(imgURL, '_blank'); 
+        showToast('اضغط مطولاً على الصورة لحفظها.'); 
+      }
+    }, 'image/png');
+  };
+  
+  img.onerror = () => {
+    showToast('فشل تحميل الورقة الأساسية، تأكد من الاتصال بالإنترنت.');
+  };
 }
 
 function busCard(b,i){
@@ -373,7 +404,9 @@ function busCard(b,i){
       </div>
     </summary>
     <div class="bus-actions">
-      <button style="width:100%; background:#0b1b3d; border-color:#0b1b3d; color:#fff; margin-bottom:8px" data-action="permit" data-id="${esc(b.id)}">${svgPrint} إصدار تصريح (ورقة)</button>
+      <!-- زر إصدار التصريح (الجديد) -->
+      <button style="width:100%; background:#0b1b3d; border-color:#0b1b3d; color:#fff; margin-bottom:8px" data-action="permit" data-id="${esc(b.id)}">إصدار تصريح إلكتروني (ورقة)</button>
+      
       ${sharedHtml}
       <div class="bus-action-row">
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
@@ -406,13 +439,13 @@ function render(){
     return `<div class="flight-block">
       <div class="flight-head">
         <div>
-          <div class="flight-title">${esc(b.flight)}</div>
-          <div class="flight-info">إقلاع ${esc(b.time)} | ${p} راكب (${g.length} باص)</div>
+          <div class="flight-title">${esc(b.flight)} <span style="font-size:10px; color:var(--text-muted); font-weight:700">(${g.length} باص)</span></div>
+          <div class="flight-info">إقلاع ${esc(b.time)} | إجمالي ${p} راكب</div>
         </div>
         <div class="flight-countdown" data-live="${esc(b.id)}">${until(b)}</div>
       </div>
       <div class="buses-container">${g.map((x,i)=>busCard(x,i)).join('')}</div>
-      <button class="add-bus-btn" data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص جديد للرحلة</button>
+      <button class="add-bus-btn" data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص للرحلة</button>
     </div>`;
   }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة هنا.</div>';
 
