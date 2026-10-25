@@ -150,8 +150,10 @@ details.bus-card.early .time-box.active span, details.bus-card.early .time-box.a
 .dep-btns button { padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); }
 
 .empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 900; }
+
 .toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 4px 15px rgba(16,185,129,0.4); pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
 .fab { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 999; border: none; }
 </style>
 </head>
@@ -251,7 +253,6 @@ details.bus-card.early .time-box.active span, details.bus-card.early .time-box.a
 const svgAdd = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
 const svgDepart = '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>';
 const svgDel = '<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
-const svgPrint = '<svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>';
 
 function generateAppIcon() {
   const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 512; const ctx = canvas.getContext('2d');
@@ -314,7 +315,7 @@ function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!
 
 // --- نظام إصدار التصريح ---
 async function generatePermit(b) {
-  showToast('جاري تحضير التصريح...');
+  showToast('جاري رسم التصريح...');
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   
@@ -327,27 +328,23 @@ async function generatePermit(b) {
     canvas.height = img.height;
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     
-    // إعداد القلم الأزرق (لون الحبر)
     ctx.fillStyle = '#0047AB';
-    const fontSize = Math.floor(canvas.height * 0.040); // حجم الخط
+    const fontSize = Math.floor(canvas.height * 0.040); 
     ctx.font = `bold ${fontSize}px monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
-    // البيانات
     const dateStr = new Intl.DateTimeFormat('en-GB').format(new Date());
     const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'}).format(new Date(created(b)));
     
-    // ========= إحداثيات السطور =========
-    // إذا أردت تعديل ارتفاع الكلمة، قم بزيادة أو نقصان الرقم العشري (مثلاً 0.415 اجعله 0.400 ليرتفع)
-    const columnX = canvas.width * 0.38; // موضع الكلمات يمين/يسار
+    const columnX = canvas.width * 0.38; 
     
-    ctx.fillText(dateStr, columnX, canvas.height * 0.415);              // التاريخ
-    ctx.fillText(b.flight, columnX, canvas.height * 0.472);             // الرحلة
-    ctx.fillText(b.time, columnX, canvas.height * 0.529);               // الإقلاع
-    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.586);  // الركاب
-    ctx.fillText(timeIn, columnX, canvas.height * 0.643);               // الوصول
-    // ====================================
+    // الأرقام الجديدة (تم رفعها للأعلى لتطابق الخانات بدقة)
+    ctx.fillText(dateStr, columnX, canvas.height * 0.350);              // التاريخ
+    ctx.fillText(b.flight, columnX, canvas.height * 0.420);             // الرحلة
+    ctx.fillText(b.time, columnX, canvas.height * 0.490);               // الإقلاع
+    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.560);  // الركاب
+    ctx.fillText(timeIn, columnX, canvas.height * 0.630);               // الوصول
 
     canvas.toBlob(async (blob) => {
       if (!blob) { showToast('خطأ في توليد الصورة'); return; }
