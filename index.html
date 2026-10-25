@@ -150,10 +150,8 @@ details.bus-card.early .time-box.active span, details.bus-card.early .time-box.a
 .dep-btns button { padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); }
 
 .empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 900; }
-
 .toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 4px 15px rgba(16,185,129,0.4); pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
 .fab { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 999; border: none; }
 </style>
 </head>
@@ -313,7 +311,7 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// --- نظام إصدار التصريح ---
+// --- نظام إصدار التصريح (تم وزن الارتفاعات بدقة) ---
 async function generatePermit(b) {
   showToast('جاري رسم التصريح...');
   const canvas = document.createElement('canvas');
@@ -339,12 +337,12 @@ async function generatePermit(b) {
     
     const columnX = canvas.width * 0.38; 
     
-    // الأرقام الجديدة (تم رفعها للأعلى لتطابق الخانات بدقة)
-    ctx.fillText(dateStr, columnX, canvas.height * 0.350);              // التاريخ
-    ctx.fillText(b.flight, columnX, canvas.height * 0.420);             // الرحلة
-    ctx.fillText(b.time, columnX, canvas.height * 0.490);               // الإقلاع
-    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.560);  // الركاب
-    ctx.fillText(timeIn, columnX, canvas.height * 0.630);               // الوصول
+    // تم أخذ المتوسط الدقيق لتسقط في المنتصف تماماً
+    ctx.fillText(dateStr, columnX, canvas.height * 0.385);              // التاريخ
+    ctx.fillText(b.flight, columnX, canvas.height * 0.455);             // الرحلة
+    ctx.fillText(b.time, columnX, canvas.height * 0.525);               // الإقلاع
+    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.595);  // الركاب
+    ctx.fillText(timeIn, columnX, canvas.height * 0.665);               // الوصول
 
     canvas.toBlob(async (blob) => {
       if (!blob) { showToast('خطأ في توليد الصورة'); return; }
