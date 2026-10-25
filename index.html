@@ -311,7 +311,7 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// --- نظام إصدار التصريح (تم وزن الارتفاعات بدقة) ---
+// --- نظام إصدار التصريح (تم رفع الخانات سطراً للأعلى) ---
 async function generatePermit(b) {
   showToast('جاري رسم التصريح...');
   const canvas = document.createElement('canvas');
@@ -337,12 +337,12 @@ async function generatePermit(b) {
     
     const columnX = canvas.width * 0.38; 
     
-    // تم أخذ المتوسط الدقيق لتسقط في المنتصف تماماً
-    ctx.fillText(dateStr, columnX, canvas.height * 0.385);              // التاريخ
-    ctx.fillText(b.flight, columnX, canvas.height * 0.455);             // الرحلة
-    ctx.fillText(b.time, columnX, canvas.height * 0.525);               // الإقلاع
-    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.595);  // الركاب
-    ctx.fillText(timeIn, columnX, canvas.height * 0.665);               // الوصول
+    // تم رفع الإحداثيات بمقدار خانة واحدة (0.070) للأعلى لتسقط في الأماكن الصحيحة
+    ctx.fillText(dateStr, columnX, canvas.height * 0.315);              // التاريخ
+    ctx.fillText(b.flight, columnX, canvas.height * 0.385);             // الرحلة
+    ctx.fillText(b.time, columnX, canvas.height * 0.455);               // الإقلاع
+    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.525);  // الركاب
+    ctx.fillText(timeIn, columnX, canvas.height * 0.595);               // الوصول
 
     canvas.toBlob(async (blob) => {
       if (!blob) { showToast('خطأ في توليد الصورة'); return; }
