@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="الساحات T4">
 <link id="dynamic-favicon" rel="apple-touch-icon" href="">
-<title>عمليات الساحات | T4</title>
+<title>عمليات الساحات والمواصلات | الفرز صالة 4</title>
 <style>
 /* المتغيرات (فاتح) */
 :root {
@@ -17,8 +17,8 @@
   --primary: #0b1b3d;
   --primary-light: #1e3a8a;
   --text-main: #0f172a;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
+  --text-muted: #475569;
+  --border: #cbd5e1;
   --late: #dc2626;
   --late-bg: #fef2f2;
   --early: #059669;
@@ -54,114 +54,124 @@ body.dark-theme {
 body { margin: 0; background: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 70px; transition: background 0.2s; }
 button, input { outline: none; border: none; font: inherit; margin: 0; }
 button { cursor: pointer; transition: 0.1s ease; }
-svg { width: 14px; height: 14px; fill: currentColor; vertical-align: middle; margin-left: 2px; }
+svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; margin-left: 4px; }
 
-/* الهيدر المضغوط */
-header { background: #0b1b3d; color: #fff; padding: 40px 15px 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+/* الهيدر */
+header { background: #0b1b3d; color: #fff; padding: 40px 15px 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-bottom: 4px solid #cbd5e1; }
 .header-wrap { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
-.header-titles h1 { font-size: 17px; font-weight: 800; margin: 0 0 2px; }
-.header-titles p { font-size: 11px; color: #94a3b8; margin: 0; font-weight: 600; }
-.theme-toggle { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 5px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
-#clock { font-size: 11px; font-weight: 700; color: #cbd5e1; text-align: left; margin-top: 5px; max-width: 800px; margin-inline: auto; }
+.header-titles h1 { font-size: 19px; font-weight: 900; margin: 0 0 4px; line-height: 1.3; }
+.header-titles p { font-size: 13px; color: #94a3b8; margin: 0; font-weight: 700; }
+.theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; }
+#clock { font-size: 13px; font-weight: 800; color: #cbd5e1; text-align: left; margin-top: 8px; max-width: 800px; margin-inline: auto; }
 
-main { max-width: 800px; margin: 10px auto 0; padding: 0 10px; }
+main { max-width: 800px; margin: 15px auto 0; padding: 0 12px; }
 
-/* العدادات (حجم صغير جداً) */
-.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
-.kpi-card { background: var(--surface); border: 1px solid var(--border); padding: 8px 2px; text-align: center; border-radius: 8px; }
-.kpi-card b { display: block; font-size: 16px; font-weight: 900; color: var(--primary); margin-bottom: 2px; }
-.kpi-card span { font-size: 9px; color: var(--text-muted); font-weight: 800; }
+/* العدادات */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); padding: 12px 4px; text-align: center; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.kpi-card b { display: block; font-size: 20px; font-weight: 900; color: var(--primary); margin-bottom: 2px; }
+.kpi-card span { font-size: 11px; color: var(--text-muted); font-weight: 800; }
 
 /* الألواح */
-.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.02); }
-.panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 10px; }
-.panel-header h2 { font-size: 13px; font-weight: 900; margin: 0; color: var(--primary); }
-.panel-badge { font-size: 10px; font-weight: 800; color: var(--primary-light); background: var(--bg-color); padding: 3px 8px; border-radius: 4px; }
+.panel { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; }
+.panel-header h2 { font-size: 16px; font-weight: 900; margin: 0; color: var(--primary); }
+.panel-badge { font-size: 12px; font-weight: 900; color: var(--primary-light); background: var(--bg-color); padding: 4px 10px; border-radius: 6px; }
 
 /* الأقسام المطوية */
 details.panel summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
 details.panel summary::-webkit-details-marker { display: none; }
 details.panel:not([open]) .panel-header { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
-details.panel summary::after { content: "▼"; font-size: 10px; color: var(--text-muted); }
+details.panel summary::after { content: "▼"; font-size: 12px; color: var(--text-muted); font-weight: 900; }
 details.panel[open] summary::after { content: "▲"; }
 
-/* نموذج التسجيل المضغوط */
-.form-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.form-field { display: flex; flex-direction: column; gap: 4px; }
-.form-field label { font-size: 11px; font-weight: 800; color: var(--text-muted); }
-.form-input { width: 100%; height: 42px; border: 2px solid var(--border); border-radius: 8px; padding: 0 10px; font-size: 15px; font-weight: 800; text-align: center; color: var(--text-main); background: var(--btn-bg); direction: ltr; -webkit-appearance: none; }
+/* نموذج التسجيل */
+.form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { font-size: 13px; font-weight: 900; color: var(--text-muted); }
+.form-input { width: 100%; height: 50px; border: 2px solid var(--border); border-radius: 8px; padding: 0 12px; font-size: 18px; font-weight: 900; text-align: center; color: var(--text-main); background: var(--btn-bg); direction: ltr; -webkit-appearance: none; }
 .form-input:focus { border-color: var(--primary-light); background: var(--surface); }
-.pax-group { display: flex; gap: 4px; height: 42px; }
-.pax-group button { background: var(--btn-bg); border: 2px solid var(--border); color: var(--text-main); font-weight: 900; border-radius: 8px; flex: 0.3; font-size: 15px; }
-.pax-group input { flex: 1; border: 2px solid var(--border); border-radius: 8px; font-size: 15px; font-weight: 900; text-align: center; color: var(--text-main); background: var(--surface); }
-.btn-primary { width: 100%; background: #0b1b3d; color: #fff; height: 44px; border-radius: 8px; font-size: 13px; font-weight: 900; margin-top: 4px; }
+.pax-group { display: flex; gap: 6px; height: 50px; }
+.pax-group button { background: var(--btn-bg); border: 2px solid var(--border); color: var(--text-main); font-weight: 900; border-radius: 8px; flex: 0.3; font-size: 18px; }
+.pax-group input { flex: 1; border: 2px solid var(--border); border-radius: 8px; font-size: 18px; font-weight: 900; text-align: center; color: var(--text-main); background: var(--surface); }
+.btn-primary { width: 100%; background: #0b1b3d; color: #fff; height: 50px; border-radius: 8px; font-size: 16px; font-weight: 900; margin-top: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 
 /* الفلاتر */
-.filters { display: flex; gap: 6px; margin-bottom: 10px; }
-.filters button { flex: 1; padding: 6px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); font-weight: 800; font-size: 10px; }
+.filters { display: flex; gap: 8px; margin-bottom: 15px; }
+.filters button { flex: 1; padding: 10px; border-radius: 8px; background: var(--surface); border: 2px solid var(--border); color: var(--text-muted); font-weight: 900; font-size: 13px; }
 .filters button.active { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
 
 /* 
-  التصميم الجديد للباصات والرحلات (كثافة عالية - حجم صغير) 
+  التصميم الجديد لبطاقة الباص (متوسط، واضح، ألوان بارزة) 
 */
-.flight-block { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; background: var(--bg-color); overflow: hidden; }
-.flight-head { background: var(--surface); padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-.flight-title { font-size: 15px; font-weight: 900; color: var(--text-main); direction: ltr; }
-.flight-countdown { font-size: 11px; font-weight: 900; color: var(--normal); background: var(--normal-bg); padding: 3px 8px; border-radius: 4px; }
+.flight-block { border: 2px solid var(--border); border-radius: 12px; margin-bottom: 15px; background: var(--bg-color); overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.flight-head { background: var(--surface); padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); }
+.flight-title { font-size: 18px; font-weight: 900; color: var(--text-main); direction: ltr; margin-bottom: 4px; }
+.flight-info { font-size: 12px; font-weight: 800; color: var(--text-muted); }
+.flight-countdown { font-size: 14px; font-weight: 900; color: var(--normal); background: var(--normal-bg); padding: 6px 10px; border-radius: 6px; border: 1px solid var(--normal); }
 
-.buses-container { padding: 6px; display: flex; flex-direction: column; gap: 6px; }
+.buses-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
-/* بطاقة الباص المطوية (نقرة واحدة) */
-details.bus-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-details.bus-card.late { border-right: 4px solid var(--late); }
-details.bus-card.early { border-right: 4px solid var(--early); }
-details.bus-card.normal { border-right: 4px solid var(--normal); }
+/* صندوق الباص */
+details.bus-card { background: var(--surface); border: 2px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+details.bus-card.late { border-right: 6px solid var(--late); }
+details.bus-card.early { border-right: 6px solid var(--early); }
+details.bus-card.normal { border-right: 6px solid var(--normal); }
 
-.bus-summary { padding: 8px; list-style: none; cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+.bus-summary { padding: 12px; list-style: none; cursor: pointer; display: flex; flex-direction: column; gap: 8px; }
 .bus-summary::-webkit-details-marker { display: none; }
 
 .bus-row-1 { display: flex; justify-content: space-between; align-items: center; }
-.bus-num { font-size: 13px; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
-.bus-pax-tag { font-size: 10px; font-weight: 800; background: var(--btn-bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
-.bus-status { font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 4px; }
-.bus-status.late { background: var(--late-bg); color: var(--late); }
-.bus-status.early { background: var(--early-bg); color: var(--early); }
-.bus-status.normal { background: var(--normal-bg); color: var(--normal); }
+.bus-num { font-size: 16px; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+.bus-pax-tag { font-size: 13px; font-weight: 900; background: var(--btn-bg); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); }
+.bus-status { font-size: 12px; font-weight: 900; padding: 4px 10px; border-radius: 6px; }
+.bus-status.late { background: var(--late-bg); color: var(--late); border: 1px solid var(--late); }
+.bus-status.early { background: var(--early-bg); color: var(--early); border: 1px solid var(--early); }
+.bus-status.normal { background: var(--normal-bg); color: var(--normal); border: 1px solid var(--normal); }
 
-.bus-row-2 { display: flex; gap: 6px; font-size: 10px; font-weight: 700; color: var(--text-muted); align-items: center; }
-.timer-pill { background: var(--btn-bg); padding: 2px 6px; border-radius: 4px; }
-.timer-pill.active { background: var(--normal-bg); color: var(--normal); font-weight: 900; }
-details.bus-card.late .timer-pill.active { background: var(--late-bg); color: var(--late); }
-details.bus-card.early .timer-pill.active { background: var(--early-bg); color: var(--early); }
+/* الأوقات واضحة ومرتبة */
+.bus-row-2 { display: flex; gap: 8px; }
+.time-box { flex: 1; border-radius: 6px; padding: 6px; text-align: center; border: 1px solid var(--border); background: var(--btn-bg); }
+.time-box span { display: block; font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 4px; }
+.time-box b { font-size: 15px; font-weight: 900; color: var(--text-main); direction: ltr; display: block; }
+.time-box.active { background: var(--normal-bg); border-color: var(--normal); }
+.time-box.active span { color: var(--normal); }
+.time-box.active b { color: var(--normal); }
+
+details.bus-card.late .time-box.active { background: var(--late-bg); border-color: var(--late); }
+details.bus-card.late .time-box.active span, details.bus-card.late .time-box.active b { color: var(--late); }
+details.bus-card.early .time-box.active { background: var(--early-bg); border-color: var(--early); }
+details.bus-card.early .time-box.active span, details.bus-card.early .time-box.active b { color: var(--early); }
 
 /* الأزرار الداخلية */
-.bus-actions { padding: 8px; background: var(--btn-bg); border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; }
-.bus-actions button { flex: 1; padding: 8px; border-radius: 6px; font-size: 10px; font-weight: 900; border: 1px solid var(--border); background: var(--surface); color: var(--text-main); display: flex; align-items: center; justify-content: center; }
+.bus-actions { padding: 12px; background: var(--btn-bg); border-top: 2px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+.bus-action-row { display: flex; gap: 8px; width: 100%; }
+.bus-actions button { flex: 1; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); display: flex; align-items: center; justify-content: center; }
 .bus-actions button.success { background: var(--early-bg); border-color: var(--early); color: var(--early); }
-.bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); flex: 0.4; }
+.bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
 
-.add-bus-btn { width: 100%; background: transparent; color: var(--primary-light); padding: 8px; font-size: 11px; font-weight: 900; text-align: center; }
+.add-bus-btn { width: 100%; background: transparent; color: var(--primary-light); padding: 12px; font-size: 14px; font-weight: 900; text-align: center; border-top: 2px solid var(--border); }
 
 /* المغادرة والأدوات */
-.tools-row { display: flex; gap: 6px; margin-bottom: 8px; }
-.tools-row button, .tools-row label { flex: 1; text-align: center; padding: 10px; border-radius: 6px; font-size: 11px; font-weight: 900; background: var(--surface); color: var(--text-main); cursor: pointer; border: 1px solid var(--border); }
+.tools-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.tools-row button, .tools-row label { flex: 1; text-align: center; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 900; background: var(--surface); color: var(--text-main); cursor: pointer; border: 2px solid var(--border); }
 .tools-row button.primary { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
-.report-view { background: var(--btn-bg); border: 1px solid var(--border); padding: 10px; border-radius: 6px; font-size: 11px; line-height: 1.8; white-space: pre-wrap; font-family: monospace; color: var(--text-main); max-height: 200px; overflow-y: auto; margin-top: 10px; direction: rtl; text-align: right; }
+.report-view { background: var(--btn-bg); border: 2px solid var(--border); padding: 12px; border-radius: 8px; font-size: 13px; line-height: 2; white-space: pre-wrap; font-family: monospace; color: var(--text-main); max-height: 250px; overflow-y: auto; margin-top: 10px; direction: rtl; text-align: right; font-weight: 700; }
 
-.dep-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.dep-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 2px solid var(--border); }
 .dep-row:last-child { border: none; padding-bottom: 0; }
-.dep-info { display: flex; flex-direction: column; gap: 2px; }
-.dep-flight { font-size: 13px; font-weight: 900; color: var(--text-main); }
-.dep-details { font-size: 10px; font-weight: 700; color: var(--text-muted); }
-.dep-btns { display: flex; gap: 4px; }
-.dep-btns button { padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 900; border: 1px solid var(--border); background: var(--surface); color: var(--text-main); }
+.dep-info { display: flex; flex-direction: column; gap: 4px; }
+.dep-flight { font-size: 16px; font-weight: 900; color: var(--text-main); }
+.dep-details { font-size: 12px; font-weight: 800; color: var(--text-muted); }
+.dep-btns { display: flex; gap: 6px; }
+.dep-btns button { padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); }
 
-.empty-msg { text-align: center; padding: 20px 10px; color: var(--text-muted); font-size: 11px; font-weight: 800; }
+.empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 900; }
 
-.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 10px 20px; border-radius: 20px; font-weight: 900; font-size: 12px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 4px 12px rgba(16,185,129,0.3); pointer-events: none; }
+.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 4px 15px rgba(16,185,129,0.4); pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-.fab { position: fixed; bottom: 15px; left: 15px; width: 50px; height: 50px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 999; border: none; }
+.fab { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 999; border: none; }
 </style>
 </head>
 <body>
@@ -169,12 +179,12 @@ details.bus-card.early .timer-pill.active { background: var(--early-bg); color: 
 <header>
   <div class="header-wrap">
     <div class="header-titles">
-      <h1>عمليات الفرز</h1>
-      <p>الساحات الخارجية T4</p>
+      <h1>عمليات الساحات الخارجية والمواصلات</h1>
+      <p>منطقة الفرز صالة 4</p>
     </div>
     <div style="display:flex; gap:8px;">
       <button class="theme-toggle" onclick="toggleTheme()">
-        <svg viewBox="0 0 24 24" style="margin:0; width:16px; height:16px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg viewBox="0 0 24 24" style="margin:0; width:20px; height:20px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
     </div>
   </div>
@@ -219,7 +229,7 @@ details.bus-card.early .timer-pill.active { background: var(--early-bg); color: 
     </form>
   </section>
 
-  <section class="panel" style="padding:10px;">
+  <section class="panel" style="padding:15px 12px;">
     <div class="filters" id="filters">
       <button data-f="all" class="active" onclick="setFilter('all')">الكل</button>
       <button data-f="late" onclick="setFilter('late')">المتأخرة</button>
@@ -238,7 +248,7 @@ details.bus-card.early .timer-pill.active { background: var(--early-bg); color: 
 
   <details class="panel">
     <summary class="panel-header"><h2>التقارير والإعدادات</h2></summary>
-    <div class="tools-row" style="margin-top:10px">
+    <div class="tools-row" style="margin-top:12px">
       <button id="copy" type="button">نسخ</button>
       <button id="share" type="button" class="primary">إرسال واتساب</button>
     </div>
@@ -252,7 +262,7 @@ details.bus-card.early .timer-pill.active { background: var(--early-bg); color: 
 
 <div id="toast" class="toast"></div>
 <button class="fab" onclick="window.scrollTo({top:0, behavior:'smooth'}); setTimeout(()=>document.getElementById('flight').focus(),300)">
-  <svg viewBox="0 0 24 24" style="width:24px;height:24px;margin:0"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+  <svg viewBox="0 0 24 24" style="width:28px;height:28px;margin:0"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
 </button>
 
 <script>
@@ -323,15 +333,15 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// التعديل الجذري على شكل بطاقة الباص
+// التعديل: حجم أكبر قليلاً وواضح لأوقات الباص
 function busCard(b,i){
   const c=classification(b), extras=Array.isArray(b.extra)?b.extra:[];
   let sharedHtml = '';
   if(extras.length) {
-    sharedHtml = `<div style="margin-top:6px; font-size:10px; font-weight:800; color:var(--shared);">` + extras.map((x,j)=>`
-      <div style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border); padding-bottom:4px; margin-bottom:4px;">
+    sharedHtml = `<div style="margin-top:8px; font-size:12px; font-weight:900; color:var(--shared);">` + extras.map((x,j)=>`
+      <div style="display:flex; justify-content:space-between; border-bottom:2px dashed var(--border); padding-bottom:6px; margin-bottom:6px;">
         <span>مشترك: ${esc(x.flight)} (${x.pax} راكب)</span>
-        <span data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}" style="color:var(--late); cursor:pointer;">✕</span>
+        <span data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}" style="color:var(--late); cursor:pointer; font-size:16px;">✕</span>
       </div>`).join('') + `</div>`;
   }
 
@@ -342,18 +352,23 @@ function busCard(b,i){
         <span class="bus-status ${c}">${classLabel(c)} ▾</span>
       </div>
       <div class="bus-row-2">
-        <span class="timer-pill">التحضير: ${mins(dep(b)-created(b))}</span>
-        <span class="timer-pill active" data-wait="${esc(b.id)}">بالفرز: ${mins(Date.now()-created(b))}</span>
-        ${extras.length?`<span class="timer-pill" style="color:var(--shared)">+${extras.length} رحلات</span>`:''}
+        <div class="time-box">
+          <span>التحضير</span>
+          <b>${mins(dep(b)-created(b))}</b>
+        </div>
+        <div class="time-box active">
+          <span>الانتظار بالفرز</span>
+          <b data-wait="${esc(b.id)}">${mins(Date.now()-created(b))}</b>
+        </div>
       </div>
     </summary>
     <div class="bus-actions">
       ${sharedHtml}
-      <div style="display:flex; gap:4px; width:100%; margin-top:4px;">
+      <div class="bus-action-row">
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
         <button class="success" data-action="done" data-id="${esc(b.id)}">${svgDepart} غادر</button>
-        <button class="danger" data-action="delete" data-id="${esc(b.id)}">${svgDel}</button>
       </div>
+      <button class="danger" data-action="delete" data-id="${esc(b.id)}" style="width:100%">${svgDel} حذف نهائي</button>
     </div>
   </details>`;
 }
@@ -380,13 +395,13 @@ function render(){
     return `<div class="flight-block">
       <div class="flight-head">
         <div>
-          <div class="flight-title">${esc(b.flight)} <span style="font-size:10px; color:var(--text-muted); font-weight:700">(${g.length} باص)</span></div>
-          <div class="flight-info">إقلاع ${esc(b.time)} | إجمالي ${p} راكب</div>
+          <div class="flight-title">${esc(b.flight)}</div>
+          <div class="flight-info">إقلاع ${esc(b.time)} | ${p} راكب (${g.length} باص)</div>
         </div>
         <div class="flight-countdown" data-live="${esc(b.id)}">${until(b)}</div>
       </div>
       <div class="buses-container">${g.map((x,i)=>busCard(x,i)).join('')}</div>
-      <button class="add-bus-btn" data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص للرحلة</button>
+      <button class="add-bus-btn" data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص جديد للرحلة</button>
     </div>`;
   }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة هنا.</div>';
 
@@ -476,9 +491,7 @@ $('flight').addEventListener('input',()=>{
 
 function action(e){
   let btn = e.target.closest('button[data-action]');
-  if(!btn) {
-    btn = e.target.closest('span[data-action]');
-  }
+  if(!btn) { btn = e.target.closest('span[data-action]'); }
   if(!btn) return;
   const a=btn.dataset.action,b=buses.find(b=>String(b.id)===btn.dataset.id);
   if(!b)return;
