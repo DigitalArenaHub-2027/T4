@@ -194,7 +194,7 @@ details.bus-card.normal { border-right: 6px solid var(--normal); }
     <form id="entry">
       <div class="form-grid">
         <div class="form-field">
-          <label>الرحلة</label>
+          <label>الرحلة (اكتب يدوياً أو امسح بالكاميرا)</label>
           <div class="input-with-btn">
             <input id="flight" list="flight-list" class="form-input" placeholder="SV123" maxlength="14" autocapitalize="characters" required>
             <!-- زر الكاميرا -->
@@ -283,7 +283,7 @@ window.showToast = function(msg) {
   setTimeout(()=>t.classList.remove('show'), 3000); 
 }
 
-// ----------------- الكاميرا (نسخة آمنة لمنع التعليق) -----------------
+// ----------------- الكاميرا الذكية (فلترة قوية للنصوص) -----------------
 const scanBtn = document.getElementById('scan-btn');
 const cameraInput = document.getElementById('camera-input');
 
@@ -294,21 +294,26 @@ if(scanBtn && cameraInput) {
     const file = e.target.files[0];
     if (!file) return;
 
-    showToast('جاري قراءة الصورة... قد يستغرق ثواني');
+    showToast('جاري استخراج البيانات من الصورة... يرجى الانتظار');
     
     try {
       if (typeof Tesseract === 'undefined') {
-        showToast('عذراً، مكتبة القراءة لم تحمل بعد. تأكد من الإنترنت أو أدخل يدوياً.');
+        showToast('مكتبة القراءة لم تعمل، تأكد من اتصال الإنترنت.');
         return;
       }
       
       const worker = await Tesseract.createWorker('eng');
       const ret = await worker.recognize(file);
-      const text = ret.data.text.toUpperCase();
+      let text = ret.data.text.toUpperCase();
       await worker.terminate();
 
-      const flightMatch = text.match(/[A-Z0-9]{2,3}\s?\d{2,4}/);
-      const timeMatch = text.match(/(?:[01]\d|2[0-3]):[0-5]\d/);
+      // تنظيف النص من الرموز العشوائية
+      const cleanText = text.replace(/[^A-Z0-9:\.\s]/g, ' ');
+
+      // بحث ذكي عن الرحلة (مثال: SV 818 أو FZ123)
+      const flightMatch = cleanText.match(/[A-Z]{2,3}\s?\d{2,4}/);
+      // بحث ذكي عن الوقت (مثال: 14:30 أو 14.30)
+      const timeMatch = cleanText.match(/(?:[01]?\d|2[0-3])[:\.][0-5]\d/);
 
       let found = false;
       if (flightMatch) {
@@ -316,18 +321,20 @@ if(scanBtn && cameraInput) {
         found = true;
       }
       if (timeMatch) {
-        document.getElementById('time').value = timeMatch[0];
+        let t = timeMatch[0].replace('.', ':');
+        if(t.length === 4) t = '0' + t; // لجعلها 04:08 بدلاً من 4:08
+        document.getElementById('time').value = t;
         found = true;
       }
 
       if(found) {
         showToast('تم التقاط البيانات بنجاح ✓');
       } else {
-        showToast('لم يتم العثور على رحلة أو وقت واضح. اكتبها يدوياً.');
+        showToast('الصورة غير واضحة، حاول تقريب الكاميرا أو أدخل يدوياً.');
       }
     } catch (error) {
       console.error(error);
-      showToast('حدث خطأ أثناء المسح. جرب مرة أخرى أو اكتب يدوياً.');
+      showToast('خطأ أثناء المسح. الرجاء الإدخال يدوياً.');
     } finally {
       e.target.value = ''; 
     }
