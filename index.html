@@ -9,6 +9,8 @@
 <meta name="apple-mobile-web-app-title" content="الساحات T4">
 <link id="dynamic-favicon" rel="apple-touch-icon" href="">
 <title>عمليات الساحات والمواصلات | الفرز صالة 4</title>
+<!-- مكتبة الذكاء الاصطناعي لقراءة الكاميرا -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 :root {
   --bg-color: #f1f5f9;
@@ -84,6 +86,14 @@ details.panel[open] summary::after { content: "▲"; }
 .form-field label { font-size: 13px; font-weight: 900; color: var(--text-muted); }
 .form-input { width: 100%; height: 50px; border: 2px solid var(--border); border-radius: 8px; padding: 0 12px; font-size: 18px; font-weight: 900; text-align: center; color: var(--text-main); background: var(--btn-bg); direction: ltr; -webkit-appearance: none; }
 .form-input:focus { border-color: var(--primary-light); background: var(--surface); }
+
+/* زر الكاميرا */
+.input-with-btn { display: flex; gap: 6px; height: 50px; }
+.input-with-btn .form-input { flex: 1; height: 100%; }
+.scan-btn { background: #0b1b3d; color: #fff; border-radius: 8px; width: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(11,27,61,0.2); }
+.scan-btn svg { width: 24px; height: 24px; margin: 0; }
+.scan-btn:active { transform: scale(0.95); }
+
 .pax-group { display: flex; gap: 6px; height: 50px; }
 .pax-group button { background: var(--btn-bg); border: 2px solid var(--border); color: var(--text-main); font-weight: 900; border-radius: 8px; flex: 0.3; font-size: 18px; }
 .pax-group input { flex: 1; border: 2px solid var(--border); border-radius: 8px; font-size: 18px; font-weight: 900; text-align: center; color: var(--text-main); background: var(--surface); }
@@ -124,10 +134,6 @@ details.bus-card.normal { border-right: 6px solid var(--normal); }
 .time-box.active { background: var(--normal-bg); border-color: var(--normal); }
 .time-box.active span { color: var(--normal); }
 .time-box.active b { color: var(--normal); }
-details.bus-card.late .time-box.active { background: var(--late-bg); border-color: var(--late); }
-details.bus-card.late .time-box.active span, details.bus-card.late .time-box.active b { color: var(--late); }
-details.bus-card.early .time-box.active { background: var(--early-bg); border-color: var(--early); }
-details.bus-card.early .time-box.active span, details.bus-card.early .time-box.active b { color: var(--early); }
 
 .bus-actions { padding: 12px; background: var(--btn-bg); border-top: 2px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
 .bus-action-row { display: flex; gap: 8px; width: 100%; }
@@ -189,7 +195,14 @@ details.bus-card.early .time-box.active span, details.bus-card.early .time-box.a
       <div class="form-grid">
         <div class="form-field">
           <label>الرحلة</label>
-          <input id="flight" list="flight-list" class="form-input" placeholder="SV123" maxlength="14" autocapitalize="characters" required>
+          <div class="input-with-btn">
+            <input id="flight" list="flight-list" class="form-input" placeholder="SV123" maxlength="14" autocapitalize="characters" required>
+            <!-- زر الكاميرا -->
+            <button type="button" class="scan-btn" id="scan-btn" title="مسح باستخدام الكاميرا">
+              <svg viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
+            </button>
+            <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none">
+          </div>
           <datalist id="flight-list"></datalist>
         </div>
         <div class="form-field">
@@ -267,8 +280,61 @@ generateAppIcon();
 
 window.showToast = function(msg) {
   const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2000);
+  setTimeout(()=>t.classList.remove('show'), 3000); 
 }
+
+// ----------------- الكاميرا (نسخة آمنة لمنع التعليق) -----------------
+const scanBtn = document.getElementById('scan-btn');
+const cameraInput = document.getElementById('camera-input');
+
+if(scanBtn && cameraInput) {
+  scanBtn.onclick = () => cameraInput.click();
+
+  cameraInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    showToast('جاري قراءة الصورة... قد يستغرق ثواني');
+    
+    try {
+      if (typeof Tesseract === 'undefined') {
+        showToast('عذراً، مكتبة القراءة لم تحمل بعد. تأكد من الإنترنت أو أدخل يدوياً.');
+        return;
+      }
+      
+      const worker = await Tesseract.createWorker('eng');
+      const ret = await worker.recognize(file);
+      const text = ret.data.text.toUpperCase();
+      await worker.terminate();
+
+      const flightMatch = text.match(/[A-Z0-9]{2,3}\s?\d{2,4}/);
+      const timeMatch = text.match(/(?:[01]\d|2[0-3]):[0-5]\d/);
+
+      let found = false;
+      if (flightMatch) {
+        document.getElementById('flight').value = flightMatch[0].replace(/\s+/g, '');
+        found = true;
+      }
+      if (timeMatch) {
+        document.getElementById('time').value = timeMatch[0];
+        found = true;
+      }
+
+      if(found) {
+        showToast('تم التقاط البيانات بنجاح ✓');
+      } else {
+        showToast('لم يتم العثور على رحلة أو وقت واضح. اكتبها يدوياً.');
+      }
+    } catch (error) {
+      console.error(error);
+      showToast('حدث خطأ أثناء المسح. جرب مرة أخرى أو اكتب يدوياً.');
+    } finally {
+      e.target.value = ''; 
+    }
+  });
+}
+// --------------------------------------------------------------------
+
 window.adjPax = function(n) {
   const p = document.getElementById('pax'); p.value = Math.max(1, Math.min(150, (Number(p.value)||0) + n));
 }
@@ -312,7 +378,7 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// --- نظام إصدار التصريح (الوزنية الصحيحة بالمنتصف) ---
+// --- نظام التصريح: موزون بالمنتصف تماماً ---
 async function generatePermit(b) {
   showToast('جاري رسم التصريح...');
   const canvas = document.createElement('canvas');
@@ -338,11 +404,11 @@ async function generatePermit(b) {
     
     const columnX = canvas.width * 0.38; 
     
-    ctx.fillText(dateStr, columnX, canvas.height * 0.315);              // التاريخ
-    ctx.fillText(b.flight, columnX, canvas.height * 0.385);             // الرحلة
-    ctx.fillText(b.time, columnX, canvas.height * 0.455);               // الإقلاع
-    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.525);  // الركاب
-    ctx.fillText(timeIn, columnX, canvas.height * 0.595);               // الوصول
+    ctx.fillText(dateStr, columnX, canvas.height * 0.365);              // التاريخ
+    ctx.fillText(b.flight, columnX, canvas.height * 0.435);             // الرحلة
+    ctx.fillText(b.time, columnX, canvas.height * 0.505);               // الإقلاع
+    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.575);  // الركاب
+    ctx.fillText(timeIn, columnX, canvas.height * 0.645);               // الوصول
 
     canvas.toBlob(async (blob) => {
       if (!blob) { showToast('خطأ في توليد الصورة'); return; }
