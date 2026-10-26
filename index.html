@@ -13,9 +13,9 @@
 <!-- مكتبات الذكاء الاصطناعي (الكاميرا) -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-<!-- مكتبات Firebase السحابية -->
+<!-- مكتبات Firebase السحابية (Realtime Database) -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 <style>
 :root {
@@ -203,7 +203,6 @@ details.bus-card.normal { border-right: 6px solid var(--normal); }
           <label>الرحلة (اكتب يدوياً أو امسح بالكاميرا)</label>
           <div class="input-with-btn">
             <input id="flight" list="flight-list" class="form-input" placeholder="SV123" maxlength="14" autocapitalize="characters" required>
-            <!-- زر الكاميرا -->
             <button type="button" class="scan-btn" id="scan-btn" title="مسح باستخدام الكاميرا">
               <svg viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm8 3c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>
             </button>
@@ -263,21 +262,20 @@ details.bus-card.normal { border-right: 6px solid var(--normal); }
 
 <script>
 (()=>{'use strict';
-// ----------------- تهيئة السحابة (Firebase) -----------------
+// ----------------- تهيئة السحابة (Firebase Realtime Database) -----------------
 const firebaseConfig = {
   apiKey: "AIzaSyD4uNU92bklhMMd1RGju24TgbRT-f6M83U",
   authDomain: "land-t4.firebaseapp.com",
+  databaseURL: "https://land-t4-default-rtdb.firebaseio.com", 
   projectId: "land-t4",
   storageBucket: "land-t4.firebasestorage.app",
   messagingSenderId: "396514710711",
   appId: "1:396514710711:web:d5f88139a79d245cdda932"
 };
 
-// تشغيل قاعدة البيانات
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// -----------------------------------------------------------
+const db = firebase.database();
+// -----------------------------------------------------------------------------
 
 const svgAdd = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
 const svgDepart = '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>';
@@ -301,13 +299,12 @@ window.showToast = function(msg) {
   setTimeout(()=>t.classList.remove('show'), 3000); 
 }
 
-// ----------------- الكاميرا الذكية -----------------
+// الكاميرا الذكية
 const scanBtn = document.getElementById('scan-btn');
 const cameraInput = document.getElementById('camera-input');
 
 if(scanBtn && cameraInput) {
   scanBtn.onclick = () => cameraInput.click();
-
   cameraInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -338,12 +335,8 @@ if(scanBtn && cameraInput) {
         document.getElementById('time').value = t;
         found = true;
       }
-
-      if(found) {
-        showToast('تم التقاط البيانات بنجاح ✓');
-      } else {
-        showToast('الصورة غير واضحة، حاول تقريب الكاميرا أو أدخل يدوياً.');
-      }
+      if(found) showToast('تم التقاط البيانات بنجاح ✓');
+      else showToast('الصورة غير واضحة، حاول تقريب الكاميرا أو أدخل يدوياً.');
     } catch (error) {
       showToast('خطأ أثناء المسح. الرجاء الإدخال يدوياً.');
     } finally {
@@ -351,7 +344,6 @@ if(scanBtn && cameraInput) {
     }
   });
 }
-// --------------------------------------------------------------------
 
 window.adjPax = function(n) {
   const p = document.getElementById('pax'); p.value = Math.max(1, Math.min(150, (Number(p.value)||0) + n));
@@ -363,7 +355,7 @@ window.toggleTheme = function() {
 if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
 
 const $=id=>document.getElementById(id);
-let buses=[]; // مصفوفة الباصات التي سيتم تحديثها من السحابة
+let buses=[]; // سيتم تحديثها من السحابة
 
 let currentFilter = 'all';
 window.setFilter = function(f) {
@@ -419,7 +411,6 @@ async function generatePermit(b) {
     const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'}).format(new Date(created(b)));
     
     const columnX = canvas.width * 0.38; 
-    
     ctx.fillText(dateStr, columnX, canvas.height * 0.365);              
     ctx.fillText(b.flight, columnX, canvas.height * 0.435);             
     ctx.fillText(b.time, columnX, canvas.height * 0.505);               
@@ -581,14 +572,13 @@ function report(){
   return '\u200f' + lines.join('\n\u200f');
 }
 
-// ----------------- مزامنة السحابة المباشرة -----------------
-// قراءة وتحديث مستمر من السحابة لجميع المستخدمين في نفس اللحظة
-db.collection("buses").onSnapshot((snapshot) => {
+// ----------------- مزامنة السحابة المباشرة (Realtime DB) -----------------
+// استماع دائم للتغيرات من السحابة لجميع المستخدمين
+db.ref('buses').on('value', (snapshot) => {
   buses = [];
-  snapshot.forEach((doc) => {
-    buses.push(doc.data());
+  snapshot.forEach((childSnapshot) => {
+    buses.push(childSnapshot.val());
   });
-  // ترتيب الباصات من الأقدم للأحدث بناء على وقت الإنشاء
   buses.sort((a, b) => a.createdAt - b.createdAt);
   render();
 });
@@ -602,10 +592,10 @@ $('entry').addEventListener('submit',e=>{
   }
   const newBus = {id:newId(),flight,time,pax,departure:departure(time,Date.now()),createdAt:Date.now(),done:false,extra:[]};
   
-  db.collection("buses").doc(newBus.id).set(newBus).then(() => {
+  db.ref('buses/' + newBus.id).set(newBus).then(() => {
     showToast('تم التسجيل السحابي ✓');
   }).catch((error) => {
-    showToast('تأكد من تفعيل قاعدة البيانات (Test mode) في Firebase');
+    showToast('خطأ! تأكد من تفعيل وضع الاختبار (Test mode) في Firebase');
   });
   
   e.target.reset();
@@ -617,7 +607,6 @@ $('flight').addEventListener('input',()=>{
   if(b&&!$('time').value)$('time').value=b.time;
 });
 
-// التعامل مع الأزرار وتحديث السحابة
 function action(e){
   let btn = e.target.closest('button[data-action]');
   if(!btn) { btn = e.target.closest('span[data-action]'); }
@@ -631,7 +620,7 @@ function action(e){
   }
   else if(a==='delete'){
     if(!confirm('تأكيد الحذف النهائي للباص للجميع؟'))return;
-    db.collection("buses").doc(b.id).delete();
+    db.ref('buses/' + b.id).remove();
     showToast('تم الحذف');
     return;
   }
@@ -641,12 +630,11 @@ function action(e){
     const pax=Number(val.trim());
     if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح');return}
     const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[]};
-    db.collection("buses").doc(newBus.id).set(newBus);
+    db.ref('buses/' + newBus.id).set(newBus);
     showToast('تمت الإضافة');
     return;
   }
   
-  // لباقي التعديلات على نفس الباص
   if(a==='addextra'){
     const f=prompt('رقم الرحلة المشتركة:');if(f===null)return;
     const flight=f.trim().toUpperCase().replace(/\s+/g,'');
@@ -656,7 +644,8 @@ function action(e){
     const val=prompt('الركاب للرحلة المشتركة:');if(val===null)return;
     const pax=Number(val.trim());
     if(!Number.isInteger(pax)||pax<1||pax>150){showToast('عدد غير صحيح');return}
-    (b.extra||(b.extra=[])).push({flight,time:time.trim(),pax,departure:departure(time.trim(),created(b)),createdAt:Date.now()});
+    if(!b.extra) b.extra = [];
+    b.extra.push({flight,time:time.trim(),pax,departure:departure(time.trim(),created(b)),createdAt:Date.now()});
     showToast('تمت إضافة المشترك');
   }
   else if(a==='removeextra'){
@@ -668,7 +657,7 @@ function action(e){
   else if(a==='restore'){ b.done=false; delete b.doneAt; showToast('تم التراجع'); }
   
   // رفع التحديث للسحابة
-  db.collection("buses").doc(b.id).set(b);
+  db.ref('buses/' + b.id).set(b);
 }
 
 $('active').addEventListener('click',action);
