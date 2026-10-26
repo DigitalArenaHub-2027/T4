@@ -9,8 +9,14 @@
 <meta name="apple-mobile-web-app-title" content="الساحات T4">
 <link id="dynamic-favicon" rel="apple-touch-icon" href="">
 <title>عمليات الساحات والمواصلات | الفرز صالة 4</title>
-<!-- مكتبة الذكاء الاصطناعي لقراءة الكاميرا -->
+
+<!-- مكتبات الذكاء الاصطناعي (الكاميرا) -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+<!-- مكتبات Firebase السحابية -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
 <style>
 :root {
   --bg-color: #f1f5f9;
@@ -167,7 +173,7 @@ details.bus-card.normal { border-right: 6px solid var(--normal); }
   <div class="header-wrap">
     <div class="header-titles">
       <h1>عمليات الساحات الخارجية والمواصلات</h1>
-      <p>منطقة الفرز صالة 4</p>
+      <p>منطقة الفرز صالة 4 (مزامنة سحابية)</p>
     </div>
     <div style="display:flex; gap:8px;">
       <button class="theme-toggle" onclick="toggleTheme()">
@@ -246,10 +252,6 @@ details.bus-card.normal { border-right: 6px solid var(--normal); }
       <button id="copy" type="button">نسخ</button>
       <button id="share" type="button" class="primary">إرسال واتساب</button>
     </div>
-    <div class="tools-row">
-      <button id="backup" type="button">تصدير</button>
-      <label>استيراد<input type="file" id="restorefile" accept=".json,application/json" style="display:none"></label>
-    </div>
     <div id="preview" class="report-view"></div>
   </details>
 </main>
@@ -261,6 +263,22 @@ details.bus-card.normal { border-right: 6px solid var(--normal); }
 
 <script>
 (()=>{'use strict';
+// ----------------- تهيئة السحابة (Firebase) -----------------
+const firebaseConfig = {
+  apiKey: "AIzaSyD4uNU92bklhMMd1RGju24TgbRT-f6M83U",
+  authDomain: "land-t4.firebaseapp.com",
+  projectId: "land-t4",
+  storageBucket: "land-t4.firebasestorage.app",
+  messagingSenderId: "396514710711",
+  appId: "1:396514710711:web:d5f88139a79d245cdda932"
+};
+
+// تشغيل قاعدة البيانات
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// -----------------------------------------------------------
+
 const svgAdd = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
 const svgDepart = '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>';
 const svgDel = '<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
@@ -283,7 +301,7 @@ window.showToast = function(msg) {
   setTimeout(()=>t.classList.remove('show'), 3000); 
 }
 
-// ----------------- الكاميرا الذكية (فلترة قوية للنصوص) -----------------
+// ----------------- الكاميرا الذكية -----------------
 const scanBtn = document.getElementById('scan-btn');
 const cameraInput = document.getElementById('camera-input');
 
@@ -293,7 +311,6 @@ if(scanBtn && cameraInput) {
   cameraInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     showToast('جاري استخراج البيانات من الصورة... يرجى الانتظار');
     
     try {
@@ -301,18 +318,13 @@ if(scanBtn && cameraInput) {
         showToast('مكتبة القراءة لم تعمل، تأكد من اتصال الإنترنت.');
         return;
       }
-      
       const worker = await Tesseract.createWorker('eng');
       const ret = await worker.recognize(file);
       let text = ret.data.text.toUpperCase();
       await worker.terminate();
 
-      // تنظيف النص من الرموز العشوائية
       const cleanText = text.replace(/[^A-Z0-9:\.\s]/g, ' ');
-
-      // بحث ذكي عن الرحلة (مثال: SV 818 أو FZ123)
       const flightMatch = cleanText.match(/[A-Z]{2,3}\s?\d{2,4}/);
-      // بحث ذكي عن الوقت (مثال: 14:30 أو 14.30)
       const timeMatch = cleanText.match(/(?:[01]?\d|2[0-3])[:\.][0-5]\d/);
 
       let found = false;
@@ -322,7 +334,7 @@ if(scanBtn && cameraInput) {
       }
       if (timeMatch) {
         let t = timeMatch[0].replace('.', ':');
-        if(t.length === 4) t = '0' + t; // لجعلها 04:08 بدلاً من 4:08
+        if(t.length === 4) t = '0' + t; 
         document.getElementById('time').value = t;
         found = true;
       }
@@ -333,7 +345,6 @@ if(scanBtn && cameraInput) {
         showToast('الصورة غير واضحة، حاول تقريب الكاميرا أو أدخل يدوياً.');
       }
     } catch (error) {
-      console.error(error);
       showToast('خطأ أثناء المسح. الرجاء الإدخال يدوياً.');
     } finally {
       e.target.value = ''; 
@@ -351,9 +362,8 @@ window.toggleTheme = function() {
 }
 if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
 
-const KEY='landside-t4-personal-v1', $=id=>document.getElementById(id);
-let buses=[];
-try{ const v=JSON.parse(localStorage.getItem(KEY)||'[]'); if(Array.isArray(v))buses=v; }catch(e){}
+const $=id=>document.getElementById(id);
+let buses=[]; // مصفوفة الباصات التي سيتم تحديثها من السحابة
 
 let currentFilter = 'all';
 window.setFilter = function(f) {
@@ -380,12 +390,11 @@ function classification(b){const d=dep(b)-created(b); if(d<18000000)return 'late
 function classLabel(c){ return c==='late'?'متأخر':c==='early'?'مبكر':'عادي'; }
 function total(b){return Number(b.pax||0)+(Array.isArray(b.extra)?b.extra:[]).reduce((a,x)=>a+Number(x.pax||0),0)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(buses));return true}catch(e){alert('تعذر الحفظ.');return false}}
 function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// --- نظام التصريح: موزون بالمنتصف تماماً ---
+// --- نظام التصريح ---
 async function generatePermit(b) {
   showToast('جاري رسم التصريح...');
   const canvas = document.createElement('canvas');
@@ -411,11 +420,11 @@ async function generatePermit(b) {
     
     const columnX = canvas.width * 0.38; 
     
-    ctx.fillText(dateStr, columnX, canvas.height * 0.365);              // التاريخ
-    ctx.fillText(b.flight, columnX, canvas.height * 0.435);             // الرحلة
-    ctx.fillText(b.time, columnX, canvas.height * 0.505);               // الإقلاع
-    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.575);  // الركاب
-    ctx.fillText(timeIn, columnX, canvas.height * 0.645);               // الوصول
+    ctx.fillText(dateStr, columnX, canvas.height * 0.365);              
+    ctx.fillText(b.flight, columnX, canvas.height * 0.435);             
+    ctx.fillText(b.time, columnX, canvas.height * 0.505);               
+    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.575);  
+    ctx.fillText(timeIn, columnX, canvas.height * 0.645);               
 
     canvas.toBlob(async (blob) => {
       if (!blob) { showToast('خطأ في توليد الصورة'); return; }
@@ -572,17 +581,34 @@ function report(){
   return '\u200f' + lines.join('\n\u200f');
 }
 
+// ----------------- مزامنة السحابة المباشرة -----------------
+// قراءة وتحديث مستمر من السحابة لجميع المستخدمين في نفس اللحظة
+db.collection("buses").onSnapshot((snapshot) => {
+  buses = [];
+  snapshot.forEach((doc) => {
+    buses.push(doc.data());
+  });
+  // ترتيب الباصات من الأقدم للأحدث بناء على وقت الإنشاء
+  buses.sort((a, b) => a.createdAt - b.createdAt);
+  render();
+});
+
+// تسجيل باص جديد في السحابة
 $('entry').addEventListener('submit',e=>{
   e.preventDefault();
   const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
   if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){
     showToast('خطأ في الإدخال');return;
   }
-  buses.push({id:newId(),flight,time,pax,departure:departure(time,Date.now()),createdAt:Date.now(),done:false,extra:[]});
-  if(!save()){buses.pop();return}
+  const newBus = {id:newId(),flight,time,pax,departure:departure(time,Date.now()),createdAt:Date.now(),done:false,extra:[]};
+  
+  db.collection("buses").doc(newBus.id).set(newBus).then(() => {
+    showToast('تم التسجيل السحابي ✓');
+  }).catch((error) => {
+    showToast('تأكد من تفعيل قاعدة البيانات (Test mode) في Firebase');
+  });
+  
   e.target.reset();
-  showToast('تم التسجيل ✓');
-  render();
 });
 
 $('flight').addEventListener('input',()=>{
@@ -591,6 +617,7 @@ $('flight').addEventListener('input',()=>{
   if(b&&!$('time').value)$('time').value=b.time;
 });
 
+// التعامل مع الأزرار وتحديث السحابة
 function action(e){
   let btn = e.target.closest('button[data-action]');
   if(!btn) { btn = e.target.closest('span[data-action]'); }
@@ -600,16 +627,27 @@ function action(e){
 
   if(a==='permit'){
     generatePermit(b);
+    return;
+  }
+  else if(a==='delete'){
+    if(!confirm('تأكيد الحذف النهائي للباص للجميع؟'))return;
+    db.collection("buses").doc(b.id).delete();
+    showToast('تم الحذف');
+    return;
   }
   else if(a==='addsame'){
     const val=prompt('باص جديد للرحلة '+b.flight+'\nأدخل عدد الركاب:');
     if(val===null)return;
     const pax=Number(val.trim());
     if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح');return}
-    buses.push({id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[]});
+    const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[]};
+    db.collection("buses").doc(newBus.id).set(newBus);
     showToast('تمت الإضافة');
+    return;
   }
-  else if(a==='addextra'){
+  
+  // لباقي التعديلات على نفس الباص
+  if(a==='addextra'){
     const f=prompt('رقم الرحلة المشتركة:');if(f===null)return;
     const flight=f.trim().toUpperCase().replace(/\s+/g,'');
     if(!/^[A-Z0-9-\u0600-\u06FF]{2,18}$/.test(flight)){showToast('رقم غير صحيح');return}
@@ -628,14 +666,9 @@ function action(e){
   }
   else if(a==='done'){ b.done=true; b.doneAt=new Date().toISOString(); showToast('غادر الفرز ✓'); }
   else if(a==='restore'){ b.done=false; delete b.doneAt; showToast('تم التراجع'); }
-  else if(a==='delete'){
-    if(!confirm('تأكيد الحذف النهائي للباص؟'))return;
-    buses=buses.filter(x=>x!==b);
-    showToast('تم الحذف');
-  }
-  const old=localStorage.getItem(KEY);
-  if(!save()){try{buses=JSON.parse(old||'[]')}catch(e){}return}
-  render();
+  
+  // رفع التحديث للسحابة
+  db.collection("buses").doc(b.id).set(b);
 }
 
 $('active').addEventListener('click',action);
@@ -647,24 +680,8 @@ $('share').onclick=() => {
   const text = encodeURIComponent(report());
   window.open('https://wa.me/u_vvw?text=' + text, '_blank');
 };
-$('backup').onclick=()=>{
-  const blob=new Blob([JSON.stringify(buses,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download='landside-backup.json';a.click(); setTimeout(()=>URL.revokeObjectURL(url),3000);
-};
-$('restorefile').addEventListener('change',async e=>{
-  const f=e.target.files[0];if(!f)return;
-  try{
-    const v=JSON.parse(await f.text());
-    if(!Array.isArray(v))throw Error();
-    if(!confirm('تأكيد استعادة النسخة الاحتياطية؟'))return;
-    const old=buses;buses=v;
-    if(!save()){buses=old;return}
-    render(); showToast('تم الاستعادة ✓');
-  }catch(err){alert('ملف غير صحيح.')}
-  finally{e.target.value=''}
-});
 
-render(); setInterval(tick,1000);
+setInterval(tick,1000);
 })();
 </script>
 </body>
