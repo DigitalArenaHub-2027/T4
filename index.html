@@ -151,12 +151,12 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .fab { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 999; border: none; }
 
-/* شاشة تحديد وجهة المغادرة المنبثقة (ثابتة 100%) */
-.modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(11, 27, 61, 0.7); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
-.modal-box { background: var(--surface); padding: 25px 20px; border-radius: 16px; width: 100%; max-width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
+/* شاشة تحديد وجهة المغادرة المنبثقة (ثابتة وقوية) */
+.modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(11, 27, 61, 0.8); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+.modal-box { background: var(--surface); padding: 25px 20px; border-radius: 16px; width: 100%; max-width: 340px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); text-align: center; }
 .modal-box h3 { margin: 0 0 8px 0; color: var(--primary); font-size: 18px; font-weight: 900; }
 .modal-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-weight: 800; }
-.modal-box button { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 8px; font-size: 15px; font-weight: 900; border: 2px solid var(--normal); background: var(--normal-bg); color: var(--normal); }
+.modal-box button { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 8px; font-size: 15px; font-weight: 900; border: 2px solid var(--normal); background: var(--normal-bg); color: var(--normal); cursor: pointer; }
 .modal-box button:active { transform: scale(0.97); }
 .modal-box button.btn-mosque { border-color: #059669; background: #ecfdf5; color: #059669; }
 .modal-box button.btn-groups { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
@@ -251,14 +251,14 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
   </details>
 </main>
 
-<!-- نافذة تحديد الوجهة عند المغادرة (مربوطة بشكل صحيح) -->
+<!-- نافذة تحديد الوجهة عند المغادرة (مربوطة بالـ window لضمان العمل 100%) -->
 <div id="dest-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>تأكيد مغادرة الباص</h3>
     <p>اختر وجهة الباص لتسجيل وقت الخروج بدقة:</p>
-    <button id="btn-dest-1" class="btn-mosque">01 خلف المسجد</button>
-    <button id="btn-dest-2" class="btn-groups">02 مبنى المجموعات</button>
-    <button id="btn-dest-cancel" class="cancel">تراجع</button>
+    <button class="btn-mosque" onclick="window.confirmDeparture('01 خلف المسجد')">01 خلف المسجد</button>
+    <button class="btn-groups" onclick="window.confirmDeparture('02 مبنى المجموعات')">02 مبنى المجموعات</button>
+    <button class="cancel" onclick="window.closeDepartureModal()">تراجع</button>
   </div>
 </div>
 
@@ -268,6 +268,21 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
 </button>
 
 <script>
+// --- دوال شاشة المغادرة (Global Functions) لتجنب أي تعليق ---
+window.pendingDoneBusId = null;
+
+window.showDepartureModal = function(id) {
+  window.pendingDoneBusId = id;
+  document.getElementById('dest-modal').style.display = 'flex';
+};
+
+window.closeDepartureModal = function() {
+  document.getElementById('dest-modal').style.display = 'none';
+  window.pendingDoneBusId = null;
+};
+
+// ----------------------------------------------------------------
+
 (()=>{'use strict';
 // ----------------- تهيئة السحابة (Firebase Realtime Database) -----------------
 const firebaseConfig = {
@@ -393,21 +408,10 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// --- دوال شاشة المغادرة ---
-let pendingDoneBusId = null;
-const destModal = $('dest-modal');
-
-function openModal(id) {
-  pendingDoneBusId = id;
-  destModal.style.display = 'flex';
-}
-function closeModal() {
-  destModal.style.display = 'none';
-  pendingDoneBusId = null;
-}
-function confirmDeparture(dest) {
-  if(!pendingDoneBusId) return;
-  const b = buses.find(x => String(x.id) === pendingDoneBusId);
+// اكمال ربط التحديث السحابي للمغادرة بالدالة الرئيسية
+window.confirmDeparture = function(dest) {
+  if(!window.pendingDoneBusId) return;
+  const b = buses.find(x => String(x.id) === window.pendingDoneBusId);
   if(b) {
     b.done = true;
     b.doneAt = Date.now(); 
@@ -415,12 +419,8 @@ function confirmDeparture(dest) {
     db.ref('buses/' + b.id).set(b);
     showToast('تم تسجيل وقت الخروج والوجهة ✓');
   }
-  closeModal();
+  window.closeDepartureModal();
 }
-
-$('btn-dest-1').onclick = () => confirmDeparture('01 خلف المسجد');
-$('btn-dest-2').onclick = () => confirmDeparture('02 مبنى المجموعات');
-$('btn-dest-cancel').onclick = () => closeModal();
 
 
 // --- نظام التصريح (موزون 100%) ---
@@ -703,8 +703,8 @@ function action(e){
     showToast('تم الحذف');
   }
   else if(a==='done'){ 
-    // يفتح شاشة اختيار الوجهة
-    openModal(b.id);
+    // يفتح شاشة اختيار الوجهة بشكل مباشر وقوي
+    window.showDepartureModal(b.id);
     return;
   }
   else if(a==='restore'){ 
