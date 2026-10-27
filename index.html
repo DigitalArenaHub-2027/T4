@@ -109,7 +109,7 @@ details.panel[open] summary::after { content: "▲"; }
 .filters button { flex: 1; padding: 10px; border-radius: 8px; background: var(--surface); border: 2px solid var(--border); color: var(--text-muted); font-weight: 900; font-size: 13px; }
 .filters button.active { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
 
-/* الواجهة الجديدة: أصغر وأرتب */
+/* الواجهة الجديدة للرحلات والباصات */
 .flight-block { border: 2px solid var(--border); border-radius: 8px; margin-bottom: 12px; background: var(--bg-color); overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .buses-container { padding: 8px; display: flex; flex-direction: column; gap: 8px; }
 
@@ -130,16 +130,6 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
 .bus-actions button.success { background: var(--early-bg); border-color: var(--early); color: var(--early); }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
 .add-bus-btn { width: 100%; background: transparent; color: var(--primary-light); padding: 10px; font-size: 13px; font-weight: 900; text-align: center; border-top: 2px solid var(--border); }
-
-/* سجل المغادرة */
-.dep-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
-.dep-row:last-child { border: none; padding-bottom: 0; }
-.dep-info { display: flex; flex-direction: column; gap: 3px; }
-.dep-flight { font-size: 15px; font-weight: 900; color: var(--text-main); }
-.dep-details { font-size: 12px; font-weight: 800; color: var(--text-muted); }
-.dep-dest { font-size: 11px; font-weight: 900; color: #059669; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 2px;}
-.dep-btns { display: flex; gap: 6px; }
-.dep-btns button { padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); }
 
 .tools-row { display: flex; gap: 8px; margin-bottom: 10px; }
 .tools-row button { flex: 1; text-align: center; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 900; background: var(--surface); color: var(--text-main); cursor: pointer; border: 2px solid var(--border); }
@@ -251,14 +241,14 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
   </details>
 </main>
 
-<!-- نافذة تحديد الوجهة عند المغادرة (مربوطة بالـ window لضمان العمل 100%) -->
+<!-- نافذة تحديد الوجهة عند المغادرة (مستقلة وتعمل 100%) -->
 <div id="dest-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>تأكيد مغادرة الباص</h3>
     <p>اختر وجهة الباص لتسجيل وقت الخروج بدقة:</p>
-    <button class="btn-mosque" onclick="window.confirmDeparture('01 خلف المسجد')">01 خلف المسجد</button>
-    <button class="btn-groups" onclick="window.confirmDeparture('02 مبنى المجموعات')">02 مبنى المجموعات</button>
-    <button class="cancel" onclick="window.closeDepartureModal()">تراجع</button>
+    <button id="btn-dest-1" class="btn-mosque">01 خلف المسجد</button>
+    <button id="btn-dest-2" class="btn-groups">02 مبنى المجموعات</button>
+    <button id="btn-dest-cancel" class="cancel">تراجع</button>
   </div>
 </div>
 
@@ -268,21 +258,6 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
 </button>
 
 <script>
-// --- دوال شاشة المغادرة (Global Functions) لتجنب أي تعليق ---
-window.pendingDoneBusId = null;
-
-window.showDepartureModal = function(id) {
-  window.pendingDoneBusId = id;
-  document.getElementById('dest-modal').style.display = 'flex';
-};
-
-window.closeDepartureModal = function() {
-  document.getElementById('dest-modal').style.display = 'none';
-  window.pendingDoneBusId = null;
-};
-
-// ----------------------------------------------------------------
-
 (()=>{'use strict';
 // ----------------- تهيئة السحابة (Firebase Realtime Database) -----------------
 const firebaseConfig = {
@@ -408,10 +383,20 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// اكمال ربط التحديث السحابي للمغادرة بالدالة الرئيسية
-window.confirmDeparture = function(dest) {
-  if(!window.pendingDoneBusId) return;
-  const b = buses.find(x => String(x.id) === window.pendingDoneBusId);
+// --- دوال شاشة المغادرة بشكل يضمن عملها 100% ---
+const destModal = $('dest-modal');
+let pendingDoneBusId = null;
+
+$('btn-dest-1').addEventListener('click', () => confirmDeparture('01 خلف المسجد'));
+$('btn-dest-2').addEventListener('click', () => confirmDeparture('02 مبنى المجموعات'));
+$('btn-dest-cancel').addEventListener('click', () => {
+  destModal.style.display = 'none';
+  pendingDoneBusId = null;
+});
+
+function confirmDeparture(dest) {
+  if(!pendingDoneBusId) return;
+  const b = buses.find(x => String(x.id) === pendingDoneBusId);
   if(b) {
     b.done = true;
     b.doneAt = Date.now(); 
@@ -419,11 +404,11 @@ window.confirmDeparture = function(dest) {
     db.ref('buses/' + b.id).set(b);
     showToast('تم تسجيل وقت الخروج والوجهة ✓');
   }
-  window.closeDepartureModal();
+  destModal.style.display = 'none';
+  pendingDoneBusId = null;
 }
 
-
-// --- نظام التصريح (موزون 100%) ---
+// --- نظام التصريح ---
 async function generatePermit(b) {
   showToast('جاري رسم التصريح...');
   const canvas = document.createElement('canvas');
@@ -473,6 +458,7 @@ async function generatePermit(b) {
   img.onerror = () => { showToast('تأكد من الاتصال بالإنترنت لسحب الورقة.'); };
 }
 
+// كرت الباص النشط
 function busCard(b,i){
   const c=classification(b), extras=Array.isArray(b.extra)?b.extra:[];
   let sharedHtml = '';
@@ -484,7 +470,6 @@ function busCard(b,i){
       </div>`).join('') + `</div>`;
   }
 
-  // تم دمج الوقت بشكل صغير جداً على اليسار وإلغاء المربعات الكبيرة
   return `<details class="bus-card ${c}">
     <summary class="bus-summary" style="padding:10px; cursor:pointer; display:flex; flex-direction:column; gap:6px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -532,12 +517,12 @@ function render(){
 
   $('active').innerHTML=groups.length?groups.map(g=>{
     const b=g[0], p=g.reduce((a,x)=>a+total(x),0);
-    // تصغير خط الرحلة وترتيبها لتكون واضحة ومميزة
+    // تصغير خط الرحلة بناءً على طلبك
     return `<div class="flight-block">
       <div style="background:var(--surface); padding:10px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); border-right:4px solid var(--primary);">
         <div style="display:flex; flex-direction:column; gap:2px;">
           <div style="display:flex; align-items:baseline; gap:8px;">
-            <span style="font-size:18px; font-weight:900; color:var(--primary); direction:ltr;">${esc(b.flight)}</span>
+            <span style="font-size:16px; font-weight:900; color:var(--primary); direction:ltr;">${esc(b.flight)}</span>
             <span style="font-size:12px; font-weight:800; color:#d97706;">(${p} راكب)</span>
           </div>
           <div style="font-size:12px; font-weight:800; color:var(--text-muted);">
@@ -551,7 +536,7 @@ function render(){
     </div>`;
   }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة هنا.</div>';
 
-  // سجل المغادرة يُظهر الدقيقة بالضبط والوجهة
+  // سجل المغادرة: الآن يعرض الباصات على شكل "قائمة" قابلة للفتح (Menu) مثل النشطة بالضبط
   $('done').innerHTML=done.length?done.slice().reverse().map(b=>{
     let dTime = '--:--';
     if(b.doneAt) {
@@ -559,17 +544,40 @@ function render(){
     }
     const destName = b.destination || 'لم تحدد الوجهة';
     
-    return `<div class="dep-row">
-      <div class="dep-info">
-        <span class="dep-flight">${esc(b.flight)} <span style="font-size:12px; color:var(--text-muted);">(${total(b)} راكب)</span></span>
-        <span class="dep-details">خروج: <b style="color:var(--text-main); font-size:13px">${dTime}</b></span>
-        <span class="dep-dest">${destName}</span>
+    const extras = Array.isArray(b.extra) ? b.extra : [];
+    let sharedHtml = '';
+    if(extras.length) {
+      sharedHtml = `<div style="margin-top:6px; font-size:11px; font-weight:900; color:var(--shared);">` + extras.map((x,j)=>`
+        <div style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border); padding-bottom:4px; margin-bottom:4px;">
+          <span>مشترك: ${esc(x.flight)} (${x.pax} راكب)</span>
+        </div>`).join('') + `</div>`;
+    }
+
+    return `<details class="bus-card early" style="margin-bottom:8px;">
+      <summary class="bus-summary" style="padding:10px; cursor:pointer; display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:15px; font-weight:900; color:var(--text-main);">${esc(b.flight)}</span>
+            <span style="font-size:12px; font-weight:900; background:var(--btn-bg); padding:2px 6px; border-radius:4px; color:#d97706; border:1px solid var(--border);">${total(b)} راكب</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="font-size:10px; color:var(--text-muted); font-weight:800; text-align:left; line-height:1.4;">
+              خروج: <b style="color:var(--text-main); font-size:11px;">${dTime}</b><br>
+              <span style="color:#059669">${destName}</span>
+            </div>
+            <span class="bus-status early" style="font-size:11px; font-weight:900; padding:4px 8px; border-radius:6px;">غادر ▾</span>
+          </div>
+        </div>
+      </summary>
+      <div class="bus-actions">
+        <button style="width:100%; background:#0b1b3d; border-color:#0b1b3d; color:#fff; margin-bottom:4px" data-action="permit" data-id="${esc(b.id)}">${svgPrint} إعادة طباعة التصريح</button>
+        ${sharedHtml}
+        <div class="bus-action-row">
+          <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع (إرجاع للفرز)</button>
+          <button class="danger" data-action="delete" data-id="${esc(b.id)}">${svgDel} حذف نهائي</button>
+        </div>
       </div>
-      <div class="dep-btns">
-        <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع</button>
-        <button style="border-color:#fecaca;color:#b91c1c" data-action="delete" data-id="${esc(b.id)}">${svgDel}</button>
-      </div>
-    </div>`;
+    </details>`;
   }).join('') : '<div class="empty-msg">لم يغادر أي باص.</div>';
 
   $('preview').textContent = report();
@@ -703,8 +711,9 @@ function action(e){
     showToast('تم الحذف');
   }
   else if(a==='done'){ 
-    // يفتح شاشة اختيار الوجهة بشكل مباشر وقوي
-    window.showDepartureModal(b.id);
+    // يفتح شاشة اختيار الوجهة بدون أي تعليق
+    pendingDoneBusId = b.id;
+    destModal.style.display = 'flex';
     return;
   }
   else if(a==='restore'){ 
