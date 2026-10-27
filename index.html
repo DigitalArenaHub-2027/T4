@@ -58,16 +58,18 @@ body.dark-theme {
 
 * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
 body { margin: 0; background: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 70px; transition: background 0.2s; }
-button, input { outline: none; border: none; font: inherit; margin: 0; }
+button, input, textarea { outline: none; border: none; font: inherit; margin: 0; }
 button { cursor: pointer; transition: 0.1s ease; }
 svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; margin-left: 4px; }
 
 header { background: #0b1b3d; color: #fff; padding: 45px 15px 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-bottom: 4px solid #cbd5e1; }
 .header-wrap { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
 .header-titles h1 { font-size: 24px; font-weight: 900; margin: 0 0 6px; line-height: 1.3; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-.header-titles p { font-size: 15px; color: #cbd5e1; margin: 0; font-weight: 800; letter-spacing: 0.5px; }
-.theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; }
+.header-titles p { font-size: 15px; color: #cbd5e1; margin: 0; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; }
 #clock { font-size: 13px; font-weight: 800; color: #cbd5e1; text-align: left; margin-top: 10px; max-width: 800px; margin-inline: auto; }
+
+.shift-badge-header { background: #2563eb; color: #fff; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 900; letter-spacing: 1px; }
 
 main { max-width: 800px; margin: 15px auto 0; padding: 0 12px; }
 
@@ -122,6 +124,7 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
 .bus-status.late { background: var(--late-bg); color: var(--late); border: 1px solid var(--late); }
 .bus-status.early { background: var(--early-bg); color: var(--early); border: 1px solid var(--early); }
 .bus-status.normal { background: var(--normal-bg); color: var(--normal); border: 1px solid var(--normal); }
+.shift-tag { font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); background: var(--btn-bg); color: var(--text-muted); margin-right: 6px; }
 
 .bus-actions { padding: 10px; background: var(--btn-bg); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
 .bus-action-row { display: flex; gap: 6px; width: 100%; }
@@ -130,35 +133,53 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
 .add-bus-btn { width: 100%; background: transparent; color: var(--primary-light); padding: 10px; font-size: 13px; font-weight: 900; text-align: center; border-top: 2px solid var(--border); }
 
+/* أدوات التقرير والشفتات */
+.handover-box { width: 100%; height: 80px; border: 2px solid var(--border); border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 800; color: var(--text-main); background: var(--btn-bg); margin-bottom: 12px; resize: none; }
+.handover-box:focus { border-color: var(--primary-light); background: var(--surface); }
+
 .tools-row { display: flex; gap: 8px; margin-bottom: 10px; }
 .tools-row button { flex: 1; text-align: center; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 900; background: var(--surface); color: var(--text-main); cursor: pointer; border: 2px solid var(--border); }
-.tools-row button.primary { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
+.tools-row button.primary { background: #10b981; color: #fff; border-color: #10b981; }
+.tools-row button.secondary { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
+
 .report-view { background: var(--btn-bg); border: 2px solid var(--border); padding: 10px; border-radius: 8px; font-size: 12px; line-height: 2; white-space: pre-wrap; font-family: monospace; color: var(--text-main); max-height: 250px; overflow-y: auto; margin-top: 10px; direction: rtl; text-align: right; font-weight: 700; }
 
 .empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 900; }
-.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 4px 15px rgba(16,185,129,0.4); pointer-events: none; }
+.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 4px 15px rgba(16,185,129,0.4); pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .fab { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 999; border: none; }
 
-/* شاشة تحديد وجهة المغادرة المنبثقة */
-.modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(11, 27, 61, 0.8); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+/* شاشات منبثقة (الشفت والمغادرة) */
+.modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(11, 27, 61, 0.85); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(8px); }
 .modal-box { background: var(--surface); padding: 25px 20px; border-radius: 16px; width: 100%; max-width: 340px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); text-align: center; }
 .modal-box h3 { margin: 0 0 8px 0; color: var(--primary); font-size: 18px; font-weight: 900; }
-.modal-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-weight: 800; }
-.modal-box button { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 8px; font-size: 15px; font-weight: 900; border: 2px solid var(--normal); background: var(--normal-bg); color: var(--normal); cursor: pointer; }
+.modal-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-weight: 800; line-height: 1.5; }
+.modal-box button { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 8px; font-size: 15px; font-weight: 900; border: 2px solid var(--border); background: var(--btn-bg); color: var(--text-main); cursor: pointer; }
 .modal-box button:active { transform: scale(0.97); }
+.modal-box button.btn-shift { border-color: #0b1b3d; background: #0b1b3d; color: #fff; box-shadow: 0 4px 10px rgba(11,27,61,0.2); }
 .modal-box button.btn-mosque { border-color: #059669; background: #ecfdf5; color: #059669; }
 .modal-box button.btn-groups { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
-.modal-box button.cancel { background: var(--btn-bg); color: var(--text-muted); border-color: var(--border); margin-bottom: 0; margin-top: 10px; }
+.modal-box button.cancel { background: var(--bg-color); color: var(--text-muted); border-color: transparent; margin-bottom: 0; margin-top: 10px; }
 </style>
 </head>
 <body>
 
+<!-- نافذة اختيار الشفت الإجبارية (عند بدء النظام) -->
+<div id="shift-modal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>تسجيل الدخول للشفت</h3>
+    <p>مرحباً بك في عمليات الفرز، يرجى تحديد الشفت الحالي للبدء في العمل وتوثيق التقارير:</p>
+    <button class="btn-shift" onclick="window.selectShift('A')">شفت A (05:30 - 13:30)</button>
+    <button class="btn-shift" onclick="window.selectShift('B')">شفت B (13:30 - 21:30)</button>
+    <button class="btn-shift" onclick="window.selectShift('C')">شفت C (21:30 - 05:30)</button>
+  </div>
+</div>
+
 <header>
   <div class="header-wrap">
     <div class="header-titles">
-      <h1>عمليات الساحات الخارجية والمواصلات</h1>
-      <p>منطقة الفرز صالة 4 (مزامنة سحابية)</p>
+      <h1>عمليات الساحات والمواصلات</h1>
+      <p>صالة 4 <span id="active-shift-display" class="shift-badge-header">بانتظار التحديد...</span></p>
     </div>
     <div style="display:flex; gap:8px;">
       <button class="theme-toggle" onclick="toggleTheme()">
@@ -224,17 +245,22 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
 
   <details class="panel">
     <summary class="panel-header">
-      <h2>سجل المغادرة (وقت الخروج والوجهة)</h2>
+      <h2>سجل المغادرة (الوجهة ووقت الخروج)</h2>
       <span class="panel-badge" id="donecount">0</span>
     </summary>
     <div id="done"></div>
   </details>
 
-  <details class="panel">
-    <summary class="panel-header"><h2>التقارير والإعدادات</h2></summary>
-    <div class="tools-row" style="margin-top:12px">
-      <button id="copy" type="button">نسخ</button>
-      <button id="share" type="button" class="primary">إرسال واتساب</button>
+  <details class="panel" open>
+    <summary class="panel-header"><h2>التقارير وتسليم الشفت</h2></summary>
+    
+    <label style="font-size:13px; font-weight:900; color:var(--text-muted); margin-bottom:6px; display:block;">مذكرة تسليم الشفت (مباشرة لجميع الزملاء):</label>
+    <textarea id="handover-text" class="handover-box" placeholder="اكتب هنا العهدة، والملاحظات، والرحلات المتبقية للشفت القادم..."></textarea>
+
+    <div class="tools-row">
+      <button id="btn-change-shift" type="button" onclick="window.changeShift()" class="secondary">تغيير الشفت</button>
+      <button id="copy" type="button">نسخ التقرير</button>
+      <button id="share" type="button" class="primary">واتساب الشفت</button>
     </div>
     <div id="preview" class="report-view"></div>
   </details>
@@ -258,7 +284,30 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
 
 <script>
 (()=>{'use strict';
-// ----------------- تهيئة السحابة (Firebase Realtime Database) -----------------
+
+// ----------------- نظام إدارة الشفتات -----------------
+let currentShift = localStorage.getItem('activeShift');
+window.selectShift = function(shiftLetter) {
+  currentShift = shiftLetter;
+  localStorage.setItem('activeShift', shiftLetter);
+  document.getElementById('shift-modal').style.display = 'none';
+  document.getElementById('active-shift-display').textContent = 'شفت ' + shiftLetter;
+  showToast('تم تسجيل الدخول في شفت ' + shiftLetter + ' ✓');
+  render();
+};
+
+window.changeShift = function() {
+  document.getElementById('shift-modal').style.display = 'flex';
+};
+
+if (!currentShift) {
+  document.getElementById('shift-modal').style.display = 'flex';
+} else {
+  document.getElementById('active-shift-display').textContent = 'شفت ' + currentShift;
+}
+// -------------------------------------------------------
+
+// تهيئة السحابة (Firebase Realtime Database)
 const firebaseConfig = {
   apiKey: "AIzaSyD4uNU92bklhMMd1RGju24TgbRT-f6M83U",
   authDomain: "land-t4.firebaseapp.com",
@@ -271,7 +320,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-// -----------------------------------------------------------------------------
 
 const $=id=>document.getElementById(id);
 const svgAdd = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
@@ -468,6 +516,12 @@ function busCard(b,i){
       </div>`).join('') + `</div>`;
   }
 
+  // إظهار تاج الشفت إذا كان مسجل
+  let shiftBadge = '';
+  if(b.shift) {
+    shiftBadge = `<span class="shift-tag">شفت ${esc(b.shift)}</span>`;
+  }
+
   return `<details class="bus-card ${c}">
     <summary class="bus-summary" style="padding:10px; cursor:pointer; display:flex; flex-direction:column; gap:6px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -483,6 +537,7 @@ function busCard(b,i){
           <span class="bus-status ${c}" style="font-size:11px; font-weight:900; padding:4px 8px; border-radius:6px;">${classLabel(c)} ▾</span>
         </div>
       </div>
+      ${shiftBadge ? `<div style="text-align:right;">${shiftBadge}</div>` : ''}
     </summary>
     <div class="bus-actions">
       <button style="width:100%; background:#0b1b3d; border-color:#0b1b3d; color:#fff; margin-bottom:4px" data-action="permit" data-id="${esc(b.id)}">${svgPrint} إصدار تصريح</button>
@@ -533,7 +588,6 @@ function render(){
     </div>`;
   }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة هنا.</div>';
 
-  // معالجة آمنة ومضمونة لسجل المغادرة تضمن عمل الأزرار والقوائم 100%
   $('done').innerHTML=done.length?done.slice().reverse().map(b=>{
     let dTime = '--:--';
     if (b.doneAt) {
@@ -555,6 +609,9 @@ function render(){
         </div>`).join('') + `</div>`;
     }
 
+    let shiftBadge = '';
+    if(b.shift) shiftBadge = `<span class="shift-tag" style="margin-top:4px; display:inline-block;">شفت ${esc(b.shift)}</span>`;
+
     return `<details class="bus-card early" style="margin-bottom:8px;">
       <summary class="bus-summary" style="padding:10px; cursor:pointer; display:flex; flex-direction:column; gap:6px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -570,6 +627,7 @@ function render(){
             <span class="bus-status early" style="font-size:11px; font-weight:900; padding:4px 8px; border-radius:6px;">غادر ▾</span>
           </div>
         </div>
+        ${shiftBadge}
       </summary>
       <div class="bus-actions">
         <button style="width:100%; background:#0b1b3d; border-color:#0b1b3d; color:#fff; margin-bottom:4px" data-action="permit" data-id="${esc(b.id)}">${svgPrint} إعادة طباعة التصريح</button>
@@ -608,10 +666,14 @@ function tick(){
 }
 
 function report(){
+  // التقرير صار يصدر باسم الشفت الحالي
   const a=buses.filter(b=>!b.done), done=buses.filter(b=>b.done), groups=groupBy(a);
   const d = new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'short',timeStyle:'short'}).format(new Date());
+  
+  const shiftTitle = currentShift ? `شفت (${currentShift})` : 'الساحات';
+  
   const lines = [
-    'تقرير الفرز (T4)',
+    `تقرير الفرز (T4) - ${shiftTitle}`,
     'الوقت: ' + d,
     '-------------------------',
     'الباصات بالفرز: ' + a.length,
@@ -640,10 +702,19 @@ function report(){
       lines.push('-------------------------');
     }
   }
+  
+  // إضافة ملاحظة التسليم للتقرير إذا كانت موجودة
+  const handoverNote = $('handover-text').value.trim();
+  if(handoverNote) {
+    lines.push('📌 ملاحظات تسليم الشفت:');
+    lines.push(handoverNote);
+    lines.push('-------------------------');
+  }
+  
   return '\u200f' + lines.join('\n\u200f');
 }
 
-// ----------------- مزامنة السحابة المباشرة -----------------
+// ----------------- مزامنة السحابة المباشرة والباصات والملاحظات -----------------
 db.ref('buses').on('value', (snapshot) => {
   buses = [];
   snapshot.forEach((childSnapshot) => {
@@ -653,16 +724,35 @@ db.ref('buses').on('value', (snapshot) => {
   render();
 });
 
+// مزامنة ملاحظات تسليم الشفت الحية بين كل الأجهزة
+db.ref('handoverNote').on('value', (snapshot) => {
+  const note = snapshot.val();
+  if(note !== null && document.activeElement !== $('handover-text')) {
+    $('handover-text').value = note;
+  }
+});
+$('handover-text').addEventListener('input', (e) => {
+  db.ref('handoverNote').set(e.target.value);
+});
+
+
 $('entry').addEventListener('submit',e=>{
   e.preventDefault();
+  if(!currentShift) {
+    showToast('يجب تحديد الشفت أولاً!');
+    window.changeShift();
+    return;
+  }
+  
   const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
   if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){
     showToast('خطأ في الإدخال');return;
   }
-  const newBus = {id:newId(),flight,time,pax,departure:departure(time,Date.now()),createdAt:Date.now(),done:false,extra:[]};
+  
+  const newBus = {id:newId(),flight,time,pax,departure:departure(time,Date.now()),createdAt:Date.now(),done:false,extra:[],shift:currentShift};
   
   db.ref('buses/' + newBus.id).set(newBus).then(() => {
-    showToast('تم التسجيل السحابي ✓');
+    showToast('تم التسجيل باسم شفت ' + currentShift + ' ✓');
   }).catch((error) => {
     showToast('خطأ في الاتصال بقاعدة البيانات');
   });
@@ -694,11 +784,12 @@ function action(e){
     return;
   }
   else if(a==='addsame'){
+    if(!currentShift) { window.changeShift(); return; }
     const val=prompt('باص جديد للرحلة '+b.flight+'\nأدخل عدد الركاب:');
     if(val===null)return;
     const pax=Number(val.trim());
     if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح');return}
-    const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[]};
+    const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[],shift:currentShift};
     db.ref('buses/' + newBus.id).set(newBus);
     showToast('تمت الإضافة');
     return;
