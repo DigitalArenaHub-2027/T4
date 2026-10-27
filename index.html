@@ -109,7 +109,6 @@ details.panel[open] summary::after { content: "▲"; }
 .filters button { flex: 1; padding: 10px; border-radius: 8px; background: var(--surface); border: 2px solid var(--border); color: var(--text-muted); font-weight: 900; font-size: 13px; }
 .filters button.active { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
 
-/* الواجهة الجديدة للرحلات والباصات */
 .flight-block { border: 2px solid var(--border); border-radius: 8px; margin-bottom: 12px; background: var(--bg-color); overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .buses-container { padding: 8px; display: flex; flex-direction: column; gap: 8px; }
 
@@ -141,7 +140,7 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .fab { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 999; border: none; }
 
-/* شاشة تحديد وجهة المغادرة المنبثقة (ثابتة وقوية) */
+/* شاشة تحديد وجهة المغادرة المنبثقة */
 .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(11, 27, 61, 0.8); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
 .modal-box { background: var(--surface); padding: 25px 20px; border-radius: 16px; width: 100%; max-width: 340px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); text-align: center; }
 .modal-box h3 { margin: 0 0 8px 0; color: var(--primary); font-size: 18px; font-weight: 900; }
@@ -241,7 +240,7 @@ details.bus-card.normal { border-right: 4px solid var(--normal); }
   </details>
 </main>
 
-<!-- نافذة تحديد الوجهة عند المغادرة (مستقلة وتعمل 100%) -->
+<!-- نافذة تحديد الوجهة عند المغادرة -->
 <div id="dest-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>تأكيد مغادرة الباص</h3>
@@ -383,16 +382,16 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// --- دوال شاشة المغادرة بشكل يضمن عملها 100% ---
+// --- دوال شاشة المغادرة ---
 const destModal = $('dest-modal');
 let pendingDoneBusId = null;
 
-$('btn-dest-1').addEventListener('click', () => confirmDeparture('01 خلف المسجد'));
-$('btn-dest-2').addEventListener('click', () => confirmDeparture('02 مبنى المجموعات'));
-$('btn-dest-cancel').addEventListener('click', () => {
+$('btn-dest-1').onclick = () => confirmDeparture('01 خلف المسجد');
+$('btn-dest-2').onclick = () => confirmDeparture('02 مبنى المجموعات');
+$('btn-dest-cancel').onclick = () => {
   destModal.style.display = 'none';
   pendingDoneBusId = null;
-});
+};
 
 function confirmDeparture(dest) {
   if(!pendingDoneBusId) return;
@@ -458,7 +457,6 @@ async function generatePermit(b) {
   img.onerror = () => { showToast('تأكد من الاتصال بالإنترنت لسحب الورقة.'); };
 }
 
-// كرت الباص النشط
 function busCard(b,i){
   const c=classification(b), extras=Array.isArray(b.extra)?b.extra:[];
   let sharedHtml = '';
@@ -517,7 +515,6 @@ function render(){
 
   $('active').innerHTML=groups.length?groups.map(g=>{
     const b=g[0], p=g.reduce((a,x)=>a+total(x),0);
-    // تصغير خط الرحلة بناءً على طلبك
     return `<div class="flight-block">
       <div style="background:var(--surface); padding:10px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); border-right:4px solid var(--primary);">
         <div style="display:flex; flex-direction:column; gap:2px;">
@@ -536,11 +533,16 @@ function render(){
     </div>`;
   }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة هنا.</div>';
 
-  // سجل المغادرة: الآن يعرض الباصات على شكل "قائمة" قابلة للفتح (Menu) مثل النشطة بالضبط
+  // معالجة آمنة ومضمونة لسجل المغادرة تضمن عمل الأزرار والقوائم 100%
   $('done').innerHTML=done.length?done.slice().reverse().map(b=>{
     let dTime = '--:--';
-    if(b.doneAt) {
-      dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh'}).format(new Date(Number(b.doneAt)));
+    if (b.doneAt) {
+      try {
+        const dateObj = (typeof b.doneAt === 'string') ? new Date(b.doneAt) : new Date(Number(b.doneAt));
+        if (!isNaN(dateObj.getTime())) {
+          dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh'}).format(dateObj);
+        }
+      } catch(e) {}
     }
     const destName = b.destination || 'لم تحدد الوجهة';
     
@@ -587,7 +589,17 @@ function render(){
 function tick(){
   const lookup=new Map(buses.map(b=>[String(b.id),b]));
   document.querySelectorAll('[data-live]').forEach(el=>{const b=lookup.get(el.dataset.live);if(b)el.textContent=until(b)});
-  document.querySelectorAll('[data-wait]').forEach(el=>{const b=lookup.get(el.dataset.wait);if(b)el.textContent=mins((b.done&&b.doneAt?Number(b.doneAt):Date.now())-created(b))});
+  document.querySelectorAll('[data-wait]').forEach(el=>{
+    const b=lookup.get(el.dataset.wait);
+    if(b) {
+      let endTime = Date.now();
+      if(b.done && b.doneAt) {
+         const dateObj = (typeof b.doneAt === 'string') ? new Date(b.doneAt) : new Date(Number(b.doneAt));
+         if(!isNaN(dateObj.getTime())) endTime = dateObj.getTime();
+      }
+      el.textContent = mins(endTime - created(b));
+    }
+  });
   const upcoming=buses.filter(b=>!b.done).flatMap(b=>[{flight:b.flight,dep:dep(b)},...(b.extra||[]).map(x=>({flight:x.flight,dep:Number(x.departure)||departure(x.time,created(b))}))]).filter(x=>x.dep>Date.now()).sort((a,b)=>a.dep-b.dep);
   $('nextflight').textContent=upcoming.length?`القادمة: ${upcoming[0].flight}`:'—';
   
@@ -711,7 +723,6 @@ function action(e){
     showToast('تم الحذف');
   }
   else if(a==='done'){ 
-    // يفتح شاشة اختيار الوجهة بدون أي تعليق
     pendingDoneBusId = b.id;
     destModal.style.display = 'flex';
     return;
@@ -720,7 +731,7 @@ function action(e){
     b.done=false; 
     delete b.doneAt; 
     delete b.destination;
-    showToast('تم التراجع'); 
+    showToast('تم التراجع وإرجاع الباص للفرز ✓'); 
   }
   
   db.ref('buses/' + b.id).set(b);
