@@ -109,62 +109,76 @@ details.panel[open] summary::after { content: "▲"; }
 .filters button { flex: 1; padding: 10px; border-radius: 8px; background: var(--surface); border: 2px solid var(--border); color: var(--text-muted); font-weight: 900; font-size: 13px; }
 .filters button.active { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
 
-.flight-block { border: 2px solid var(--border); border-radius: 12px; margin-bottom: 15px; background: var(--bg-color); overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-.flight-head { background: var(--surface); padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); }
-.flight-title { font-size: 18px; font-weight: 900; color: var(--text-main); direction: ltr; margin-bottom: 4px; }
-.flight-info { font-size: 12px; font-weight: 800; color: var(--text-muted); }
+/* تعديلات الواجهة الجديدة (شكل أرتب وأصغر) */
+.flight-block { border: 2px solid var(--border); border-radius: 8px; margin-bottom: 12px; background: var(--bg-color); overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.flight-head { background: var(--surface); padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); border-right: 5px solid #0b1b3d; }
+.flight-title { font-size: 24px; font-weight: 900; color: var(--primary); direction: ltr; letter-spacing: 1px; }
 .flight-countdown { font-size: 14px; font-weight: 900; color: var(--normal); background: var(--normal-bg); padding: 6px 10px; border-radius: 6px; border: 1px solid var(--normal); }
 
-.buses-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
+.buses-container { padding: 8px; display: flex; flex-direction: column; gap: 8px; }
 
-details.bus-card { background: var(--surface); border: 2px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-details.bus-card.late { border-right: 6px solid var(--late); }
-details.bus-card.early { border-right: 6px solid var(--early); }
-details.bus-card.normal { border-right: 6px solid var(--normal); }
+details.bus-card { background: var(--surface); border: 2px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+details.bus-card.late { border-right: 5px solid var(--late); }
+details.bus-card.early { border-right: 5px solid var(--early); }
+details.bus-card.normal { border-right: 5px solid var(--normal); }
 
-.bus-summary { padding: 12px; list-style: none; cursor: pointer; display: flex; flex-direction: column; gap: 8px; }
+.bus-summary { padding: 10px; list-style: none; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
 .bus-summary::-webkit-details-marker { display: none; }
 
 .bus-row-1 { display: flex; justify-content: space-between; align-items: center; }
-.bus-num { font-size: 16px; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-.bus-pax-tag { font-size: 13px; font-weight: 900; background: var(--btn-bg); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); }
-.bus-status { font-size: 12px; font-weight: 900; padding: 4px 10px; border-radius: 6px; }
+.bus-num { font-size: 15px; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+.bus-pax-tag { font-size: 12px; font-weight: 900; background: var(--btn-bg); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border); color: #d97706; }
+.bus-status { font-size: 11px; font-weight: 900; padding: 3px 8px; border-radius: 6px; }
 .bus-status.late { background: var(--late-bg); color: var(--late); border: 1px solid var(--late); }
 .bus-status.early { background: var(--early-bg); color: var(--early); border: 1px solid var(--early); }
 .bus-status.normal { background: var(--normal-bg); color: var(--normal); border: 1px solid var(--normal); }
 
-.bus-row-2 { display: flex; gap: 8px; }
-.time-box { flex: 1; border-radius: 6px; padding: 6px; text-align: center; border: 1px solid var(--border); background: var(--btn-bg); }
-.time-box span { display: block; font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 4px; }
-.time-box b { font-size: 15px; font-weight: 900; color: var(--text-main); direction: ltr; display: block; }
+/* تصغير مربعات الوقت داخل الباص لتخفيف الزحمة */
+.bus-row-2 { display: flex; gap: 6px; }
+.time-box { flex: 1; border-radius: 6px; padding: 4px; text-align: center; border: 1px solid var(--border); background: var(--btn-bg); }
+.time-box span { display: block; font-size: 10px; font-weight: 800; color: var(--text-muted); margin-bottom: 2px; }
+.time-box b { font-size: 13px; font-weight: 900; color: var(--text-main); direction: ltr; display: block; }
 .time-box.active { background: var(--normal-bg); border-color: var(--normal); }
 .time-box.active span { color: var(--normal); }
 .time-box.active b { color: var(--normal); }
 
-.bus-actions { padding: 12px; background: var(--btn-bg); border-top: 2px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
-.bus-action-row { display: flex; gap: 8px; width: 100%; }
-.bus-actions button { flex: 1; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); display: flex; align-items: center; justify-content: center; }
+.bus-actions { padding: 10px; background: var(--btn-bg); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
+.bus-action-row { display: flex; gap: 6px; width: 100%; }
+.bus-actions button { flex: 1; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); display: flex; align-items: center; justify-content: center; }
 .bus-actions button.success { background: var(--early-bg); border-color: var(--early); color: var(--early); }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
-.add-bus-btn { width: 100%; background: transparent; color: var(--primary-light); padding: 12px; font-size: 14px; font-weight: 900; text-align: center; border-top: 2px solid var(--border); }
+.add-bus-btn { width: 100%; background: transparent; color: var(--primary-light); padding: 10px; font-size: 13px; font-weight: 900; text-align: center; border-top: 2px solid var(--border); }
+
+/* سجل المغادرة */
+.dep-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.dep-row:last-child { border: none; padding-bottom: 0; }
+.dep-info { display: flex; flex-direction: column; gap: 3px; }
+.dep-flight { font-size: 15px; font-weight: 900; color: var(--text-main); }
+.dep-details { font-size: 12px; font-weight: 800; color: var(--text-muted); }
+.dep-dest { font-size: 11px; font-weight: 900; color: #059669; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 2px;}
+.dep-btns { display: flex; gap: 6px; }
+.dep-btns button { padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); }
 
 .tools-row { display: flex; gap: 8px; margin-bottom: 10px; }
-.tools-row button, .tools-row label { flex: 1; text-align: center; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 900; background: var(--surface); color: var(--text-main); cursor: pointer; border: 2px solid var(--border); }
+.tools-row button { flex: 1; text-align: center; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 900; background: var(--surface); color: var(--text-main); cursor: pointer; border: 2px solid var(--border); }
 .tools-row button.primary { background: #0b1b3d; color: #fff; border-color: #0b1b3d; }
-.report-view { background: var(--btn-bg); border: 2px solid var(--border); padding: 12px; border-radius: 8px; font-size: 13px; line-height: 2; white-space: pre-wrap; font-family: monospace; color: var(--text-main); max-height: 250px; overflow-y: auto; margin-top: 10px; direction: rtl; text-align: right; font-weight: 700; }
-
-.dep-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 2px solid var(--border); }
-.dep-row:last-child { border: none; padding-bottom: 0; }
-.dep-info { display: flex; flex-direction: column; gap: 4px; }
-.dep-flight { font-size: 16px; font-weight: 900; color: var(--text-main); }
-.dep-details { font-size: 12px; font-weight: 800; color: var(--text-muted); }
-.dep-btns { display: flex; gap: 6px; }
-.dep-btns button { padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); }
+.report-view { background: var(--btn-bg); border: 2px solid var(--border); padding: 10px; border-radius: 8px; font-size: 12px; line-height: 2; white-space: pre-wrap; font-family: monospace; color: var(--text-main); max-height: 250px; overflow-y: auto; margin-top: 10px; direction: rtl; text-align: right; font-weight: 700; }
 
 .empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 900; }
 .toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981; color: white; padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; box-shadow: 0 4px 15px rgba(16,185,129,0.4); pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .fab { position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; border-radius: 50%; background: #0b1b3d; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 999; border: none; }
+
+/* شاشة تحديد وجهة المغادرة المنبثقة (الرسمية) */
+.modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(11, 27, 61, 0.7); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
+.modal-box { background: var(--surface); padding: 25px 20px; border-radius: 16px; width: 100%; max-width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
+.modal-box h3 { margin: 0 0 8px 0; color: var(--primary); font-size: 18px; font-weight: 900; }
+.modal-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-weight: 800; }
+.modal-box button { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 8px; font-size: 15px; font-weight: 900; border: 2px solid var(--normal); background: var(--normal-bg); color: var(--normal); }
+.modal-box button:active { transform: scale(0.97); }
+.modal-box button.btn-mosque { border-color: #059669; background: #ecfdf5; color: #059669; }
+.modal-box button.btn-groups { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+.modal-box button.cancel { background: var(--btn-bg); color: var(--text-muted); border-color: var(--border); margin-bottom: 0; margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -239,7 +253,7 @@ details.bus-card.normal { border-right: 6px solid var(--normal); }
 
   <details class="panel">
     <summary class="panel-header">
-      <h2>سجل المغادرة</h2>
+      <h2>سجل المغادرة (وقت الخروج والوجهة)</h2>
       <span class="panel-badge" id="donecount">0</span>
     </summary>
     <div id="done"></div>
@@ -254,6 +268,17 @@ details.bus-card.normal { border-right: 6px solid var(--normal); }
     <div id="preview" class="report-view"></div>
   </details>
 </main>
+
+<!-- نافذة تحديد الوجهة عند المغادرة -->
+<div id="dest-modal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>تأكيد مغادرة الباص</h3>
+    <p>اختر وجهة الباص لتسجيل وقت الخروج بدقة:</p>
+    <button class="btn-mosque" onclick="confirmDeparture('01 خلف المسجد')">01 خلف المسجد</button>
+    <button class="btn-groups" onclick="confirmDeparture('02 مبنى المجموعات')">02 مبنى المجموعات</button>
+    <button class="cancel" onclick="closeModal()">تراجع</button>
+  </div>
+</div>
 
 <div id="toast" class="toast"></div>
 <button class="fab" onclick="window.scrollTo({top:0, behavior:'smooth'}); setTimeout(()=>document.getElementById('flight').focus(),300)">
@@ -356,6 +381,7 @@ if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-t
 
 const $=id=>document.getElementById(id);
 let buses=[]; // سيتم تحديثها من السحابة
+let pendingDoneBusId = null; // متغير لحفظ الباص المراد مغادرته
 
 let currentFilter = 'all';
 window.setFilter = function(f) {
@@ -386,6 +412,28 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
+// --- دوال الشاشة المنبثقة للمغادرة ---
+window.openModal = function(id) {
+  pendingDoneBusId = id;
+  $('dest-modal').style.display = 'flex';
+}
+window.closeModal = function() {
+  $('dest-modal').style.display = 'none';
+  pendingDoneBusId = null;
+}
+window.confirmDeparture = function(dest) {
+  if(!pendingDoneBusId) return;
+  const b = buses.find(x => String(x.id) === pendingDoneBusId);
+  if(b) {
+    b.done = true;
+    b.doneAt = Date.now(); // حفظ وقت الخروج كطابع زمني دقيق
+    b.destination = dest; // حفظ الوجهة المختارة
+    db.ref('buses/' + b.id).set(b);
+    showToast('تم تسجيل الخروج والوجهة بنجاح ✓');
+  }
+  closeModal();
+}
+
 // --- نظام التصريح (الوزنية الصحيحة 100%) ---
 async function generatePermit(b) {
   showToast('جاري رسم التصريح...');
@@ -412,7 +460,6 @@ async function generatePermit(b) {
     
     const columnX = canvas.width * 0.38; 
     
-    // تم رفع جميع النصوص لأعلى بمقدار خانة كاملة لتستقر في المنتصف
     ctx.fillText(dateStr, columnX, canvas.height * 0.315);              
     ctx.fillText(b.flight, columnX, canvas.height * 0.385);             
     ctx.fillText(b.time, columnX, canvas.height * 0.455);               
@@ -441,10 +488,10 @@ function busCard(b,i){
   const c=classification(b), extras=Array.isArray(b.extra)?b.extra:[];
   let sharedHtml = '';
   if(extras.length) {
-    sharedHtml = `<div style="margin-top:8px; font-size:12px; font-weight:900; color:var(--shared);">` + extras.map((x,j)=>`
-      <div style="display:flex; justify-content:space-between; border-bottom:2px dashed var(--border); padding-bottom:6px; margin-bottom:6px;">
+    sharedHtml = `<div style="margin-top:6px; font-size:11px; font-weight:900; color:var(--shared);">` + extras.map((x,j)=>`
+      <div style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border); padding-bottom:4px; margin-bottom:4px;">
         <span>مشترك: ${esc(x.flight)} (${x.pax} راكب)</span>
-        <span data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}" style="color:var(--late); cursor:pointer; font-size:16px;">✕</span>
+        <span data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}" style="color:var(--late); cursor:pointer; font-size:14px;">✕</span>
       </div>`).join('') + `</div>`;
   }
 
@@ -456,23 +503,23 @@ function busCard(b,i){
       </div>
       <div class="bus-row-2">
         <div class="time-box">
-          <span>التحضير</span>
+          <span>تحضير</span>
           <b>${mins(dep(b)-created(b))}</b>
         </div>
         <div class="time-box active">
-          <span>الانتظار بالفرز</span>
+          <span>انتظار الفرز</span>
           <b data-wait="${esc(b.id)}">${mins(Date.now()-created(b))}</b>
         </div>
       </div>
     </summary>
     <div class="bus-actions">
-      <button style="width:100%; background:#0b1b3d; border-color:#0b1b3d; color:#fff; margin-bottom:8px" data-action="permit" data-id="${esc(b.id)}">${svgPrint} إصدار تصريح (ورقة)</button>
+      <button style="width:100%; background:#0b1b3d; border-color:#0b1b3d; color:#fff; margin-bottom:4px" data-action="permit" data-id="${esc(b.id)}">${svgPrint} إصدار تصريح</button>
       ${sharedHtml}
       <div class="bus-action-row">
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
         <button class="success" data-action="done" data-id="${esc(b.id)}">${svgDepart} غادر</button>
       </div>
-      <button class="danger" data-action="delete" data-id="${esc(b.id)}" style="width:100%; margin-top:8px">${svgDel} حذف نهائي</button>
+      <button class="danger" data-action="delete" data-id="${esc(b.id)}" style="width:100%; margin-top:4px">${svgDel} حذف نهائي</button>
     </div>
   </details>`;
 }
@@ -496,11 +543,17 @@ function render(){
 
   $('active').innerHTML=groups.length?groups.map(g=>{
     const b=g[0], p=g.reduce((a,x)=>a+total(x),0);
+    // تصميم الرأس الجديد للرحلة: إبراز رقم الرحلة والوقت والركاب بشكل كبير ورسمي
     return `<div class="flight-block">
       <div class="flight-head">
-        <div>
-          <div class="flight-title">${esc(b.flight)} <span style="font-size:10px; color:var(--text-muted); font-weight:700">(${g.length} باص)</span></div>
-          <div class="flight-info">إقلاع ${esc(b.time)} | إجمالي ${p} راكب</div>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <div style="display:flex; align-items:baseline; gap:8px;">
+            <span class="flight-title">${esc(b.flight)}</span>
+            <span style="font-size:14px; font-weight:800; color:#d97706;">(${p} راكب)</span>
+          </div>
+          <div style="font-size:12px; font-weight:800; color:var(--text-muted);">
+            إقلاع: <b style="font-size:14px; color:var(--text-main); margin-right:4px;">${esc(b.time)}</b> | الباصات: ${g.length}
+          </div>
         </div>
         <div class="flight-countdown" data-live="${esc(b.id)}">${until(b)}</div>
       </div>
@@ -509,12 +562,19 @@ function render(){
     </div>`;
   }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة هنا.</div>';
 
+  // تحديث سجل المغادرة لعرض وقت الخروج الدقيق والوجهة
   $('done').innerHTML=done.length?done.slice().reverse().map(b=>{
-    const waitMs=(b.doneAt?new Date(b.doneAt).getTime():Date.now())-created(b);
+    let dTime = '--:--';
+    if(b.doneAt) {
+      dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh'}).format(new Date(Number(b.doneAt)));
+    }
+    const destName = b.destination || 'لم تحدد الوجهة';
+    
     return `<div class="dep-row">
       <div class="dep-info">
-        <span class="dep-flight">${esc(b.flight)}</span>
-        <span class="dep-details">الركاب: ${total(b)} | انتظار: ${mins(waitMs)}</span>
+        <span class="dep-flight">${esc(b.flight)} <span style="font-size:12px; color:var(--text-muted);">(${b.pax} راكب)</span></span>
+        <span class="dep-details">خروج: <b style="color:var(--text-main); font-size:13px">${dTime}</b></span>
+        <span class="dep-dest">${destName}</span>
       </div>
       <div class="dep-btns">
         <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع</button>
@@ -530,7 +590,7 @@ function render(){
 function tick(){
   const lookup=new Map(buses.map(b=>[String(b.id),b]));
   document.querySelectorAll('[data-live]').forEach(el=>{const b=lookup.get(el.dataset.live);if(b)el.textContent=until(b)});
-  document.querySelectorAll('[data-wait]').forEach(el=>{const b=lookup.get(el.dataset.wait);if(b)el.textContent=mins((b.done&&b.doneAt?new Date(b.doneAt).getTime():Date.now())-created(b))});
+  document.querySelectorAll('[data-wait]').forEach(el=>{const b=lookup.get(el.dataset.wait);if(b)el.textContent=mins((b.done&&b.doneAt?Number(b.doneAt):Date.now())-created(b))});
   const upcoming=buses.filter(b=>!b.done).flatMap(b=>[{flight:b.flight,dep:dep(b)},...(b.extra||[]).map(x=>({flight:x.flight,dep:Number(x.departure)||departure(x.time,created(b))}))]).filter(x=>x.dep>Date.now()).sort((a,b)=>a.dep-b.dep);
   $('nextflight').textContent=upcoming.length?`القادمة: ${upcoming[0].flight}`:'—';
   
@@ -597,7 +657,7 @@ $('entry').addEventListener('submit',e=>{
   db.ref('buses/' + newBus.id).set(newBus).then(() => {
     showToast('تم التسجيل السحابي ✓');
   }).catch((error) => {
-    showToast('خطأ! تأكد من تفعيل وضع الاختبار (Test mode) في Firebase');
+    showToast('خطأ في الاتصال بقاعدة البيانات');
   });
   
   e.target.reset();
@@ -655,10 +715,19 @@ function action(e){
     b.extra.splice(Number(btn.dataset.index),1);
     showToast('تم الحذف');
   }
-  else if(a==='done'){ b.done=true; b.doneAt=new Date().toISOString(); showToast('غادر الفرز ✓'); }
-  else if(a==='restore'){ b.done=false; delete b.doneAt; showToast('تم التراجع'); }
+  else if(a==='done'){ 
+    // فتح الشاشة المنبثقة لاختيار الوجهة بدلاً من المغادرة الفورية
+    openModal(b.id);
+    return;
+  }
+  else if(a==='restore'){ 
+    b.done=false; 
+    delete b.doneAt; 
+    delete b.destination;
+    showToast('تم التراجع'); 
+  }
   
-  // رفع التحديث للسحابة
+  // رفع التحديث للسحابة لأي عملية أخرى غير done
   db.ref('buses/' + b.id).set(b);
 }
 
