@@ -52,7 +52,7 @@ body.dark-theme {
   --primary-light: #cbd5e1;
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
-  --border: #475569;
+  --border: #475569; /* لون إطار بارز في المظلم */
   --input-bg: #1e293b;
   --late: #f87171;
   --late-bg: #451a1a;
@@ -107,14 +107,15 @@ details.panel:not([open]) .panel-header { margin-bottom: 0; border-bottom: none;
 details.panel summary::after { content: "▼"; font-size: 12px; color: var(--text-muted); font-weight: 900; transition: 0.3s; }
 details.panel[open] summary::after { content: "▲"; }
 
-/* النماذج ومربعات الإدخال (معدلة للوضع المظلم وتوسيط الوقت) */
+/* النماذج ومربعات الإدخال (موزونة وبارزة) */
 .form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; }
 .form-field label { font-size: 13px; font-weight: 900; color: var(--text-muted); }
 .form-input { 
   width: 100%; 
-  height: 50px; 
-  border: 1px solid var(--border); /* مبروزة لتكون واضحة */
+  max-width: 100%;
+  height: 52px; 
+  border: 2px solid var(--border); /* البرواز العريض للوضوح */
   border-radius: var(--radius-md); 
   padding: 0 16px; 
   font-size: 18px; 
@@ -122,18 +123,13 @@ details.panel[open] summary::after { content: "▲"; }
   text-align: center; 
   color: var(--text-main); 
   background: var(--input-bg); 
-  direction: ltr; 
+  box-sizing: border-box;
   transition: 0.3s; 
 }
-/* حل مشكلة شطحة الوقت لليسار */
-input[type="time"]::-webkit-datetime-edit {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+#flight { direction: ltr; } /* فقط للرحلة عشان الإنجليزي */
+input[type="time"] { direction: rtl; } /* حل مشكلة شطحة الوقت لليسار */
 .form-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-.form-input::placeholder { color: #94a3b8; font-weight: 700; }
+.form-input::placeholder { color: #94a3b8; font-weight: 700; opacity: 0.8; }
 
 .btn-primary { width: 100%; background: var(--accent); color: #fff; height: 52px; border-radius: var(--radius-md); font-size: 16px; font-weight: 900; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); border: none; }
 .btn-primary:active { transform: scale(0.98); background: var(--accent-hover); }
@@ -180,8 +176,8 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .bus-status.normal { background: var(--normal-bg); color: var(--normal); }
 
 .bus-actions { padding: 12px; background: var(--input-bg); border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 8px; }
-.bus-action-row { display: flex; gap: 8px; width: 100%; }
-.bus-actions button { flex: 1; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 900; border: 1px solid var(--border); background: var(--surface); color: var(--text-main); display: flex; align-items: center; justify-content: center; }
+.bus-action-row { display: flex; gap: 8px; width: 100%; align-items: stretch; }
+.bus-actions button { flex: 1; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); display: flex; align-items: center; justify-content: center; }
 .bus-actions button.success { background: var(--early); border-color: var(--early); color: #fff; }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
 .add-bus-btn { width: 100%; background: transparent; color: var(--accent); padding: 12px; font-size: 13px; font-weight: 900; text-align: center; border-top: 1px solid var(--border); }
@@ -205,7 +201,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .modal-box { background: var(--surface); padding: 25px 20px; border-radius: var(--radius-lg); width: 100%; max-width: 350px; box-shadow: var(--shadow-md); text-align: center; border: 1px solid var(--border); }
 .modal-box h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 18px; font-weight: 900; }
 .modal-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; font-weight: 700; line-height: 1.6; }
-.modal-box button { width: 100%; padding: 16px; margin-bottom: 12px; border-radius: var(--radius-md); font-size: 15px; font-weight: 900; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-main); }
+.modal-box button { width: 100%; padding: 16px; margin-bottom: 12px; border-radius: var(--radius-md); font-size: 15px; font-weight: 900; border: 2px solid var(--border); background: var(--input-bg); color: var(--text-main); }
 .modal-box button:active { transform: scale(0.97); }
 .modal-box button.btn-mosque { border-color: var(--early); background: var(--early-bg); color: var(--early); }
 .modal-box button.btn-groups { border-color: var(--normal); background: var(--normal-bg); color: var(--normal); }
@@ -279,7 +275,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
     <div id="done"></div>
   </details>
 
-  <!-- التقرير الحين مقفل افتراضياً عشان النظافة -->
+  <!-- التقرير مغلق افتراضياً لترتيب الشاشة -->
   <details class="panel">
     <summary class="panel-header"><h2>التقارير اليومية الرسمية</h2></summary>
     <div class="tools-row">
@@ -482,13 +478,17 @@ function busCard(b,i){
       </div>
     </summary>
     <div class="bus-actions">
-      <button style="width:100%; background:var(--primary); border-color:var(--primary); color:#fff; margin-bottom:4px" data-action="permit" data-id="${esc(b.id)}">${svgPrint} استخراج تصريح</button>
       ${sharedHtml}
       <div class="bus-action-row">
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
         <button class="success" data-action="done" data-id="${esc(b.id)}">${svgDepart} غادر</button>
+        
+        <!-- زر التصريح: أيقونة صغيرة أقصى اليسار -->
+        <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="استخراج تصريح">
+          ${svgPrint}
+        </button>
       </div>
-      <button class="danger" data-action="delete" data-id="${esc(b.id)}" style="width:100%; margin-top:4px">${svgDel} حذف السجل</button>
+      <button class="danger" data-action="delete" data-id="${esc(b.id)}" style="width:100%; margin-top:6px">${svgDel} حذف السجل</button>
     </div>
   </details>`;
 }
@@ -568,11 +568,15 @@ function render(){
         </div>
       </summary>
       <div class="bus-actions">
-        <button style="width:100%; background:var(--primary); border-color:var(--primary); color:#fff; margin-bottom:4px" data-action="permit" data-id="${esc(b.id)}">${svgPrint} إعادة طباعة التصريح</button>
         ${sharedHtml}
         <div class="bus-action-row">
-          <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع (إرجاع للفرز)</button>
+          <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع للفرز</button>
           <button class="danger" data-action="delete" data-id="${esc(b.id)}">${svgDel} حذف نهائي</button>
+          
+          <!-- زر التصريح: أيقونة صغيرة أقصى اليسار -->
+          <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="إعادة طباعة التصريح">
+            ${svgPrint}
+          </button>
         </div>
       </div>
     </details>`;
