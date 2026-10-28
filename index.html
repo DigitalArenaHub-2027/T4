@@ -10,12 +10,16 @@
 <link id="dynamic-favicon" rel="apple-touch-icon" href="">
 <title>عمليات الساحات الخارجية | الفرز صالة 4</title>
 
-<!-- مكتبات Firebase السحابية (Realtime Database) -->
+<!-- مكتبات Firebase السحابية -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
+<!-- مكتبات استخراج التقارير الرسمية (PDF وصور) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
-/* المتغيرات اللونية للتصميم العصري الجديد */
+/* المتغيرات اللونية للتصميم العصري */
 :root {
   --bg-color: #f4f7f9;
   --surface: #ffffff;
@@ -62,43 +66,38 @@ body.dark-theme {
 }
 
 * { box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
-body { margin: 0; background: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 90px; transition: background 0.3s ease; }
+body { margin: 0; background: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 50px; transition: background 0.3s ease; }
 button, input { outline: none; border: none; font: inherit; margin: 0; }
 button { cursor: pointer; transition: 0.2s ease; }
 svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; margin-left: 4px; }
 
-/* الهيدر الجديد الفخم */
+/* الهيدر الأنيق والمضغوط */
 header { 
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); 
-  padding: 35px 20px 25px; 
+  padding: 25px 20px 20px; 
   color: #fff; 
   border-radius: 0 0 24px 24px; 
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15); 
-  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15); 
+  margin-bottom: 15px;
 }
-.header-content { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: flex-start; }
-.right-titles { flex: 1; }
-.right-titles h1 { font-size: 16px; font-weight: 900; margin: 0; color: #f8fafc; line-height: 1.4; }
-.right-titles h2 { font-size: 11px; font-weight: 600; margin: 2px 0 8px 0; color: #94a3b8; letter-spacing: 0.5px; text-transform: uppercase; }
-.right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; display: flex; align-items: center; gap: 6px; }
+.header-content { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
+.right-titles h1 { font-size: 20px; font-weight: 900; margin: 0 0 4px 0; color: #f8fafc; line-height: 1.3; }
+.right-titles p { font-size: 14px; font-weight: 700; color: #34d399; margin: 0; }
+.theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; backdrop-filter: blur(5px); }
 
-.left-branding { text-align: left; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
-.airport-name { font-size: 9px; font-weight: 700; color: #cbd5e1; text-align: left; line-height: 1.4; opacity: 0.8; letter-spacing: 0.3px; }
-.theme-toggle { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; backdrop-filter: blur(5px); }
-
-#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.7); text-align: right; max-width: 800px; margin: 15px auto 0; }
+#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-align: left; max-width: 800px; margin: 10px auto 0; }
 
 main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
 
-/* الإحصائيات (تصميم الكروت الجديد) */
-.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-.kpi-card { background: var(--surface); padding: 14px 6px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: 0.3s; }
+/* الإحصائيات */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+.kpi-card { background: var(--surface); padding: 12px 6px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: 0.3s; }
 .kpi-card b { display: block; font-size: 22px; font-weight: 900; color: var(--accent); margin-bottom: 2px; }
 .kpi-card span { font-size: 11px; color: var(--text-muted); font-weight: 800; }
 
 /* الحاويات (Panels) */
-.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow-md); transition: 0.3s; }
-.panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px; }
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 15px; box-shadow: var(--shadow-md); transition: 0.3s; }
+.panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
 .panel-header h2 { font-size: 16px; font-weight: 900; margin: 0; color: var(--primary); }
 .panel-badge { font-size: 12px; font-weight: 900; color: var(--accent); background: var(--normal-bg); padding: 4px 10px; border-radius: 8px; }
 
@@ -108,25 +107,46 @@ details.panel:not([open]) .panel-header { margin-bottom: 0; border-bottom: none;
 details.panel summary::after { content: "▼"; font-size: 12px; color: var(--text-muted); font-weight: 900; transition: 0.3s; }
 details.panel[open] summary::after { content: "▲"; }
 
-/* النماذج ومربعات الإدخال (تصميم فخم ونظيف) */
-.form-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
-.form-field { display: flex; flex-direction: column; gap: 8px; }
-.form-field label { font-size: 13px; font-weight: 800; color: var(--text-muted); display: flex; justify-content: space-between; }
-.form-field label span { font-size: 11px; opacity: 0.7; }
-.form-input { width: 100%; height: 54px; border: 2px solid transparent; border-radius: var(--radius-md); padding: 0 16px; font-size: 18px; font-weight: 900; text-align: center; color: var(--text-main); background: var(--input-bg); direction: ltr; transition: 0.3s; }
+/* النماذج ومربعات الإدخال */
+.form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label { font-size: 13px; font-weight: 900; color: var(--text-muted); }
+.form-input { width: 100%; height: 50px; border: 2px solid transparent; border-radius: var(--radius-md); padding: 0 16px; font-size: 18px; font-weight: 900; text-align: center; color: var(--text-main); background: var(--input-bg); direction: ltr; transition: 0.3s; }
 .form-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-.form-input::placeholder { color: #a1a1aa; font-weight: 600; }
+.form-input::placeholder { color: #94a3b8; }
 
-.btn-primary { width: 100%; background: var(--accent); color: #fff; height: 54px; border-radius: var(--radius-md); font-size: 16px; font-weight: 900; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+.btn-primary { width: 100%; background: var(--accent); color: #fff; height: 52px; border-radius: var(--radius-md); font-size: 16px; font-weight: 900; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
 .btn-primary:active { transform: scale(0.98); background: var(--accent-hover); }
 
-/* أزرار الفلترة */
-.filters { display: flex; gap: 8px; margin-bottom: 16px; }
-.filters button { flex: 1; padding: 12px; border-radius: var(--radius-md); background: var(--input-bg); border: 1px solid var(--border); color: var(--text-muted); font-weight: 800; font-size: 13px; transition: 0.2s; }
-.filters button.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+/* أزرار الفلترة (شكل زجاجي) */
+.filters { display: flex; gap: 8px; margin-bottom: 15px; }
+.filters button { 
+  flex: 1; 
+  padding: 12px; 
+  border-radius: var(--radius-md); 
+  background: rgba(255, 255, 255, 0.4); 
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(203, 213, 225, 0.6); 
+  color: var(--text-muted); 
+  font-weight: 900; 
+  font-size: 13px; 
+  transition: 0.2s; 
+}
+body.dark-theme .filters button {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+.filters button.active { 
+  background: var(--primary); 
+  color: #fff; 
+  border-color: var(--primary); 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+}
 
 /* كروت الباصات */
-.flight-block { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 16px; background: var(--bg-color); overflow: hidden; }
+.flight-block { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 15px; background: var(--bg-color); overflow: hidden; }
 .buses-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
 details.bus-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
@@ -135,7 +155,6 @@ details.bus-card.early { border-right: 5px solid var(--early); }
 details.bus-card.normal { border-right: 5px solid var(--normal); }
 
 .bus-summary::-webkit-details-marker { display: none; }
-
 .bus-status.late { background: var(--late-bg); color: var(--late); }
 .bus-status.early { background: var(--early-bg); color: var(--early); }
 .bus-status.normal { background: var(--normal-bg); color: var(--normal); }
@@ -147,23 +166,23 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
 .add-bus-btn { width: 100%; background: transparent; color: var(--accent); padding: 12px; font-size: 13px; font-weight: 900; text-align: center; border-top: 1px solid var(--border); }
 
-.tools-row { display: flex; gap: 10px; margin-top: 10px; }
-.tools-row button { flex: 1; text-align: center; padding: 12px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border); }
-.tools-row button.primary { background: #10b981; color: #fff; border-color: #10b981; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+/* أزرار قسم التقرير */
+.tools-row { display: flex; gap: 8px; margin-top: 5px; }
+.tools-row button { flex: 1; text-align: center; padding: 14px 10px; border-radius: var(--radius-md); font-size: 14px; font-weight: 900; color: #fff; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+.tools-row button:active { transform: scale(0.97); }
+.btn-whatsapp { background: #10b981; }
+.btn-pdf { background: #dc2626; }
 
-.report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 15px; border-radius: var(--radius-md); font-size: 12px; line-height: 2; white-space: pre-wrap; font-family: monospace; color: var(--text-main); max-height: 250px; overflow-y: auto; margin-top: 12px; direction: rtl; text-align: right; font-weight: 700; }
+/* حاوية الجدول الرسمي (التقرير) */
+.report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 400px; overflow-y: auto; margin-top: 15px; }
 
 .empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
-
-.toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.2); pointer-events: none; text-align: center; width: max-content; }
+.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.2); pointer-events: none; text-align: center; width: max-content; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-.fab { position: fixed; bottom: 24px; left: 24px; width: 60px; height: 60px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); z-index: 999; border: none; transition: 0.3s; }
-.fab:active { transform: scale(0.9); }
 
 /* شاشة تحديد الوجهة المنبثقة */
 .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15, 23, 42, 0.85); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(8px); }
-.modal-box { background: var(--surface); padding: 30px 20px; border-radius: var(--radius-lg); width: 100%; max-width: 350px; box-shadow: var(--shadow-md); text-align: center; border: 1px solid var(--border); }
+.modal-box { background: var(--surface); padding: 25px 20px; border-radius: var(--radius-lg); width: 100%; max-width: 350px; box-shadow: var(--shadow-md); text-align: center; border: 1px solid var(--border); }
 .modal-box h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 18px; font-weight: 900; }
 .modal-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; font-weight: 700; line-height: 1.6; }
 .modal-box button { width: 100%; padding: 16px; margin-bottom: 12px; border-radius: var(--radius-md); font-size: 15px; font-weight: 900; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-main); }
@@ -178,14 +197,12 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 <header>
   <div class="header-content">
     <div class="right-titles">
-      <h1>عمليات الساحات الخارجية والمواصلات</h1>
-      <h2>Landside & Transportation Operations</h2>
-      <p>منطقة الفرز صالة 4 | Staging Area T4</p>
+      <h1>عمليات الساحات والمواصلات</h1>
+      <p>منطقة الفرز صالة 4</p>
     </div>
-    <div class="left-branding">
-      <span class="airport-name">مطار الملك عبدالعزيز الدولي<br>King Abdulaziz Int'l Airport</span>
+    <div>
       <button class="theme-toggle" onclick="toggleTheme()" title="تغيير المظهر">
-        <svg viewBox="0 0 24 24" style="margin:0; width:20px; height:20px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg viewBox="0 0 24 24" style="margin:0; width:22px; height:22px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
     </div>
   </div>
@@ -208,20 +225,20 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
     <form id="entry">
       <div class="form-grid">
         <div class="form-field">
-          <label>رقم الرحلة <span>Flight No.</span></label>
+          <label>رقم الرحلة</label>
           <input id="flight" list="flight-list" class="form-input" placeholder="SV123" maxlength="14" autocapitalize="characters" required autocomplete="off">
           <datalist id="flight-list"></datalist>
         </div>
         <div class="form-field">
-          <label>وقت الإقلاع <span>Dep. Time</span></label>
+          <label>وقت الإقلاع</label>
           <input id="time" type="time" class="form-input" required>
         </div>
         <div class="form-field">
-          <label>عدد الركاب <span>Pax Count</span></label>
-          <input id="pax" type="number" min="1" max="150" inputmode="numeric" placeholder="مثال: 48" class="form-input" required autocomplete="off">
+          <label>عدد الركاب</label>
+          <input id="pax" type="number" min="1" max="150" inputmode="numeric" placeholder="أدخل العدد (مثال: 48)" class="form-input" required autocomplete="off">
         </div>
       </div>
-      <button type="submit" class="btn-primary">حفظ بيانات الباص</button>
+      <button type="submit" class="btn-primary">حفظ البيانات</button>
     </form>
   </section>
 
@@ -243,16 +260,16 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
   </details>
 
   <details class="panel" open>
-    <summary class="panel-header"><h2>التقارير اليومية</h2></summary>
+    <summary class="panel-header"><h2>التقارير اليومية الرسمية</h2></summary>
     <div class="tools-row">
-      <button id="copy" type="button">نسخ التقرير</button>
-      <button id="share" type="button" class="primary">إرسال للواتساب</button>
+      <button id="btn-share" type="button" onclick="exportAsImageAndShare()" class="btn-whatsapp">مشاركة كصورة (واتساب)</button>
+      <button id="btn-pdf" type="button" onclick="exportAsPDF()" class="btn-pdf">تحميل كـ PDF</button>
     </div>
+    <!-- هنا يظهر الجدول الرسمي المصمم ليتم طباعته أو تصويره -->
     <div id="preview" class="report-view"></div>
   </details>
 </main>
 
-<!-- نافذة تحديد الوجهة عند المغادرة -->
 <div id="dest-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>تأكيد مغادرة الباص</h3>
@@ -264,9 +281,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 </div>
 
 <div id="toast" class="toast"></div>
-<button class="fab" onclick="window.scrollTo({top:0, behavior:'smooth'}); setTimeout(()=>document.getElementById('flight').focus(),300)">
-  <svg viewBox="0 0 24 24" style="width:28px;height:28px;margin:0"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-</button>
 
 <script>
 (()=>{'use strict';
@@ -543,7 +557,7 @@ function render(){
     </details>`;
   }).join('') : '<div class="empty-msg">سجل المغادرة فارغ.</div>';
 
-  $('preview').textContent = report();
+  $('preview').innerHTML = generateTableHTML();
   tick();
 }
 
@@ -568,42 +582,121 @@ function tick(){
   $('clock').textContent = new Intl.DateTimeFormat('ar-SA', options).format(new Date());
 }
 
-function report(){
-  const a=buses.filter(b=>!b.done), done=buses.filter(b=>b.done), groups=groupBy(a);
-  const d = new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'short',timeStyle:'short'}).format(new Date());
+// بناء تصميم التقرير الجدولي الرسمي (ليتم تصويره وتحويله PDF)
+function generateTableHTML(){
+  const a = buses.filter(b => !b.done), done = buses.filter(b => b.done), groups = groupBy(a);
+  const d = new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
+
+  let html = `<div id="report-content" style="background:#ffffff; color:#0f172a; padding:25px; font-family: Tahoma, sans-serif; direction:rtl; text-align:right; border-radius:12px;">`;
   
-  const lines = [
-    'تقرير الفرز (T4)',
-    'الوقت: ' + d,
-    '-------------------------',
-    'الباصات بالفرز: ' + a.length,
-    'إجمالي الركاب: ' + a.reduce((n,b)=>n+total(b),0),
-    'المغادرة: ' + done.length,
-    '-------------------------',
-  ];
-  if (!groups.length) {
-    lines.push('لا توجد باصات حالياً بالفرز.');
-  } else {
-    for (const g of groups) {
-      const f = g[0], hasShared = g.some(b => b.extra && b.extra.length > 0);
-      lines.push('الرحلة: '+f.flight, 'الإقلاع: '+f.time);
-      if (g.length === 1 && !hasShared) {
-        lines.push('الركاب: '+f.pax);
-      } else if (!hasShared) {
-        lines.push('الباصات: '+g.length, 'الركاب: '+g.map(b=>b.pax).join(' + '), 'الإجمالي: '+g.reduce((sum,b)=>sum+b.pax,0));
-      } else {
-        lines.push('الباصات: '+g.length);
-        g.forEach((b, i) => {
-          const ex = Array.isArray(b.extra) ? b.extra : [];
-          if (!ex.length) lines.push('- باص '+(i+1)+': '+b.pax+' راكب');
-          else lines.push('- باص '+(i+1)+': '+b.pax+' راكب', '  (مشترك: '+ex.map(x=>x.flight+' '+x.pax).join(' ، ')+')', '  إجمالي: '+total(b));
-        });
-      }
-      lines.push('-------------------------');
-    }
+  html += `<div style="text-align:center; border-bottom:3px solid #1e3a8a; padding-bottom:15px; margin-bottom:20px;">
+    <h2 style="margin:0; font-size:22px; color:#1e3a8a; font-weight:900;">تقرير عمليات الساحات - صالة 4</h2>
+    <p style="margin:8px 0 0; font-size:13px; color:#475569; font-weight:bold;">تاريخ ووقت التقرير: ${d}</p>
+  </div>`;
+
+  html += `<div style="display:flex; justify-content:space-around; background:#f8fafc; padding:15px; border-radius:10px; margin-bottom:25px; border:1px solid #cbd5e1;">
+    <div style="text-align:center;"><b style="display:block; font-size:20px; color:#0f172a;">${a.length}</b><span style="font-size:12px; color:#64748b; font-weight:bold;">باصات بالفرز</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:20px; color:#d97706;">${a.reduce((n,b)=>n+total(b),0)}</b><span style="font-size:12px; color:#64748b; font-weight:bold;">الركاب بالفرز</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:20px; color:#059669;">${done.length}</b><span style="font-size:12px; color:#64748b; font-weight:bold;">باصات مغادرة</span></div>
+  </div>`;
+
+  html += `<h3 style="font-size:16px; color:#1e3a8a; margin-bottom:10px; border-right:4px solid #1e3a8a; padding-right:8px;">الرحلات الحالية بالفرز (الانتظار)</h3>`;
+  html += `<table style="width:100%; border-collapse:collapse; margin-bottom:30px; text-align:center; font-size:13px;">
+    <thead>
+      <tr style="background:#1e3a8a; color:#ffffff;">
+        <th style="padding:10px; border:1px solid #cbd5e1;">الرحلة</th>
+        <th style="padding:10px; border:1px solid #cbd5e1;">الإقلاع</th>
+        <th style="padding:10px; border:1px solid #cbd5e1;">الباصات</th>
+        <th style="padding:10px; border:1px solid #cbd5e1;">الركاب</th>
+      </tr>
+    </thead>
+    <tbody>`;
+  if(!groups.length) html += `<tr><td colspan="4" style="padding:15px; border:1px solid #cbd5e1; color:#64748b;">لا توجد باصات بالفرز حالياً</td></tr>`;
+  else {
+    groups.forEach(g => {
+      const f = g[0], tot = g.reduce((s,b)=>s+total(b),0);
+      html += `<tr>
+        <td style="padding:10px; border:1px solid #cbd5e1; font-weight:bold;">${f.flight}</td>
+        <td style="padding:10px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold;">${f.time}</td>
+        <td style="padding:10px; border:1px solid #cbd5e1;">${g.length}</td>
+        <td style="padding:10px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706;">${tot}</td>
+      </tr>`;
+    });
   }
-  return '\u200f' + lines.join('\n\u200f');
+  html += `</tbody></table>`;
+
+  html += `<h3 style="font-size:16px; color:#059669; margin-bottom:10px; border-right:4px solid #059669; padding-right:8px;">سجل المغادرة (تم الترحيل)</h3>`;
+  html += `<table style="width:100%; border-collapse:collapse; text-align:center; font-size:13px;">
+    <thead>
+      <tr style="background:#059669; color:#ffffff;">
+        <th style="padding:10px; border:1px solid #cbd5e1;">الرحلة</th>
+        <th style="padding:10px; border:1px solid #cbd5e1;">وقت الخروج</th>
+        <th style="padding:10px; border:1px solid #cbd5e1;">الوجهة</th>
+        <th style="padding:10px; border:1px solid #cbd5e1;">الركاب</th>
+      </tr>
+    </thead>
+    <tbody>`;
+  if(!done.length) html += `<tr><td colspan="4" style="padding:15px; border:1px solid #cbd5e1; color:#64748b;">لم يغادر أي باص بعد</td></tr>`;
+  else {
+    done.slice().reverse().forEach(b => {
+      let dTime = '--:--';
+      if(b.doneAt){
+        try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh'}).format(dt); } catch(e){}
+      }
+      html += `<tr>
+        <td style="padding:10px; border:1px solid #cbd5e1; font-weight:bold;">${b.flight}</td>
+        <td style="padding:10px; border:1px solid #cbd5e1; color:#059669; font-weight:bold;">${dTime}</td>
+        <td style="padding:10px; border:1px solid #cbd5e1;">${b.destination||'--'}</td>
+        <td style="padding:10px; border:1px solid #cbd5e1; font-weight:bold;">${total(b)}</td>
+      </tr>`;
+    });
+  }
+  html += `</tbody></table></div>`;
+  return html;
 }
+
+// دالة المشاركة كصورة عبر واتساب
+window.exportAsImageAndShare = async function() {
+  const el = document.getElementById('report-content');
+  if(!el) return;
+  showToast('جاري تجهيز الصورة...');
+  try {
+    const canvas = await html2canvas(el, { scale: 2, useCORS: true });
+    canvas.toBlob(async (blob) => {
+      const file = new File([blob], "Report.png", { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'تقرير عمليات الساحات' });
+      } else {
+        const imgURL = URL.createObjectURL(blob); 
+        window.open(imgURL, '_blank'); 
+        showToast('اضغط مطولاً على الصورة لحفظها ثم إرسالها.');
+      }
+    }, "image/png");
+  } catch(e) {
+    showToast('حدث خطأ أثناء استخراج الصورة.');
+  }
+};
+
+// دالة الاستخراج كملف PDF
+window.exportAsPDF = async function() {
+  const el = document.getElementById('report-content');
+  if(!el) return;
+  showToast('جاري إنشاء ملف PDF الرسمي...');
+  try {
+    const canvas = await html2canvas(el, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('Report_T4.pdf');
+    showToast('تم تحميل ملف الـ PDF بنجاح ✓');
+  } catch(e) {
+    showToast('حدث خطأ أثناء استخراج الملف.');
+  }
+};
 
 // ----------------- مزامنة السحابة المباشرة -----------------
 db.ref('buses').on('value', (snapshot) => {
@@ -679,10 +772,10 @@ function action(e){
     if(!Number.isInteger(pax)||pax<1||pax>150){showToast('عدد غير صحيح');return}
     if(!b.extra) b.extra = [];
     b.extra.push({flight,time:time.trim(),pax,departure:departure(time.trim(),created(b)),createdAt:Date.now()});
-    showToast('تمت إضافة الرحلة المشتركة');
+    showToast('تمت إضافة المشترك');
   }
   else if(a==='removeextra'){
-    if(!confirm('هل أنت متأكد من حذف الرحلة المشتركة؟'))return;
+    if(!confirm('هل أنت متأكد من حذف المشترك؟'))return;
     b.extra.splice(Number(btn.dataset.index),1);
     showToast('تم الحذف');
   }
@@ -703,13 +796,6 @@ function action(e){
 
 $('active').addEventListener('click',action);
 $('done').addEventListener('click',action);
-
-async function copy(){ try{await navigator.clipboard.writeText(report());showToast('تم نسخ التقرير ✓')}catch(e){prompt('انسخ:',report())} }
-$('copy').onclick=copy;
-$('share').onclick=() => {
-  const TheText = encodeURIComponent(report());
-  window.open('https://wa.me/u_vvw?text=' + TheText, '_blank');
-};
 
 setInterval(tick,1000);
 })();
