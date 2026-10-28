@@ -29,7 +29,7 @@
   --accent-hover: #1d4ed8;
   --text-main: #1e293b;
   --text-muted: #64748b;
-  --border: #e2e8f0;
+  --border: #cbd5e1;
   --input-bg: #f8fafc;
   --late: #ef4444;
   --late-bg: #fef2f2;
@@ -47,13 +47,13 @@
 
 body.dark-theme {
   --bg-color: #0b1120;
-  --surface: #1e293b;
+  --surface: #0f172a;
   --primary: #f8fafc;
   --primary-light: #cbd5e1;
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
-  --border: #334155;
-  --input-bg: #0f172a;
+  --border: #475569;
+  --input-bg: #1e293b;
   --late: #f87171;
   --late-bg: #451a1a;
   --early: #34d399;
@@ -67,8 +67,8 @@ body.dark-theme {
 
 * { box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
 body { margin: 0; background: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 50px; transition: background 0.3s ease; }
-button, input { outline: none; border: none; font: inherit; margin: 0; }
-button { cursor: pointer; transition: 0.2s ease; }
+button, input { outline: none; font: inherit; margin: 0; }
+button { cursor: pointer; border: none; transition: 0.2s ease; }
 svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; margin-left: 4px; }
 
 /* الهيدر الأنيق والمضغوط */
@@ -81,8 +81,8 @@ header {
   margin-bottom: 15px;
 }
 .header-content { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
-.right-titles h1 { font-size: 20px; font-weight: 900; margin: 0 0 4px 0; color: #f8fafc; line-height: 1.3; }
-.right-titles p { font-size: 14px; font-weight: 700; color: #34d399; margin: 0; }
+.right-titles h1 { font-size: 17px; font-weight: 900; margin: 0 0 4px 0; color: #f8fafc; line-height: 1.4; }
+.right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; }
 .theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; backdrop-filter: blur(5px); }
 
 #clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-align: left; max-width: 800px; margin: 10px auto 0; }
@@ -107,15 +107,35 @@ details.panel:not([open]) .panel-header { margin-bottom: 0; border-bottom: none;
 details.panel summary::after { content: "▼"; font-size: 12px; color: var(--text-muted); font-weight: 900; transition: 0.3s; }
 details.panel[open] summary::after { content: "▲"; }
 
-/* النماذج ومربعات الإدخال */
+/* النماذج ومربعات الإدخال (معدلة للوضع المظلم وتوسيط الوقت) */
 .form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; }
 .form-field label { font-size: 13px; font-weight: 900; color: var(--text-muted); }
-.form-input { width: 100%; height: 50px; border: 2px solid transparent; border-radius: var(--radius-md); padding: 0 16px; font-size: 18px; font-weight: 900; text-align: center; color: var(--text-main); background: var(--input-bg); direction: ltr; transition: 0.3s; }
+.form-input { 
+  width: 100%; 
+  height: 50px; 
+  border: 1px solid var(--border); /* مبروزة لتكون واضحة */
+  border-radius: var(--radius-md); 
+  padding: 0 16px; 
+  font-size: 18px; 
+  font-weight: 900; 
+  text-align: center; 
+  color: var(--text-main); 
+  background: var(--input-bg); 
+  direction: ltr; 
+  transition: 0.3s; 
+}
+/* حل مشكلة شطحة الوقت لليسار */
+input[type="time"]::-webkit-datetime-edit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 .form-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-.form-input::placeholder { color: #94a3b8; }
+.form-input::placeholder { color: #94a3b8; font-weight: 700; }
 
-.btn-primary { width: 100%; background: var(--accent); color: #fff; height: 52px; border-radius: var(--radius-md); font-size: 16px; font-weight: 900; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
+.btn-primary { width: 100%; background: var(--accent); color: #fff; height: 52px; border-radius: var(--radius-md); font-size: 16px; font-weight: 900; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); border: none; }
 .btn-primary:active { transform: scale(0.98); background: var(--accent-hover); }
 
 /* أزرار الفلترة (شكل زجاجي) */
@@ -168,13 +188,13 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 
 /* أزرار قسم التقرير */
 .tools-row { display: flex; gap: 8px; margin-top: 5px; }
-.tools-row button { flex: 1; text-align: center; padding: 14px 10px; border-radius: var(--radius-md); font-size: 14px; font-weight: 900; color: #fff; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+.tools-row button { flex: 1; text-align: center; padding: 14px 10px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 .tools-row button:active { transform: scale(0.97); }
 .btn-whatsapp { background: #10b981; }
 .btn-pdf { background: #dc2626; }
 
 /* حاوية الجدول الرسمي (التقرير) */
-.report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 400px; overflow-y: auto; margin-top: 15px; }
+.report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 450px; overflow-y: auto; margin-top: 15px; }
 
 .empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
 .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.2); pointer-events: none; text-align: center; width: max-content; }
@@ -197,7 +217,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 <header>
   <div class="header-content">
     <div class="right-titles">
-      <h1>عمليات الساحات والمواصلات</h1>
+      <h1>عمليات الساحات الخارجية والمواصلات</h1>
       <p>منطقة الفرز صالة 4</p>
     </div>
     <div>
@@ -235,7 +255,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
         </div>
         <div class="form-field">
           <label>عدد الركاب</label>
-          <input id="pax" type="number" min="1" max="150" inputmode="numeric" placeholder="أدخل العدد (مثال: 48)" class="form-input" required autocomplete="off">
+          <input id="pax" type="number" min="1" max="150" inputmode="numeric" placeholder="مثال: 48" class="form-input" required autocomplete="off">
         </div>
       </div>
       <button type="submit" class="btn-primary">حفظ البيانات</button>
@@ -259,13 +279,14 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
     <div id="done"></div>
   </details>
 
-  <details class="panel" open>
+  <!-- التقرير الحين مقفل افتراضياً عشان النظافة -->
+  <details class="panel">
     <summary class="panel-header"><h2>التقارير اليومية الرسمية</h2></summary>
     <div class="tools-row">
-      <button id="btn-share" type="button" onclick="exportAsImageAndShare()" class="btn-whatsapp">مشاركة كصورة (واتساب)</button>
+      <button id="btn-share" type="button" onclick="exportAsImageAndShare()" class="btn-whatsapp">مشاركة كصورة</button>
       <button id="btn-pdf" type="button" onclick="exportAsPDF()" class="btn-pdf">تحميل كـ PDF</button>
     </div>
-    <!-- هنا يظهر الجدول الرسمي المصمم ليتم طباعته أو تصويره -->
+    <!-- هنا يظهر الجدول الرسمي المصمم ليتم طباعته أو تصويره بشكل صغير واحترافي -->
     <div id="preview" class="report-view"></div>
   </details>
 </main>
@@ -582,61 +603,61 @@ function tick(){
   $('clock').textContent = new Intl.DateTimeFormat('ar-SA', options).format(new Date());
 }
 
-// بناء تصميم التقرير الجدولي الرسمي (ليتم تصويره وتحويله PDF)
+// تصميم التقرير الجدولي الرسمي والصغير للطباعة والمشاركة
 function generateTableHTML(){
   const a = buses.filter(b => !b.done), done = buses.filter(b => b.done), groups = groupBy(a);
   const d = new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
 
-  let html = `<div id="report-content" style="background:#ffffff; color:#0f172a; padding:25px; font-family: Tahoma, sans-serif; direction:rtl; text-align:right; border-radius:12px;">`;
+  let html = `<div id="report-content" style="background:#ffffff; color:#0f172a; padding:15px; font-family: 'Segoe UI', Tahoma, sans-serif; direction:rtl; text-align:right; border-radius:8px;">`;
   
-  html += `<div style="text-align:center; border-bottom:3px solid #1e3a8a; padding-bottom:15px; margin-bottom:20px;">
-    <h2 style="margin:0; font-size:22px; color:#1e3a8a; font-weight:900;">تقرير عمليات الساحات - صالة 4</h2>
-    <p style="margin:8px 0 0; font-size:13px; color:#475569; font-weight:bold;">تاريخ ووقت التقرير: ${d}</p>
+  html += `<div style="text-align:center; border-bottom:2px solid #1e3a8a; padding-bottom:10px; margin-bottom:15px;">
+    <h2 style="margin:0; font-size:17px; color:#1e3a8a; font-weight:900;">عمليات الساحات الخارجية والمواصلات - منطقة الفرز (صالة 4)</h2>
+    <p style="margin:5px 0 0; font-size:11px; color:#475569; font-weight:bold;">تقرير وردية العمل | تاريخ ووقت التقرير: ${d}</p>
   </div>`;
 
-  html += `<div style="display:flex; justify-content:space-around; background:#f8fafc; padding:15px; border-radius:10px; margin-bottom:25px; border:1px solid #cbd5e1;">
-    <div style="text-align:center;"><b style="display:block; font-size:20px; color:#0f172a;">${a.length}</b><span style="font-size:12px; color:#64748b; font-weight:bold;">باصات بالفرز</span></div>
-    <div style="text-align:center;"><b style="display:block; font-size:20px; color:#d97706;">${a.reduce((n,b)=>n+total(b),0)}</b><span style="font-size:12px; color:#64748b; font-weight:bold;">الركاب بالفرز</span></div>
-    <div style="text-align:center;"><b style="display:block; font-size:20px; color:#059669;">${done.length}</b><span style="font-size:12px; color:#64748b; font-weight:bold;">باصات مغادرة</span></div>
+  html += `<div style="display:flex; justify-content:space-around; background:#f8fafc; padding:8px; border-radius:6px; margin-bottom:15px; border:1px solid #cbd5e1;">
+    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#0f172a;">${a.length}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">باصات بالفرز</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#d97706;">${a.reduce((n,b)=>n+total(b),0)}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">الركاب بالفرز</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#059669;">${done.length}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">باصات مغادرة</span></div>
   </div>`;
 
-  html += `<h3 style="font-size:16px; color:#1e3a8a; margin-bottom:10px; border-right:4px solid #1e3a8a; padding-right:8px;">الرحلات الحالية بالفرز (الانتظار)</h3>`;
-  html += `<table style="width:100%; border-collapse:collapse; margin-bottom:30px; text-align:center; font-size:13px;">
+  html += `<h3 style="font-size:14px; color:#1e3a8a; margin-bottom:8px; border-right:3px solid #1e3a8a; padding-right:6px;">الرحلات الحالية بالفرز (الانتظار)</h3>`;
+  html += `<table style="width:100%; border-collapse:collapse; margin-bottom:20px; text-align:center; font-size:11px;">
     <thead>
       <tr style="background:#1e3a8a; color:#ffffff;">
-        <th style="padding:10px; border:1px solid #cbd5e1;">الرحلة</th>
-        <th style="padding:10px; border:1px solid #cbd5e1;">الإقلاع</th>
-        <th style="padding:10px; border:1px solid #cbd5e1;">الباصات</th>
-        <th style="padding:10px; border:1px solid #cbd5e1;">الركاب</th>
+        <th style="padding:6px; border:1px solid #cbd5e1;">الرحلة</th>
+        <th style="padding:6px; border:1px solid #cbd5e1;">وقت الإقلاع</th>
+        <th style="padding:6px; border:1px solid #cbd5e1;">الباصات</th>
+        <th style="padding:6px; border:1px solid #cbd5e1;">الركاب</th>
       </tr>
     </thead>
     <tbody>`;
-  if(!groups.length) html += `<tr><td colspan="4" style="padding:15px; border:1px solid #cbd5e1; color:#64748b;">لا توجد باصات بالفرز حالياً</td></tr>`;
+  if(!groups.length) html += `<tr><td colspan="4" style="padding:10px; border:1px solid #cbd5e1; color:#64748b;">لا توجد باصات بالفرز حالياً</td></tr>`;
   else {
     groups.forEach(g => {
       const f = g[0], tot = g.reduce((s,b)=>s+total(b),0);
       html += `<tr>
-        <td style="padding:10px; border:1px solid #cbd5e1; font-weight:bold;">${f.flight}</td>
-        <td style="padding:10px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold;">${f.time}</td>
-        <td style="padding:10px; border:1px solid #cbd5e1;">${g.length}</td>
-        <td style="padding:10px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706;">${tot}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold;">${f.flight}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold;">${f.time}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">${g.length}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706;">${tot}</td>
       </tr>`;
     });
   }
   html += `</tbody></table>`;
 
-  html += `<h3 style="font-size:16px; color:#059669; margin-bottom:10px; border-right:4px solid #059669; padding-right:8px;">سجل المغادرة (تم الترحيل)</h3>`;
-  html += `<table style="width:100%; border-collapse:collapse; text-align:center; font-size:13px;">
+  html += `<h3 style="font-size:14px; color:#059669; margin-bottom:8px; border-right:3px solid #059669; padding-right:6px;">سجل المغادرة (تم الترحيل)</h3>`;
+  html += `<table style="width:100%; border-collapse:collapse; text-align:center; font-size:11px;">
     <thead>
       <tr style="background:#059669; color:#ffffff;">
-        <th style="padding:10px; border:1px solid #cbd5e1;">الرحلة</th>
-        <th style="padding:10px; border:1px solid #cbd5e1;">وقت الخروج</th>
-        <th style="padding:10px; border:1px solid #cbd5e1;">الوجهة</th>
-        <th style="padding:10px; border:1px solid #cbd5e1;">الركاب</th>
+        <th style="padding:6px; border:1px solid #cbd5e1;">الرحلة</th>
+        <th style="padding:6px; border:1px solid #cbd5e1;">وقت الخروج</th>
+        <th style="padding:6px; border:1px solid #cbd5e1;">الوجهة</th>
+        <th style="padding:6px; border:1px solid #cbd5e1;">الركاب</th>
       </tr>
     </thead>
     <tbody>`;
-  if(!done.length) html += `<tr><td colspan="4" style="padding:15px; border:1px solid #cbd5e1; color:#64748b;">لم يغادر أي باص بعد</td></tr>`;
+  if(!done.length) html += `<tr><td colspan="4" style="padding:10px; border:1px solid #cbd5e1; color:#64748b;">لم يغادر أي باص بعد</td></tr>`;
   else {
     done.slice().reverse().forEach(b => {
       let dTime = '--:--';
@@ -644,10 +665,10 @@ function generateTableHTML(){
         try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh'}).format(dt); } catch(e){}
       }
       html += `<tr>
-        <td style="padding:10px; border:1px solid #cbd5e1; font-weight:bold;">${b.flight}</td>
-        <td style="padding:10px; border:1px solid #cbd5e1; color:#059669; font-weight:bold;">${dTime}</td>
-        <td style="padding:10px; border:1px solid #cbd5e1;">${b.destination||'--'}</td>
-        <td style="padding:10px; border:1px solid #cbd5e1; font-weight:bold;">${total(b)}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold;">${b.flight}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; color:#059669; font-weight:bold;">${dTime}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1;">${b.destination||'--'}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold;">${total(b)}</td>
       </tr>`;
     });
   }
@@ -655,7 +676,7 @@ function generateTableHTML(){
   return html;
 }
 
-// دالة المشاركة كصورة عبر واتساب
+// تصدير كصورة ومشاركة
 window.exportAsImageAndShare = async function() {
   const el = document.getElementById('report-content');
   if(!el) return;
@@ -677,7 +698,7 @@ window.exportAsImageAndShare = async function() {
   }
 };
 
-// دالة الاستخراج كملف PDF
+// تصدير PDF بذكاء وتقسيم الصفحات
 window.exportAsPDF = async function() {
   const el = document.getElementById('report-content');
   if(!el) return;
@@ -687,10 +708,23 @@ window.exportAsPDF = async function() {
     const imgData = canvas.toDataURL('image/png');
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'mm', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
     
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    let heightLeft = pdfHeight;
+    let position = 0;
+    
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+    heightLeft -= pageHeight;
+    
+    while (heightLeft >= 0) {
+      position = heightLeft - pdfHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pageHeight;
+    }
+    
     pdf.save('Report_T4.pdf');
     showToast('تم تحميل ملف الـ PDF بنجاح ✓');
   } catch(e) {
