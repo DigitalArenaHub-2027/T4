@@ -85,7 +85,7 @@ header {
 .right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; }
 .theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; backdrop-filter: blur(5px); }
 
-#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-align: left; max-width: 800px; margin: 10px auto 0; }
+#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-align: left; max-width: 800px; margin: 10px auto 0; direction: ltr; }
 
 main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
 
@@ -99,7 +99,7 @@ main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
 .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 15px; box-shadow: var(--shadow-md); transition: 0.3s; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
 .panel-header h2 { font-size: 16px; font-weight: 900; margin: 0; color: var(--primary); }
-.panel-badge { font-size: 12px; font-weight: 900; color: var(--accent); background: var(--normal-bg); padding: 4px 10px; border-radius: 8px; }
+.panel-badge { font-size: 12px; font-weight: 900; color: var(--accent); background: var(--normal-bg); padding: 4px 10px; border-radius: 8px; direction: ltr; }
 
 details.panel summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
 details.panel summary::-webkit-details-marker { display: none; }
@@ -107,12 +107,13 @@ details.panel:not([open]) .panel-header { margin-bottom: 0; border-bottom: none;
 details.panel summary::after { content: "▼"; font-size: 12px; color: var(--text-muted); font-weight: 900; transition: 0.3s; }
 details.panel[open] summary::after { content: "▲"; }
 
-/* النماذج ومربعات الإدخال (تم حل مشكلة الآيفون جذرياً) */
+/* النماذج ومربعات الإدخال */
 .form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; width: 100%; }
 .form-field { display: flex; flex-direction: column; gap: 6px; width: 100%; }
 .form-field label { font-size: 13px; font-weight: 900; color: var(--text-muted); }
 .form-input { 
   width: 100%; 
+  max-width: 100%;
   height: 52px; 
   border: 2px solid var(--border); 
   border-radius: var(--radius-md); 
@@ -123,19 +124,20 @@ details.panel[open] summary::after { content: "▲"; }
   color: var(--text-main); 
   background: var(--input-bg); 
   box-sizing: border-box;
-  -webkit-appearance: none; /* يمنع تدخل سفاري في شكل المربع */
+  -webkit-appearance: none; 
   appearance: none;
-  direction: ltr; /* يجبر الأرقام والوقت على السنترة بدون أخطاء */
+  direction: ltr; 
   transition: 0.3s; 
   margin: 0;
 }
+input[type="time"] { direction: rtl; } 
 .form-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
 .form-input::placeholder { color: #94a3b8; font-weight: 700; opacity: 0.8; }
 
 .btn-primary { width: 100%; background: var(--accent); color: #fff; height: 52px; border-radius: var(--radius-md); font-size: 16px; font-weight: 900; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); border: none; }
 .btn-primary:active { transform: scale(0.98); background: var(--accent-hover); }
 
-/* أزرار الفلترة (شكل زجاجي) */
+/* أزرار الفلترة */
 .filters { display: flex; gap: 8px; margin-bottom: 15px; }
 .filters button { 
   flex: 1; 
@@ -183,12 +185,14 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
 .add-bus-btn { width: 100%; background: transparent; color: var(--accent); padding: 12px; font-size: 13px; font-weight: 900; text-align: center; border-top: 1px solid var(--border); }
 
-/* أزرار قسم التقرير */
-.tools-row { display: flex; gap: 8px; margin-top: 5px; }
-.tools-row button { flex: 1; text-align: center; padding: 14px 10px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-.tools-row button:active { transform: scale(0.97); }
-.btn-whatsapp { background: #10b981; }
-.btn-pdf { background: #dc2626; }
+/* أزرار قسم التقرير الشاملة (4 أزرار) */
+.tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.tools-grid button { padding: 14px 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+.tools-grid button:active { transform: scale(0.97); }
+.btn-whatsapp-img { background: #10b981; } /* أخضر */
+.btn-whatsapp-text { background: #2563eb; } /* أزرق */
+.btn-pdf { background: #dc2626; } /* أحمر */
+.btn-copy { background: #475569; } /* رمادي */
 
 /* حاوية الجدول الرسمي (التقرير) */
 .report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 450px; overflow-y: auto; margin-top: 15px; }
@@ -280,9 +284,11 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
   <!-- التقرير مغلق افتراضياً لترتيب الشاشة -->
   <details class="panel">
     <summary class="panel-header"><h2>التقارير اليومية الرسمية</h2></summary>
-    <div class="tools-row">
-      <button id="btn-share" type="button" onclick="exportAsImageAndShare()" class="btn-whatsapp">مشاركة كصورة</button>
-      <button id="btn-pdf" type="button" onclick="exportAsPDF()" class="btn-pdf">تحميل كـ PDF</button>
+    <div class="tools-grid">
+      <button type="button" onclick="exportAsImageAndShare()" class="btn-whatsapp-img">صورة (واتساب)</button>
+      <button type="button" onclick="shareTextWhatsApp()" class="btn-whatsapp-text">نص (واتساب)</button>
+      <button type="button" onclick="exportAsPDF()" class="btn-pdf">تحميل كـ PDF</button>
+      <button type="button" onclick="copyTextReport()" class="btn-copy">نسخ كنص</button>
     </div>
     <!-- هنا يظهر الجدول الرسمي المصمم ليتم طباعته أو تصويره بشكل صغير واحترافي -->
     <div id="preview" class="report-view"></div>
@@ -424,8 +430,9 @@ async function generatePermit(b) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
+    // تنسيق التاريخ والوقت بالأرقام الإنجليزية للتصريح
     const dateStr = new Intl.DateTimeFormat('en-GB').format(new Date());
-    const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'}).format(new Date(created(b)));
+    const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(created(b)));
     
     const columnX = canvas.width * 0.38; 
     
@@ -468,7 +475,7 @@ function busCard(b,i){
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div style="display:flex; align-items:center; gap:10px;">
           <span style="font-size:15px; font-weight:900; color:var(--text-main);">باص ${i+1}</span>
-          <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--shared); border:1px solid var(--border);">${total(b)} راكب</span>
+          <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--shared); border:1px solid var(--border); direction:ltr;">${total(b)} راكب</span>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
           <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-align:left; line-height:1.5;">
@@ -519,10 +526,10 @@ function render(){
         <div style="display:flex; flex-direction:column; gap:4px;">
           <div style="display:flex; align-items:baseline; gap:10px;">
             <span style="font-size:18px; font-weight:900; color:var(--primary); direction:ltr; letter-spacing:1px;">${esc(b.flight)}</span>
-            <span style="font-size:13px; font-weight:800; color:var(--shared);">(${p} راكب)</span>
+            <span style="font-size:13px; font-weight:800; color:var(--shared); direction:ltr;">(${p} راكب)</span>
           </div>
           <div style="font-size:12px; font-weight:800; color:var(--text-muted);">
-            إقلاع: <b style="color:var(--text-main); margin-right:4px; font-size:13px;">${esc(b.time)}</b> | إجمالي الباصات: ${g.length}
+            إقلاع: <b style="color:var(--text-main); margin-right:4px; font-size:13px; direction:ltr; display:inline-block;">${esc(b.time)}</b> | إجمالي الباصات: <span style="direction:ltr; display:inline-block;">${g.length}</span>
           </div>
         </div>
         <div class="flight-countdown" data-live="${esc(b.id)}" style="font-size:13px; font-weight:900; color:var(--normal); background:var(--normal-bg); padding:6px 12px; border-radius:8px; border:1px solid var(--normal);">${until(b)}</div>
@@ -538,7 +545,8 @@ function render(){
       try {
         const dateObj = (typeof b.doneAt === 'string') ? new Date(b.doneAt) : new Date(Number(b.doneAt));
         if (!isNaN(dateObj.getTime())) {
-          dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh'}).format(dateObj);
+          // تنسيق وقت الخروج بالأرقام الإنجليزية
+          dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dateObj);
         }
       } catch(e) {}
     }
@@ -557,12 +565,12 @@ function render(){
       <summary class="bus-summary" style="padding:14px 12px; cursor:pointer; display:flex; flex-direction:column; gap:8px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:16px; font-weight:900; color:var(--text-main); letter-spacing:0.5px;">${esc(b.flight)}</span>
-            <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--shared); border:1px solid var(--border);">${total(b)} راكب</span>
+            <span style="font-size:16px; font-weight:900; color:var(--text-main); letter-spacing:0.5px; direction:ltr;">${esc(b.flight)}</span>
+            <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--shared); border:1px solid var(--border); direction:ltr;">${total(b)} راكب</span>
           </div>
           <div style="display:flex; align-items:center; gap:10px;">
             <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-align:left; line-height:1.5;">
-              خروج: <b style="color:var(--text-main); font-size:12px;">${dTime}</b><br>
+              خروج: <b style="color:var(--text-main); font-size:12px; direction:ltr; display:inline-block;">${dTime}</b><br>
               <span style="color:var(--early)">${destName}</span>
             </div>
             <span class="bus-status early" style="font-size:11px; font-weight:900; padding:6px 10px; border-radius:8px;">مغادر ▾</span>
@@ -605,14 +613,68 @@ function tick(){
   const upcoming=buses.filter(b=>!b.done).flatMap(b=>[{flight:b.flight,dep:dep(b)},...(b.extra||[]).map(x=>({flight:x.flight,dep:Number(x.departure)||departure(x.time,created(b))}))]).filter(x=>x.dep>Date.now()).sort((a,b)=>a.dep-b.dep);
   $('nextflight').textContent=upcoming.length?`القادمة: ${upcoming[0].flight}`:'—';
   
-  const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-  $('clock').textContent = new Intl.DateTimeFormat('ar-SA', options).format(new Date());
+  // تنسيق الأرقام والتاريخ باللغة العربية ولكن باستخدام الأرقام الإنجليزية (1, 2, 3)
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+  $('clock').textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', options).format(new Date());
 }
+
+// دالة إنشاء النص للواتس اب والنسخ
+function generateTextReport(){
+  const a=buses.filter(b=>!b.done), done=buses.filter(b=>b.done), groups=groupBy(a);
+  const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
+  
+  const lines = [
+    'تقرير عمليات الساحات (T4)',
+    'الوقت: ' + d,
+    '-------------------------',
+    'الباصات بالفرز: ' + a.length,
+    'إجمالي الركاب: ' + a.reduce((n,b)=>n+total(b),0),
+    'المغادرة: ' + done.length,
+    '-------------------------'
+  ];
+  if (!groups.length) {
+    lines.push('لا توجد باصات حالياً بالفرز.');
+  } else {
+    for (const g of groups) {
+      const f = g[0], hasShared = g.some(b => b.extra && b.extra.length > 0);
+      lines.push('الرحلة: '+f.flight, 'الإقلاع: '+f.time);
+      if (g.length === 1 && !hasShared) {
+        lines.push('الركاب: '+f.pax);
+      } else if (!hasShared) {
+        lines.push('الباصات: '+g.length, 'الركاب: '+g.map(b=>b.pax).join(' + '), 'الإجمالي: '+g.reduce((sum,b)=>sum+b.pax,0));
+      } else {
+        lines.push('الباصات: '+g.length);
+        g.forEach((b, i) => {
+          const ex = Array.isArray(b.extra) ? b.extra : [];
+          if (!ex.length) lines.push('- باص '+(i+1)+': '+b.pax+' راكب');
+          else lines.push('- باص '+(i+1)+': '+b.pax+' راكب', '  (مشترك: '+ex.map(x=>x.flight+' '+x.pax).join(' ، ')+')', '  إجمالي: '+total(b));
+        });
+      }
+      lines.push('-------------------------');
+    }
+  }
+  return '\u200f' + lines.join('\n\u200f');
+}
+
+// أزرار النص المباشر
+window.copyTextReport = async function() {
+  try {
+    await navigator.clipboard.writeText(generateTextReport());
+    showToast('تم نسخ التقرير النصي بنجاح ✓');
+  } catch(e) {
+    prompt('انسخ التقرير:', generateTextReport());
+  }
+};
+
+window.shareTextWhatsApp = function() {
+  const text = encodeURIComponent(generateTextReport());
+  window.open('https://wa.me/?text=' + text, '_blank');
+};
 
 // تصميم التقرير الجدولي الرسمي والصغير للطباعة والمشاركة
 function generateTableHTML(){
   const a = buses.filter(b => !b.done), done = buses.filter(b => b.done), groups = groupBy(a);
-  const d = new Intl.DateTimeFormat('ar-SA',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
+  const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
 
   let html = `<div id="report-content" style="background:#ffffff; color:#0f172a; padding:15px; font-family: 'Segoe UI', Tahoma, sans-serif; direction:rtl; text-align:right; border-radius:8px;">`;
   
@@ -622,9 +684,9 @@ function generateTableHTML(){
   </div>`;
 
   html += `<div style="display:flex; justify-content:space-around; background:#f8fafc; padding:8px; border-radius:6px; margin-bottom:15px; border:1px solid #cbd5e1;">
-    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#0f172a;">${a.length}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">باصات بالفرز</span></div>
-    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#d97706;">${a.reduce((n,b)=>n+total(b),0)}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">الركاب بالفرز</span></div>
-    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#059669;">${done.length}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">باصات مغادرة</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#0f172a; direction:ltr;">${a.length}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">باصات بالفرز</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#d97706; direction:ltr;">${a.reduce((n,b)=>n+total(b),0)}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">الركاب بالفرز</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#059669; direction:ltr;">${done.length}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">باصات مغادرة</span></div>
   </div>`;
 
   html += `<h3 style="font-size:14px; color:#1e3a8a; margin-bottom:8px; border-right:3px solid #1e3a8a; padding-right:6px;">الرحلات الحالية بالفرز (الانتظار)</h3>`;
@@ -643,10 +705,10 @@ function generateTableHTML(){
     groups.forEach(g => {
       const f = g[0], tot = g.reduce((s,b)=>s+total(b),0);
       html += `<tr>
-        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold;">${f.flight}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold;">${f.time}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1;">${g.length}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706;">${tot}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${f.flight}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold; direction:ltr;">${f.time}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; direction:ltr;">${g.length}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706; direction:ltr;">${tot}</td>
       </tr>`;
     });
   }
@@ -668,13 +730,13 @@ function generateTableHTML(){
     done.slice().reverse().forEach(b => {
       let dTime = '--:--';
       if(b.doneAt){
-        try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh'}).format(dt); } catch(e){}
+        try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dt); } catch(e){}
       }
       html += `<tr>
-        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold;">${b.flight}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; color:#059669; font-weight:bold;">${dTime}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${b.flight}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; color:#059669; font-weight:bold; direction:ltr;">${dTime}</td>
         <td style="padding:6px; border:1px solid #cbd5e1;">${b.destination||'--'}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold;">${total(b)}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${total(b)}</td>
       </tr>`;
     });
   }
@@ -704,7 +766,7 @@ window.exportAsImageAndShare = async function() {
   }
 };
 
-// تصدير PDF بذكاء وتقسيم الصفحات
+// تصدير PDF بذكاء وملاءمة لصفحة واحدة
 window.exportAsPDF = async function() {
   const el = document.getElementById('report-content');
   if(!el) return;
@@ -717,20 +779,19 @@ window.exportAsPDF = async function() {
     
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    let heightLeft = pdfHeight;
-    let position = 0;
+    let imgWidth = pdfWidth;
+    let imgHeight = (canvas.height * pdfWidth) / canvas.width;
     
-    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-    heightLeft -= pageHeight;
-    
-    while (heightLeft >= 0) {
-      position = heightLeft - pdfHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pageHeight;
+    // إذا كان الجدول أطول من الصفحة، يتم تصغيره ليتناسب مع صفحة واحدة بالكامل
+    if (imgHeight > pageHeight) {
+        imgHeight = pageHeight - 10; 
+        imgWidth = (canvas.width * imgHeight) / canvas.height;
     }
     
+    // توسيط الصورة في الصفحة في حال تم تصغيرها
+    const xPos = (pdfWidth - imgWidth) / 2;
+    
+    pdf.addImage(imgData, 'PNG', xPos, 5, imgWidth, imgHeight);
     pdf.save('Report_T4.pdf');
     showToast('تم تحميل ملف الـ PDF بنجاح ✓');
   } catch(e) {
