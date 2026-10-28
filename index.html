@@ -52,7 +52,7 @@ body.dark-theme {
   --primary-light: #cbd5e1;
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
-  --border: #475569; /* لون إطار بارز في المظلم */
+  --border: #475569;
   --input-bg: #1e293b;
   --late: #f87171;
   --late-bg: #451a1a;
@@ -107,15 +107,14 @@ details.panel:not([open]) .panel-header { margin-bottom: 0; border-bottom: none;
 details.panel summary::after { content: "▼"; font-size: 12px; color: var(--text-muted); font-weight: 900; transition: 0.3s; }
 details.panel[open] summary::after { content: "▲"; }
 
-/* النماذج ومربعات الإدخال (موزونة وبارزة) */
-.form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
-.form-field { display: flex; flex-direction: column; gap: 6px; }
+/* النماذج ومربعات الإدخال (تم حل مشكلة الآيفون جذرياً) */
+.form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; width: 100%; }
+.form-field { display: flex; flex-direction: column; gap: 6px; width: 100%; }
 .form-field label { font-size: 13px; font-weight: 900; color: var(--text-muted); }
 .form-input { 
   width: 100%; 
-  max-width: 100%;
   height: 52px; 
-  border: 2px solid var(--border); /* البرواز العريض للوضوح */
+  border: 2px solid var(--border); 
   border-radius: var(--radius-md); 
   padding: 0 16px; 
   font-size: 18px; 
@@ -124,10 +123,12 @@ details.panel[open] summary::after { content: "▲"; }
   color: var(--text-main); 
   background: var(--input-bg); 
   box-sizing: border-box;
+  -webkit-appearance: none; /* يمنع تدخل سفاري في شكل المربع */
+  appearance: none;
+  direction: ltr; /* يجبر الأرقام والوقت على السنترة بدون أخطاء */
   transition: 0.3s; 
+  margin: 0;
 }
-#flight { direction: ltr; } /* فقط للرحلة عشان الإنجليزي */
-input[type="time"] { direction: rtl; } /* حل مشكلة شطحة الوقت لليسار */
 .form-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
 .form-input::placeholder { color: #94a3b8; font-weight: 700; opacity: 0.8; }
 
@@ -247,6 +248,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
         </div>
         <div class="form-field">
           <label>وقت الإقلاع</label>
+          <!-- تم معالجة حقل الوقت ليتوسط الشاشة تماماً -->
           <input id="time" type="time" class="form-input" required>
         </div>
         <div class="form-field">
@@ -483,7 +485,7 @@ function busCard(b,i){
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
         <button class="success" data-action="done" data-id="${esc(b.id)}">${svgDepart} غادر</button>
         
-        <!-- زر التصريح: أيقونة صغيرة أقصى اليسار -->
+        <!-- الأيقونة المصغرة لاستخراج التصريح في أقصى اليسار -->
         <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="استخراج تصريح">
           ${svgPrint}
         </button>
@@ -573,7 +575,7 @@ function render(){
           <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع للفرز</button>
           <button class="danger" data-action="delete" data-id="${esc(b.id)}">${svgDel} حذف نهائي</button>
           
-          <!-- زر التصريح: أيقونة صغيرة أقصى اليسار -->
+          <!-- الأيقونة المصغرة لاستخراج التصريح في أقصى اليسار -->
           <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="إعادة طباعة التصريح">
             ${svgPrint}
           </button>
