@@ -19,7 +19,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-/* المتغيرات اللونية للتصميم العصري */
 :root {
   --bg-color: #f4f7f9;
   --surface: #ffffff;
@@ -71,7 +70,6 @@ button, input { outline: none; font: inherit; margin: 0; }
 button { cursor: pointer; border: none; transition: 0.2s ease; }
 svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; margin-left: 4px; }
 
-/* الهيدر الأنيق والمضغوط */
 header { 
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); 
   padding: 25px 20px 20px; 
@@ -89,13 +87,11 @@ header {
 
 main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
 
-/* الإحصائيات */
 .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
 .kpi-card { background: var(--surface); padding: 12px 6px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: 0.3s; }
 .kpi-card b { display: block; font-size: 22px; font-weight: 900; color: var(--accent); margin-bottom: 2px; }
 .kpi-card span { font-size: 11px; color: var(--text-muted); font-weight: 800; }
 
-/* الحاويات (Panels) */
 .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 15px; box-shadow: var(--shadow-md); transition: 0.3s; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
 .panel-header h2 { font-size: 16px; font-weight: 900; margin: 0; color: var(--primary); }
@@ -107,28 +103,15 @@ details.panel:not([open]) .panel-header { margin-bottom: 0; border-bottom: none;
 details.panel summary::after { content: "▼"; font-size: 12px; color: var(--text-muted); font-weight: 900; transition: 0.3s; }
 details.panel[open] summary::after { content: "▲"; }
 
-/* النماذج ومربعات الإدخال */
 .form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; width: 100%; }
 .form-field { display: flex; flex-direction: column; gap: 6px; width: 100%; }
 .form-field label { font-size: 13px; font-weight: 900; color: var(--text-muted); }
 .form-input { 
-  width: 100%; 
-  max-width: 100%;
-  height: 52px; 
-  border: 2px solid var(--border); 
-  border-radius: var(--radius-md); 
-  padding: 0 16px; 
-  font-size: 18px; 
-  font-weight: 900; 
-  text-align: center; 
-  color: var(--text-main); 
-  background: var(--input-bg); 
-  box-sizing: border-box;
-  -webkit-appearance: none; 
-  appearance: none;
-  direction: ltr; 
-  transition: 0.3s; 
-  margin: 0;
+  width: 100%; max-width: 100%; height: 52px; 
+  border: 2px solid var(--border); border-radius: var(--radius-md); 
+  padding: 0 16px; font-size: 18px; font-weight: 900; text-align: center; 
+  color: var(--text-main); background: var(--input-bg); box-sizing: border-box;
+  -webkit-appearance: none; appearance: none; direction: ltr; transition: 0.3s; margin: 0;
 }
 input[type="time"] { direction: rtl; } 
 .form-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
@@ -137,34 +120,15 @@ input[type="time"] { direction: rtl; }
 .btn-primary { width: 100%; background: var(--accent); color: #fff; height: 52px; border-radius: var(--radius-md); font-size: 16px; font-weight: 900; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); border: none; }
 .btn-primary:active { transform: scale(0.98); background: var(--accent-hover); }
 
-/* أزرار الفلترة */
 .filters { display: flex; gap: 8px; margin-bottom: 15px; }
 .filters button { 
-  flex: 1; 
-  padding: 12px; 
-  border-radius: var(--radius-md); 
-  background: rgba(255, 255, 255, 0.4); 
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(203, 213, 225, 0.6); 
-  color: var(--text-muted); 
-  font-weight: 900; 
-  font-size: 13px; 
-  transition: 0.2s; 
+  flex: 1; padding: 12px; border-radius: var(--radius-md); 
+  background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(203, 213, 225, 0.6); color: var(--text-muted); font-weight: 900; font-size: 13px; transition: 0.2s; 
 }
-body.dark-theme .filters button {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
-}
-.filters button.active { 
-  background: var(--primary); 
-  color: #fff; 
-  border-color: var(--primary); 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
-}
+body.dark-theme .filters button { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8; }
+.filters button.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 
-/* كروت الباصات */
 .flight-block { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 15px; background: var(--bg-color); overflow: hidden; }
 .buses-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
@@ -173,7 +137,6 @@ details.bus-card.late { border-right: 5px solid var(--late); }
 details.bus-card.early { border-right: 5px solid var(--early); }
 details.bus-card.normal { border-right: 5px solid var(--normal); }
 
-/* حركة النبض للمغادرة الحديثة */
 @keyframes pulse-recent {
   0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
   70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
@@ -184,18 +147,8 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
   50% { opacity: 0.5; }
   100% { opacity: 1; }
 }
-.recent-depart {
-  border-color: var(--early) !important;
-  background-color: var(--early-bg) !important;
-  animation: pulse-recent 2s infinite;
-}
-.recent-badge-text {
-  color: var(--early);
-  font-weight: 900;
-  font-size: 11px;
-  animation: pulse-text 1.5s infinite;
-  display: inline-block;
-}
+.recent-depart { border-color: var(--early) !important; background-color: var(--early-bg) !important; animation: pulse-recent 2s infinite; }
+.recent-badge-text { color: var(--early); font-weight: 900; font-size: 11px; animation: pulse-text 1.5s infinite; display: inline-block; }
 
 .bus-summary::-webkit-details-marker { display: none; }
 .bus-status.late { background: var(--late-bg); color: var(--late); }
@@ -209,7 +162,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
 .add-bus-btn { width: 100%; background: transparent; color: var(--accent); padding: 12px; font-size: 13px; font-weight: 900; text-align: center; border-top: 1px solid var(--border); }
 
-/* أزرار قسم التقرير */
 .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .tools-grid button { padding: 14px 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 .tools-grid button:active { transform: scale(0.97); }
@@ -219,7 +171,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .btn-copy { background: #475569; }
 
 .report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 450px; overflow-y: auto; margin-top: 15px; }
-
 .empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
 .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.2); pointer-events: none; text-align: center; width: max-content; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -238,7 +189,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 </head>
 <body>
 
-<!-- شاشة طلب الإشعارات الإجبارية -->
 <div id="notif-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>تفعيل الإشعارات 🔔</h3>
@@ -358,7 +308,6 @@ const mySessionId = String(Date.now()) + Math.random().toString(36).slice(2);
 let isAppLoaded = false;
 setTimeout(() => { isAppLoaded = true; }, 3000); 
 
-// إظهار نافذة طلب الإشعارات الإجبارية إذا لم يتم طلبها مسبقاً
 document.addEventListener('DOMContentLoaded', () => {
   if ('Notification' in window && Notification.permission === 'default') {
     document.getElementById('notif-modal').style.display = 'flex';
@@ -385,8 +334,6 @@ function sendNativeNotification(title, body) {
     new Notification(title, { body: body, icon: '/dynamic-favicon' });
   }
 }
-
-// -------------------------------------------------------------
 
 const $=id=>document.getElementById(id);
 const svgAdd = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
@@ -549,8 +496,11 @@ function busCard(b,i){
     </summary>
     <div class="bus-actions">
       ${sharedHtml}
-      <div class="bus-action-row">
+      <div class="bus-action-row" style="margin-bottom:6px;">
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
+        <button data-action="edit-entry" data-id="${esc(b.id)}">⏱️ تعديل الدخول</button>
+      </div>
+      <div class="bus-action-row">
         <button class="success" data-action="done" data-id="${esc(b.id)}">${svgDepart} غادر</button>
         <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="استخراج تصريح">
           ${svgPrint}
@@ -608,7 +558,6 @@ function render(){
     }
     const destName = b.destination || 'لم تحدد الوجهة';
     
-    // تمييز الباص المغادر حديثاً (خلال 50 ثانية)
     const timeSinceDone = Date.now() - (b.doneAt || 0);
     const isRecent = timeSinceDone <= 50000;
     const recentClass = isRecent ? 'recent-depart' : '';
@@ -634,7 +583,7 @@ function render(){
       <div class="bus-actions">
         <div class="bus-action-row">
           <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع للفرز</button>
-          <button class="danger" data-action="delete" data-id="${esc(b.id)}">${svgDel} حذف نهائي</button>
+          <button data-action="edit-exit" data-id="${esc(b.id)}" style="color:var(--text-main)">⏱️ تعديل الخروج</button>
           <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="إعادة طباعة التصريح">
             ${svgPrint}
           </button>
@@ -662,7 +611,6 @@ function tick(){
     }
   });
 
-  // إزالة النبض عن الباصات اللي عدت 50 ثانية من المغادرة
   document.querySelectorAll('.recent-depart').forEach(el => {
     const doneTime = Number(el.dataset.doneTime);
     if (Date.now() - doneTime > 50000) {
@@ -701,7 +649,6 @@ function generateTextReport(){
       if (g.length === 1 && !hasShared) {
         lines.push('الركاب: '+f.pax);
       } else if (!hasShared) {
-        // تفصيل الركاب
         lines.push('الباصات: '+g.length, 'الركاب: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`);
       } else {
         lines.push('الباصات: '+g.length);
@@ -760,9 +707,7 @@ function generateTableHTML(){
   else {
     groups.forEach(g => {
       const f = g[0], tot = g.reduce((s,b)=>s+total(b),0);
-      // إضافة تفصيل الركاب في جدول PDF (40 + 30)
       const paxDetails = g.length > 1 ? `<div style="font-size:9px; color:#64748b; direction:ltr; margin-top:2px; font-weight:bold;">(${g.map(b=>b.pax).join(' + ')})</div>` : '';
-      
       html += `<tr>
         <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${f.flight}</td>
         <td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold; direction:ltr;">${f.time}</td>
@@ -849,11 +794,9 @@ window.exportAsPDF = async function() {
   } catch(e) { showToast('حدث خطأ أثناء استخراج الملف.'); }
 };
 
-// مستمع الإشعارات للباصات الجديدة
 db.ref('buses').on('child_added', (snapshot) => {
   if (!isAppLoaded) return; 
   const b = snapshot.val();
-  // إرسال إشعار إذا كان الباص مسجل من جهاز ثاني
   if (b.addedBy !== mySessionId) {
     sendNativeNotification(`باص جديد: ${b.flight}`, `الركاب: ${b.pax} | الإقلاع: ${b.time}`);
   }
@@ -943,6 +886,26 @@ function action(e){
     delete b.doneAt; 
     delete b.destination;
     showToast('تم إرجاع الباص للفرز ✓'); 
+  }
+  else if(a==='edit-entry'){
+    const time = prompt('أدخل وقت الدخول الصحيح (مثال 14:30):');
+    if(time === null) return;
+    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){showToast('تنسيق الوقت غير صحيح');return;}
+    const [h, m] = time.trim().split(':').map(Number);
+    const d = new Date(created(b));
+    d.setHours(h, m, 0, 0);
+    b.createdAt = d.getTime();
+    showToast('تم تعديل وقت الدخول ✓');
+  }
+  else if(a==='edit-exit'){
+    const time = prompt('أدخل وقت الخروج الصحيح (مثال 14:30):');
+    if(time === null) return;
+    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){showToast('تنسيق الوقت غير صحيح');return;}
+    const [h, m] = time.trim().split(':').map(Number);
+    const d = new Date(b.doneAt || Date.now());
+    d.setHours(h, m, 0, 0);
+    b.doneAt = d.getTime();
+    showToast('تم تعديل وقت الخروج ✓');
   }
   
   db.ref('buses/' + b.id).set(b);
