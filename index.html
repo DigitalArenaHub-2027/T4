@@ -173,7 +173,7 @@ details.bus-card.late { border-right: 5px solid var(--late); }
 details.bus-card.early { border-right: 5px solid var(--early); }
 details.bus-card.normal { border-right: 5px solid var(--normal); }
 
-/* حركة النبض للمغادرة الحديثة (50 ثانية) */
+/* حركة النبض للمغادرة الحديثة */
 @keyframes pulse-recent {
   0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
   70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
@@ -233,9 +233,20 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .modal-box button.btn-mosque { border-color: var(--early); background: var(--early-bg); color: var(--early); }
 .modal-box button.btn-groups { border-color: var(--normal); background: var(--normal-bg); color: var(--normal); }
 .modal-box button.cancel { background: transparent; color: var(--text-muted); border-color: transparent; margin-bottom: 0; margin-top: 5px; }
+.btn-notif { border-color: #10b981 !important; background: #10b981 !important; color: #fff !important; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
 </style>
 </head>
 <body>
+
+<!-- شاشة طلب الإشعارات الإجبارية -->
+<div id="notif-modal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>تفعيل الإشعارات 🔔</h3>
+    <p>لضمان وصول التنبيهات لك فور تسجيل أي باص جديد من قبل زملائك، يرجى السماح بتفعيل الإشعارات.</p>
+    <button class="btn-notif" onclick="requestNotificationPermission()">تفعيل الإشعارات والدخول</button>
+    <button class="cancel" onclick="document.getElementById('notif-modal').style.display='none'">دخول بدون إشعارات (لا ينصح به)</button>
+  </div>
+</div>
 
 <header>
   <div class="header-content">
@@ -343,17 +354,31 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// هوية فريدة للجهاز عشان ما يوصلك إشعار لباص أنت سجلته
 const mySessionId = String(Date.now()) + Math.random().toString(36).slice(2);
 let isAppLoaded = false;
-setTimeout(() => { isAppLoaded = true; }, 3000); // تفعيل الإشعارات بعد 3 ثواني من التحميل عشان ما يزعجك بالباصات القديمة
+setTimeout(() => { isAppLoaded = true; }, 3000); 
 
-// طلب تفعيل الإشعارات من المتصفح عند أول نقرة في الموقع
-document.addEventListener('click', () => {
-  if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-    Notification.requestPermission();
+// إظهار نافذة طلب الإشعارات الإجبارية إذا لم يتم طلبها مسبقاً
+document.addEventListener('DOMContentLoaded', () => {
+  if ('Notification' in window && Notification.permission === 'default') {
+    document.getElementById('notif-modal').style.display = 'flex';
   }
-}, { once: true });
+});
+
+window.requestNotificationPermission = function() {
+  if ('Notification' in window) {
+    Notification.requestPermission().then(permission => {
+      document.getElementById('notif-modal').style.display = 'none';
+      if (permission === 'granted') {
+        showToast('تم تفعيل الإشعارات بنجاح ✓');
+      } else {
+        showToast('تم رفض الإشعارات.');
+      }
+    });
+  } else {
+    document.getElementById('notif-modal').style.display = 'none';
+  }
+};
 
 function sendNativeNotification(title, body) {
   if ('Notification' in window && Notification.permission === 'granted') {
@@ -527,7 +552,6 @@ function busCard(b,i){
       <div class="bus-action-row">
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
         <button class="success" data-action="done" data-id="${esc(b.id)}">${svgDepart} غادر</button>
-        
         <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="استخراج تصريح">
           ${svgPrint}
         </button>
@@ -655,7 +679,6 @@ function tick(){
   $('clock').textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', options).format(new Date());
 }
 
-// دالة توليد التقرير النصي (محدثة لدعم تفاصيل الركاب)
 function generateTextReport(){
   const a=buses.filter(b=>!b.done), done=buses.filter(b=>b.done), groups=groupBy(a);
   const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
@@ -678,7 +701,7 @@ function generateTextReport(){
       if (g.length === 1 && !hasShared) {
         lines.push('الركاب: '+f.pax);
       } else if (!hasShared) {
-        // تفصيل الركاب (مثال: 40 + 30)
+        // تفصيل الركاب
         lines.push('الباصات: '+g.length, 'الركاب: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`);
       } else {
         lines.push('الباصات: '+g.length);
@@ -706,7 +729,6 @@ window.shareTextWhatsApp = function() {
   window.open('https://wa.me/?text=' + text, '_blank');
 };
 
-// تصميم التقرير الجدولي للـ PDF (محدث لدعم تفاصيل الركاب)
 function generateTableHTML(){
   const a = buses.filter(b => !b.done), done = buses.filter(b => b.done), groups = groupBy(a);
   const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
@@ -738,7 +760,7 @@ function generateTableHTML(){
   else {
     groups.forEach(g => {
       const f = g[0], tot = g.reduce((s,b)=>s+total(b),0);
-      // إضافة تفصيل الركاب (40 + 30) في الجدول للـ PDF
+      // إضافة تفصيل الركاب في جدول PDF (40 + 30)
       const paxDetails = g.length > 1 ? `<div style="font-size:9px; color:#64748b; direction:ltr; margin-top:2px; font-weight:bold;">(${g.map(b=>b.pax).join(' + ')})</div>` : '';
       
       html += `<tr>
@@ -829,11 +851,11 @@ window.exportAsPDF = async function() {
 
 // مستمع الإشعارات للباصات الجديدة
 db.ref('buses').on('child_added', (snapshot) => {
-  if (!isAppLoaded) return; // عشان ما يرسل إشعارات للباصات القديمة أول ما تفتح الموقع
+  if (!isAppLoaded) return; 
   const b = snapshot.val();
-  // إرسال إشعار فقط إذا الباص مو أنت اللي مسجله
+  // إرسال إشعار إذا كان الباص مسجل من جهاز ثاني
   if (b.addedBy !== mySessionId) {
-    sendNativeNotification(`باص جديد: ${b.flight}`, `الركاب: ${b.pax} | وقت الإقلاع: ${b.time}`);
+    sendNativeNotification(`باص جديد: ${b.flight}`, `الركاب: ${b.pax} | الإقلاع: ${b.time}`);
   }
 });
 
@@ -853,7 +875,6 @@ $('entry').addEventListener('submit',e=>{
     showToast('خطأ: تأكد من صحة البيانات المدخلة');return;
   }
   
-  // حفظ addedBy عشان النظام يعرف إنك أنت اللي ضفته ولا يزعجك بإشعار
   const newBus = {id:newId(),flight,time,pax,departure:departure(time,Date.now()),createdAt:Date.now(),done:false,extra:[], addedBy: mySessionId};
   
   db.ref('buses/' + newBus.id).set(newBus).then(() => {
