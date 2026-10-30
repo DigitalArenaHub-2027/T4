@@ -168,10 +168,34 @@ body.dark-theme .filters button {
 .flight-block { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 15px; background: var(--bg-color); overflow: hidden; }
 .buses-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
-details.bus-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+details.bus-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); transition: 0.3s; }
 details.bus-card.late { border-right: 5px solid var(--late); }
 details.bus-card.early { border-right: 5px solid var(--early); }
 details.bus-card.normal { border-right: 5px solid var(--normal); }
+
+/* حركة النبض للمغادرة الحديثة (50 ثانية) */
+@keyframes pulse-recent {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+@keyframes pulse-text {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+.recent-depart {
+  border-color: var(--early) !important;
+  background-color: var(--early-bg) !important;
+  animation: pulse-recent 2s infinite;
+}
+.recent-badge-text {
+  color: var(--early);
+  font-weight: 900;
+  font-size: 11px;
+  animation: pulse-text 1.5s infinite;
+  display: inline-block;
+}
 
 .bus-summary::-webkit-details-marker { display: none; }
 .bus-status.late { background: var(--late-bg); color: var(--late); }
@@ -185,23 +209,21 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
 .add-bus-btn { width: 100%; background: transparent; color: var(--accent); padding: 12px; font-size: 13px; font-weight: 900; text-align: center; border-top: 1px solid var(--border); }
 
-/* أزرار قسم التقرير الشاملة (4 أزرار) */
+/* أزرار قسم التقرير */
 .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .tools-grid button { padding: 14px 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 .tools-grid button:active { transform: scale(0.97); }
-.btn-whatsapp-img { background: #10b981; } /* أخضر */
-.btn-whatsapp-text { background: #2563eb; } /* أزرق */
-.btn-pdf { background: #dc2626; } /* أحمر */
-.btn-copy { background: #475569; } /* رمادي */
+.btn-whatsapp-img { background: #10b981; }
+.btn-whatsapp-text { background: #2563eb; }
+.btn-pdf { background: #dc2626; }
+.btn-copy { background: #475569; }
 
-/* حاوية الجدول الرسمي (التقرير) */
 .report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 450px; overflow-y: auto; margin-top: 15px; }
 
 .empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
 .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.2); pointer-events: none; text-align: center; width: max-content; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-/* شاشة تحديد الوجهة المنبثقة */
 .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15, 23, 42, 0.85); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(8px); }
 .modal-box { background: var(--surface); padding: 25px 20px; border-radius: var(--radius-lg); width: 100%; max-width: 350px; box-shadow: var(--shadow-md); text-align: center; border: 1px solid var(--border); }
 .modal-box h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 18px; font-weight: 900; }
@@ -252,7 +274,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
         </div>
         <div class="form-field">
           <label>وقت الإقلاع</label>
-          <!-- تم معالجة حقل الوقت ليتوسط الشاشة تماماً -->
           <input id="time" type="time" class="form-input" required>
         </div>
         <div class="form-field">
@@ -281,7 +302,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
     <div id="done"></div>
   </details>
 
-  <!-- التقرير مغلق افتراضياً لترتيب الشاشة -->
   <details class="panel">
     <summary class="panel-header"><h2>التقارير اليومية الرسمية</h2></summary>
     <div class="tools-grid">
@@ -290,7 +310,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
       <button type="button" onclick="exportAsPDF()" class="btn-pdf">تحميل كـ PDF</button>
       <button type="button" onclick="copyTextReport()" class="btn-copy">نسخ كنص</button>
     </div>
-    <!-- هنا يظهر الجدول الرسمي المصمم ليتم طباعته أو تصويره بشكل صغير واحترافي -->
     <div id="preview" class="report-view"></div>
   </details>
 </main>
@@ -310,7 +329,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 <script>
 (()=>{'use strict';
 
-// ----------------- تهيئة السحابة -----------------
+// ----------------- تهيئة السحابة والإشعارات -----------------
 const firebaseConfig = {
   apiKey: "AIzaSyD4uNU92bklhMMd1RGju24TgbRT-f6M83U",
   authDomain: "land-t4.firebaseapp.com",
@@ -323,6 +342,26 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+
+// هوية فريدة للجهاز عشان ما يوصلك إشعار لباص أنت سجلته
+const mySessionId = String(Date.now()) + Math.random().toString(36).slice(2);
+let isAppLoaded = false;
+setTimeout(() => { isAppLoaded = true; }, 3000); // تفعيل الإشعارات بعد 3 ثواني من التحميل عشان ما يزعجك بالباصات القديمة
+
+// طلب تفعيل الإشعارات من المتصفح عند أول نقرة في الموقع
+document.addEventListener('click', () => {
+  if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+    Notification.requestPermission();
+  }
+}, { once: true });
+
+function sendNativeNotification(title, body) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification(title, { body: body, icon: '/dynamic-favicon' });
+  }
+}
+
+// -------------------------------------------------------------
 
 const $=id=>document.getElementById(id);
 const svgAdd = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
@@ -384,7 +423,6 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// --- دوال شاشة المغادرة ---
 const destModal = $('dest-modal');
 let pendingDoneBusId = null;
 
@@ -409,7 +447,6 @@ function confirmDeparture(dest) {
   pendingDoneBusId = null;
 }
 
-// --- نظام التصريح ---
 async function generatePermit(b) {
   showToast('جاري استخراج التصريح...');
   const canvas = document.createElement('canvas');
@@ -430,7 +467,6 @@ async function generatePermit(b) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
-    // تنسيق التاريخ والوقت بالأرقام الإنجليزية للتصريح
     const dateStr = new Intl.DateTimeFormat('en-GB').format(new Date());
     const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(created(b)));
     
@@ -492,7 +528,6 @@ function busCard(b,i){
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
         <button class="success" data-action="done" data-id="${esc(b.id)}">${svgDepart} غادر</button>
         
-        <!-- الأيقونة المصغرة لاستخراج التصريح في أقصى اليسار -->
         <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="استخراج تصريح">
           ${svgPrint}
         </button>
@@ -544,24 +579,18 @@ function render(){
     if (b.doneAt) {
       try {
         const dateObj = (typeof b.doneAt === 'string') ? new Date(b.doneAt) : new Date(Number(b.doneAt));
-        if (!isNaN(dateObj.getTime())) {
-          // تنسيق وقت الخروج بالأرقام الإنجليزية
-          dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dateObj);
-        }
+        if (!isNaN(dateObj.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dateObj);
       } catch(e) {}
     }
     const destName = b.destination || 'لم تحدد الوجهة';
     
-    const extras = Array.isArray(b.extra) ? b.extra : [];
-    let sharedHtml = '';
-    if(extras.length) {
-      sharedHtml = `<div style="margin-top:6px; font-size:11px; font-weight:900; color:var(--shared);">` + extras.map((x,j)=>`
-        <div style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border); padding-bottom:4px; margin-bottom:4px;">
-          <span>مشترك: ${esc(x.flight)} (${x.pax} راكب)</span>
-        </div>`).join('') + `</div>`;
-    }
+    // تمييز الباص المغادر حديثاً (خلال 50 ثانية)
+    const timeSinceDone = Date.now() - (b.doneAt || 0);
+    const isRecent = timeSinceDone <= 50000;
+    const recentClass = isRecent ? 'recent-depart' : '';
+    const recentBadge = isRecent ? `<span class="recent-badge-text" style="margin-right:6px;">(غادر للتو)</span>` : '';
 
-    return `<details class="bus-card early" style="margin-bottom:12px;">
+    return `<details class="bus-card early ${recentClass}" data-done-time="${b.doneAt}" style="margin-bottom:12px;">
       <summary class="bus-summary" style="padding:14px 12px; cursor:pointer; display:flex; flex-direction:column; gap:8px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div style="display:flex; align-items:center; gap:10px;">
@@ -576,14 +605,12 @@ function render(){
             <span class="bus-status early" style="font-size:11px; font-weight:900; padding:6px 10px; border-radius:8px;">مغادر ▾</span>
           </div>
         </div>
+        ${isRecent ? `<div style="text-align:left;">${recentBadge}</div>` : ''}
       </summary>
       <div class="bus-actions">
-        ${sharedHtml}
         <div class="bus-action-row">
           <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع للفرز</button>
           <button class="danger" data-action="delete" data-id="${esc(b.id)}">${svgDel} حذف نهائي</button>
-          
-          <!-- الأيقونة المصغرة لاستخراج التصريح في أقصى اليسار -->
           <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="إعادة طباعة التصريح">
             ${svgPrint}
           </button>
@@ -610,15 +637,25 @@ function tick(){
       el.textContent = mins(endTime - created(b));
     }
   });
+
+  // إزالة النبض عن الباصات اللي عدت 50 ثانية من المغادرة
+  document.querySelectorAll('.recent-depart').forEach(el => {
+    const doneTime = Number(el.dataset.doneTime);
+    if (Date.now() - doneTime > 50000) {
+      el.classList.remove('recent-depart');
+      const badge = el.querySelector('.recent-badge-text');
+      if(badge) badge.style.display = 'none';
+    }
+  });
+
   const upcoming=buses.filter(b=>!b.done).flatMap(b=>[{flight:b.flight,dep:dep(b)},...(b.extra||[]).map(x=>({flight:x.flight,dep:Number(x.departure)||departure(x.time,created(b))}))]).filter(x=>x.dep>Date.now()).sort((a,b)=>a.dep-b.dep);
   $('nextflight').textContent=upcoming.length?`القادمة: ${upcoming[0].flight}`:'—';
   
-  // تنسيق الأرقام والتاريخ باللغة العربية ولكن باستخدام الأرقام الإنجليزية (1, 2, 3)
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
   $('clock').textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', options).format(new Date());
 }
 
-// دالة إنشاء النص للواتس اب والنسخ
+// دالة توليد التقرير النصي (محدثة لدعم تفاصيل الركاب)
 function generateTextReport(){
   const a=buses.filter(b=>!b.done), done=buses.filter(b=>b.done), groups=groupBy(a);
   const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
@@ -641,7 +678,8 @@ function generateTextReport(){
       if (g.length === 1 && !hasShared) {
         lines.push('الركاب: '+f.pax);
       } else if (!hasShared) {
-        lines.push('الباصات: '+g.length, 'الركاب: '+g.map(b=>b.pax).join(' + '), 'الإجمالي: '+g.reduce((sum,b)=>sum+b.pax,0));
+        // تفصيل الركاب (مثال: 40 + 30)
+        lines.push('الباصات: '+g.length, 'الركاب: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`);
       } else {
         lines.push('الباصات: '+g.length);
         g.forEach((b, i) => {
@@ -656,14 +694,11 @@ function generateTextReport(){
   return '\u200f' + lines.join('\n\u200f');
 }
 
-// أزرار النص المباشر
 window.copyTextReport = async function() {
   try {
     await navigator.clipboard.writeText(generateTextReport());
     showToast('تم نسخ التقرير النصي بنجاح ✓');
-  } catch(e) {
-    prompt('انسخ التقرير:', generateTextReport());
-  }
+  } catch(e) { prompt('انسخ التقرير:', generateTextReport()); }
 };
 
 window.shareTextWhatsApp = function() {
@@ -671,13 +706,12 @@ window.shareTextWhatsApp = function() {
   window.open('https://wa.me/?text=' + text, '_blank');
 };
 
-// تصميم التقرير الجدولي الرسمي والصغير للطباعة والمشاركة
+// تصميم التقرير الجدولي للـ PDF (محدث لدعم تفاصيل الركاب)
 function generateTableHTML(){
   const a = buses.filter(b => !b.done), done = buses.filter(b => b.done), groups = groupBy(a);
   const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
 
   let html = `<div id="report-content" style="background:#ffffff; color:#0f172a; padding:15px; font-family: 'Segoe UI', Tahoma, sans-serif; direction:rtl; text-align:right; border-radius:8px;">`;
-  
   html += `<div style="text-align:center; border-bottom:2px solid #1e3a8a; padding-bottom:10px; margin-bottom:15px;">
     <h2 style="margin:0; font-size:17px; color:#1e3a8a; font-weight:900;">عمليات الساحات الخارجية والمواصلات - منطقة الفرز (صالة 4)</h2>
     <p style="margin:5px 0 0; font-size:11px; color:#475569; font-weight:bold;">تقرير وردية العمل | تاريخ ووقت التقرير: ${d}</p>
@@ -704,11 +738,14 @@ function generateTableHTML(){
   else {
     groups.forEach(g => {
       const f = g[0], tot = g.reduce((s,b)=>s+total(b),0);
+      // إضافة تفصيل الركاب (40 + 30) في الجدول للـ PDF
+      const paxDetails = g.length > 1 ? `<div style="font-size:9px; color:#64748b; direction:ltr; margin-top:2px; font-weight:bold;">(${g.map(b=>b.pax).join(' + ')})</div>` : '';
+      
       html += `<tr>
         <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${f.flight}</td>
         <td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold; direction:ltr;">${f.time}</td>
         <td style="padding:6px; border:1px solid #cbd5e1; direction:ltr;">${g.length}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706; direction:ltr;">${tot}</td>
+        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706; direction:ltr;">${tot} ${paxDetails}</td>
       </tr>`;
     });
   }
@@ -744,7 +781,6 @@ function generateTableHTML(){
   return html;
 }
 
-// تصدير كصورة ومشاركة
 window.exportAsImageAndShare = async function() {
   const el = document.getElementById('report-content');
   if(!el) return;
@@ -761,12 +797,9 @@ window.exportAsImageAndShare = async function() {
         showToast('اضغط مطولاً على الصورة لحفظها ثم إرسالها.');
       }
     }, "image/png");
-  } catch(e) {
-    showToast('حدث خطأ أثناء استخراج الصورة.');
-  }
+  } catch(e) { showToast('حدث خطأ أثناء استخراج الصورة.'); }
 };
 
-// تصدير PDF بذكاء وملاءمة لصفحة واحدة
 window.exportAsPDF = async function() {
   const el = document.getElementById('report-content');
   if(!el) return;
@@ -782,24 +815,28 @@ window.exportAsPDF = async function() {
     let imgWidth = pdfWidth;
     let imgHeight = (canvas.height * pdfWidth) / canvas.width;
     
-    // إذا كان الجدول أطول من الصفحة، يتم تصغيره ليتناسب مع صفحة واحدة بالكامل
     if (imgHeight > pageHeight) {
         imgHeight = pageHeight - 10; 
         imgWidth = (canvas.width * imgHeight) / canvas.height;
     }
     
-    // توسيط الصورة في الصفحة في حال تم تصغيرها
     const xPos = (pdfWidth - imgWidth) / 2;
-    
     pdf.addImage(imgData, 'PNG', xPos, 5, imgWidth, imgHeight);
     pdf.save('Report_T4.pdf');
     showToast('تم تحميل ملف الـ PDF بنجاح ✓');
-  } catch(e) {
-    showToast('حدث خطأ أثناء استخراج الملف.');
-  }
+  } catch(e) { showToast('حدث خطأ أثناء استخراج الملف.'); }
 };
 
-// ----------------- مزامنة السحابة المباشرة -----------------
+// مستمع الإشعارات للباصات الجديدة
+db.ref('buses').on('child_added', (snapshot) => {
+  if (!isAppLoaded) return; // عشان ما يرسل إشعارات للباصات القديمة أول ما تفتح الموقع
+  const b = snapshot.val();
+  // إرسال إشعار فقط إذا الباص مو أنت اللي مسجله
+  if (b.addedBy !== mySessionId) {
+    sendNativeNotification(`باص جديد: ${b.flight}`, `الركاب: ${b.pax} | وقت الإقلاع: ${b.time}`);
+  }
+});
+
 db.ref('buses').on('value', (snapshot) => {
   buses = [];
   snapshot.forEach((childSnapshot) => {
@@ -811,19 +848,17 @@ db.ref('buses').on('value', (snapshot) => {
 
 $('entry').addEventListener('submit',e=>{
   e.preventDefault();
-  
   const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
   if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){
     showToast('خطأ: تأكد من صحة البيانات المدخلة');return;
   }
   
-  const newBus = {id:newId(),flight,time,pax,departure:departure(time,Date.now()),createdAt:Date.now(),done:false,extra:[]};
+  // حفظ addedBy عشان النظام يعرف إنك أنت اللي ضفته ولا يزعجك بإشعار
+  const newBus = {id:newId(),flight,time,pax,departure:departure(time,Date.now()),createdAt:Date.now(),done:false,extra:[], addedBy: mySessionId};
   
   db.ref('buses/' + newBus.id).set(newBus).then(() => {
     showToast('تم التسجيل بنجاح ✓');
-  }).catch((error) => {
-    showToast('خطأ في الاتصال بالسحابة');
-  });
+  }).catch((error) => { showToast('خطأ في الاتصال بالسحابة'); });
   
   e.target.reset();
 });
@@ -841,10 +876,7 @@ function action(e){
   const a=btn.dataset.action,b=buses.find(b=>String(b.id)===btn.dataset.id);
   if(!b)return;
 
-  if(a==='permit'){
-    generatePermit(b);
-    return;
-  }
+  if(a==='permit'){ generatePermit(b); return; }
   else if(a==='delete'){
     if(!confirm('تأكيد الحذف النهائي للباص للجميع؟'))return;
     db.ref('buses/' + b.id).remove();
@@ -856,7 +888,7 @@ function action(e){
     if(val===null)return;
     const pax=Number(val.trim());
     if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح');return}
-    const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[]};
+    const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[], addedBy: mySessionId};
     db.ref('buses/' + newBus.id).set(newBus);
     showToast('تمت الإضافة');
     return;
