@@ -20,69 +20,33 @@
 
 <style>
 :root {
-  --bg-color: #f4f7f9;
-  --surface: #ffffff;
-  --primary: #0f172a;
-  --primary-light: #334155;
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --border: #cbd5e1;
-  --input-bg: #f8fafc;
-  --late: #ef4444;
-  --late-bg: #fef2f2;
-  --early: #10b981;
-  --early-bg: #ecfdf5;
-  --normal: #3b82f6;
-  --normal-bg: #eff6ff;
-  --shared: #f59e0b;
-  --shared-bg: #fffbeb;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
-  --radius-lg: 20px;
-  --radius-md: 12px;
+  --bg-color: #f4f7f9; --surface: #ffffff; --primary: #0f172a; --primary-light: #334155;
+  --accent: #2563eb; --accent-hover: #1d4ed8; --text-main: #1e293b; --text-muted: #64748b;
+  --border: #cbd5e1; --input-bg: #f8fafc; --late: #ef4444; --late-bg: #fef2f2;
+  --early: #10b981; --early-bg: #ecfdf5; --normal: #3b82f6; --normal-bg: #eff6ff;
+  --shared: #f59e0b; --shared-bg: #fffbeb;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04); --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
+  --radius-lg: 20px; --radius-md: 12px;
 }
-
 body.dark-theme {
-  --bg-color: #0b1120;
-  --surface: #0f172a;
-  --primary: #f8fafc;
-  --primary-light: #cbd5e1;
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
-  --border: #475569;
-  --input-bg: #1e293b;
-  --late: #f87171;
-  --late-bg: #451a1a;
-  --early: #34d399;
-  --early-bg: #064e3b;
-  --normal: #60a5fa;
-  --normal-bg: #1e3a8a;
-  --shared: #fbbf24;
-  --shared-bg: #78350f;
+  --bg-color: #0b1120; --surface: #0f172a; --primary: #f8fafc; --primary-light: #cbd5e1;
+  --text-main: #f1f5f9; --text-muted: #94a3b8; --border: #475569; --input-bg: #1e293b;
+  --late: #f87171; --late-bg: #451a1a; --early: #34d399; --early-bg: #064e3b;
+  --normal: #60a5fa; --normal-bg: #1e3a8a; --shared: #fbbf24; --shared-bg: #78350f;
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
-
 * { box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
 body { margin: 0; background: var(--bg-color); color: var(--text-main); -webkit-font-smoothing: antialiased; padding-bottom: 50px; transition: background 0.3s ease; }
 button, input { outline: none; font: inherit; margin: 0; }
 button { cursor: pointer; border: none; transition: 0.2s ease; }
 svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; margin-left: 4px; }
 
-header { 
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); 
-  padding: 25px 20px 20px; 
-  color: #fff; 
-  border-radius: 0 0 24px 24px; 
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15); 
-  margin-bottom: 15px;
-}
+header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); padding: 25px 20px 20px; color: #fff; border-radius: 0 0 24px 24px; box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15); margin-bottom: 15px; }
 .header-content { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
 .right-titles h1 { font-size: 17px; font-weight: 900; margin: 0 0 4px 0; color: #f8fafc; line-height: 1.4; }
-.right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; }
+.right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; display: flex; align-items: center; gap: 8px; }
+.shift-badge-header { background: #2563eb; color: #fff; padding: 3px 10px; border-radius: 8px; font-size: 12px; font-weight: 900; direction: ltr; display: inline-block; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); }
 .theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; backdrop-filter: blur(5px); }
-
 #clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-align: left; max-width: 800px; margin: 10px auto 0; direction: ltr; }
 
 main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
@@ -96,7 +60,6 @@ main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
 .panel-header h2 { font-size: 16px; font-weight: 900; margin: 0; color: var(--primary); }
 .panel-badge { font-size: 12px; font-weight: 900; color: var(--accent); background: var(--normal-bg); padding: 4px 10px; border-radius: 8px; direction: ltr; }
-
 details.panel summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
 details.panel summary::-webkit-details-marker { display: none; }
 details.panel:not([open]) .panel-header { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
@@ -106,14 +69,8 @@ details.panel[open] summary::after { content: "▲"; }
 .form-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; width: 100%; }
 .form-field { display: flex; flex-direction: column; gap: 6px; width: 100%; }
 .form-field label { font-size: 13px; font-weight: 900; color: var(--text-muted); }
-.form-input { 
-  width: 100%; max-width: 100%; height: 52px; 
-  border: 2px solid var(--border); border-radius: var(--radius-md); 
-  padding: 0 16px; font-size: 18px; font-weight: 900; text-align: center; 
-  color: var(--text-main); background: var(--input-bg); box-sizing: border-box;
-  -webkit-appearance: none; appearance: none; direction: ltr; transition: 0.3s; margin: 0;
-}
-input[type="time"] { direction: rtl; } 
+.form-input { width: 100%; max-width: 100%; height: 52px; border: 2px solid var(--border); border-radius: var(--radius-md); padding: 0 16px; font-size: 18px; font-weight: 900; text-align: center; color: var(--text-main); background: var(--input-bg); box-sizing: border-box; -webkit-appearance: none; appearance: none; direction: ltr; transition: 0.3s; margin: 0; }
+input[type="time"] { direction: rtl; }
 .form-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
 .form-input::placeholder { color: #94a3b8; font-weight: 700; opacity: 0.8; }
 
@@ -121,13 +78,10 @@ input[type="time"] { direction: rtl; }
 .btn-primary:active { transform: scale(0.98); background: var(--accent-hover); }
 
 .filters { display: flex; gap: 8px; margin-bottom: 15px; }
-.filters button { 
-  flex: 1; padding: 12px; border-radius: var(--radius-md); 
-  background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(203, 213, 225, 0.6); color: var(--text-muted); font-weight: 900; font-size: 13px; transition: 0.2s; 
-}
+.filters button { flex: 1; padding: 12px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(203, 213, 225, 0.6); color: var(--text-muted); font-weight: 900; font-size: 13px; transition: 0.2s; }
 body.dark-theme .filters button { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8; }
 .filters button.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+body.dark-theme .filters button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 .flight-block { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 15px; background: var(--bg-color); overflow: hidden; }
 .buses-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
@@ -136,65 +90,76 @@ details.bus-card { background: var(--surface); border: 1px solid var(--border); 
 details.bus-card.late { border-right: 5px solid var(--late); }
 details.bus-card.early { border-right: 5px solid var(--early); }
 details.bus-card.normal { border-right: 5px solid var(--normal); }
-
-@keyframes pulse-recent {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
-  70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-}
-@keyframes pulse-text {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-.recent-depart { border-color: var(--early) !important; background-color: var(--early-bg) !important; animation: pulse-recent 2s infinite; }
-.recent-badge-text { color: var(--early); font-weight: 900; font-size: 11px; animation: pulse-text 1.5s infinite; display: inline-block; }
-
 .bus-summary::-webkit-details-marker { display: none; }
 .bus-status.late { background: var(--late-bg); color: var(--late); }
 .bus-status.early { background: var(--early-bg); color: var(--early); }
 .bus-status.normal { background: var(--normal-bg); color: var(--normal); }
+
+@keyframes pulse-recent { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+@keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+.recent-depart { border-color: var(--early) !important; background-color: var(--early-bg) !important; animation: pulse-recent 2s infinite; }
+.recent-badge-text { color: var(--early); font-weight: 900; font-size: 12px; animation: pulse-text 1.2s infinite; display: inline-block; }
 
 .bus-actions { padding: 12px; background: var(--input-bg); border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 8px; }
 .bus-action-row { display: flex; gap: 8px; width: 100%; align-items: stretch; }
 .bus-actions button { flex: 1; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 900; border: 2px solid var(--border); background: var(--surface); color: var(--text-main); display: flex; align-items: center; justify-content: center; }
 .bus-actions button.success { background: var(--early); border-color: var(--early); color: #fff; }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
-.add-bus-btn { width: 100%; background: transparent; color: var(--accent); padding: 12px; font-size: 13px; font-weight: 900; text-align: center; border-top: 1px solid var(--border); }
+.add-bus-btn { width: 100%; background: transparent; color: var(--accent); padding: 12px; font-size: 13px; font-weight: 900; border-top: 1px solid var(--border); }
 
 .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-.tools-grid button { padding: 14px 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+.tools-grid button { padding: 14px 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 .tools-grid button:active { transform: scale(0.97); }
-.btn-whatsapp-img { background: #10b981; }
-.btn-whatsapp-text { background: #2563eb; }
-.btn-pdf { background: #dc2626; }
-.btn-copy { background: #475569; }
+.btn-whatsapp-img { background: #10b981; } .btn-whatsapp-text { background: #2563eb; } .btn-pdf { background: #dc2626; } .btn-copy { background: #475569; }
 
 .report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 450px; overflow-y: auto; margin-top: 15px; }
 .empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
-.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.2); pointer-events: none; text-align: center; width: max-content; }
+
+/* الإشعار السفلي باللون الأخضر والخط الأبيض الواضح دائماً */
+.toast { 
+  position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); 
+  background: #10b981 !important; color: #ffffff !important; 
+  padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 15px; 
+  opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; 
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); pointer-events: none; text-align: center; 
+  width: max-content; max-width: 90%; border: 2px solid #059669;
+}
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
 .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15, 23, 42, 0.85); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(8px); }
-.modal-box { background: var(--surface); padding: 25px 20px; border-radius: var(--radius-lg); width: 100%; max-width: 350px; box-shadow: var(--shadow-md); text-align: center; border: 1px solid var(--border); }
+.modal-box { background: var(--surface); padding: 25px 20px; border-radius: var(--radius-lg); width: 100%; max-width: 350px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow-md); }
 .modal-box h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 18px; font-weight: 900; }
 .modal-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; font-weight: 700; line-height: 1.6; }
 .modal-box button { width: 100%; padding: 16px; margin-bottom: 12px; border-radius: var(--radius-md); font-size: 15px; font-weight: 900; border: 2px solid var(--border); background: var(--input-bg); color: var(--text-main); }
 .modal-box button:active { transform: scale(0.97); }
 .modal-box button.btn-mosque { border-color: var(--early); background: var(--early-bg); color: var(--early); }
 .modal-box button.btn-groups { border-color: var(--normal); background: var(--normal-bg); color: var(--normal); }
-.modal-box button.cancel { background: transparent; color: var(--text-muted); border-color: transparent; margin-bottom: 0; margin-top: 5px; }
 .btn-notif { border-color: #10b981 !important; background: #10b981 !important; color: #fff !important; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+.btn-shift-select { border-color: #2563eb !important; background: #eff6ff !important; color: #1e3a8a !important; direction: ltr; }
+body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffffff !important; border-color: #3b82f6 !important; }
 </style>
 </head>
 <body>
 
+<!-- شاشة اختيار النوبة (Shift) -->
+<div id="shift-modal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>تسجيل الدخول للنوبة (Shift)</h3>
+    <p id="shift-msg">الرجاء اختيار الشفت الخاص بك للبدء. التقارير والإشعارات ستكون مخصصة لشفتك فقط:</p>
+    <button class="btn-shift-select" onclick="setShift('Shift A')">Shift A (05:30 - 13:30)</button>
+    <button class="btn-shift-select" onclick="setShift('Shift B')">Shift B (13:30 - 21:30)</button>
+    <button class="btn-shift-select" onclick="setShift('Shift C')">Shift C (21:30 - 05:30)</button>
+    <button id="btn-keep-shift" style="display:none; background:transparent; border-color:transparent; color:var(--text-muted);" onclick="document.getElementById('shift-modal').style.display='none'">البقاء على الشفت الحالي</button>
+  </div>
+</div>
+
+<!-- شاشة طلب الإشعارات الإجبارية -->
 <div id="notif-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>تفعيل الإشعارات 🔔</h3>
-    <p>لضمان وصول التنبيهات لك فور تسجيل أي باص جديد من قبل زملائك، يرجى السماح بتفعيل الإشعارات.</p>
+    <p>لضمان وصول التنبيهات اللحظية لك فور تسجيل أي باص في شفتك، يرجى السماح بتفعيل الإشعارات.</p>
     <button class="btn-notif" onclick="requestNotificationPermission()">تفعيل الإشعارات والدخول</button>
-    <button class="cancel" onclick="document.getElementById('notif-modal').style.display='none'">دخول بدون إشعارات (لا ينصح به)</button>
+    <button style="background:transparent; border-color:transparent; color:var(--text-muted);" onclick="document.getElementById('notif-modal').style.display='none'">دخول بدون إشعارات</button>
   </div>
 </div>
 
@@ -202,7 +167,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
   <div class="header-content">
     <div class="right-titles">
       <h1>عمليات الساحات الخارجية والمواصلات</h1>
-      <p>منطقة الفرز صالة 4</p>
+      <p>منطقة الفرز صالة 4 <span id="active-shift-badge" class="shift-badge-header" onclick="openShiftModalManual()" title="اضغط لتغيير الشفت">تحديد الشفت</span></p>
     </div>
     <div>
       <button class="theme-toggle" onclick="toggleTheme()" title="تغيير المظهر">
@@ -275,13 +240,14 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
   </details>
 </main>
 
+<!-- نافذة الوجهة -->
 <div id="dest-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>تأكيد مغادرة الباص</h3>
     <p>الرجاء تحديد وجهة الباص ليتم توثيق وقت الخروج في السجل:</p>
     <button id="btn-dest-1" class="btn-mosque">01 خلف المسجد</button>
     <button id="btn-dest-2" class="btn-groups">02 مبنى المجموعات</button>
-    <button id="btn-dest-cancel" class="cancel">إلغاء الأمر</button>
+    <button onclick="document.getElementById('dest-modal').style.display='none'" style="background:transparent; border-color:transparent; color:var(--text-muted);">إلغاء الأمر</button>
   </div>
 </div>
 
@@ -290,7 +256,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 <script>
 (()=>{'use strict';
 
-// ----------------- تهيئة السحابة والإشعارات -----------------
+// تهيئة السحابة
 const firebaseConfig = {
   apiKey: "AIzaSyD4uNU92bklhMMd1RGju24TgbRT-f6M83U",
   authDomain: "land-t4.firebaseapp.com",
@@ -300,47 +266,15 @@ const firebaseConfig = {
   messagingSenderId: "396514710711",
   appId: "1:396514710711:web:d5f88139a79d245cdda932"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-
 const mySessionId = String(Date.now()) + Math.random().toString(36).slice(2);
-let isAppLoaded = false;
-setTimeout(() => { isAppLoaded = true; }, 3000); 
-
-document.addEventListener('DOMContentLoaded', () => {
-  if ('Notification' in window && Notification.permission === 'default') {
-    document.getElementById('notif-modal').style.display = 'flex';
-  }
-});
-
-window.requestNotificationPermission = function() {
-  if ('Notification' in window) {
-    Notification.requestPermission().then(permission => {
-      document.getElementById('notif-modal').style.display = 'none';
-      if (permission === 'granted') {
-        showToast('تم تفعيل الإشعارات بنجاح ✓');
-      } else {
-        showToast('تم رفض الإشعارات.');
-      }
-    });
-  } else {
-    document.getElementById('notif-modal').style.display = 'none';
-  }
-};
-
-function sendNativeNotification(title, body) {
-  if ('Notification' in window && Notification.permission === 'granted') {
-    new Notification(title, { body: body, icon: '/dynamic-favicon' });
-  }
-}
 
 const $=id=>document.getElementById(id);
-const svgAdd = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
-const svgDepart = '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>';
-const svgDel = '<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
-const svgPrint = '<svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>';
+let activeShift = localStorage.getItem('activeShift');
+let lastPromptMinute = -1;
 
+// أيقونة التطبيق
 function generateAppIcon() {
   const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 512; const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 512, 512);
@@ -349,19 +283,74 @@ function generateAppIcon() {
   ctx.fillStyle = '#cbd5e1'; ctx.beginPath(); ctx.arc(160, 300, 45, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(350, 300, 45, 0, Math.PI*2); ctx.fill();
   ctx.fillStyle = '#ffffff'; ctx.font = 'bold 65px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('LANDSIDE', 256, 400);
   ctx.fillStyle = '#34d399'; ctx.fillText('T4', 256, 470);
-  const link = document.getElementById('dynamic-favicon'); if(link) link.href = canvas.toDataURL('image/png');
+  const link = $('dynamic-favicon'); if(link) link.href = canvas.toDataURL('image/png');
 }
 generateAppIcon();
 
-window.showToast = function(msg) {
-  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3000); 
+// إدارة الشفتات
+window.setShift = function(s) {
+  activeShift = s;
+  localStorage.setItem('activeShift', s);
+  $('shift-modal').style.display = 'none';
+  $('active-shift-badge').textContent = s;
+  showToast('تم تفعيل ' + s + ' بنجاح ✓');
+  checkNotificationPermission();
+  render();
+};
+
+window.openShiftModalManual = function() {
+  $('shift-msg').textContent = 'تغيير النوبة يدوياً: اختر الشفت المطلوب لعرض وتحديث بياناته:';
+  $('btn-keep-shift').style.display = 'block';
+  $('shift-modal').style.display = 'flex';
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!activeShift) {
+    $('shift-modal').style.display = 'flex';
+  } else {
+    $('active-shift-badge').textContent = activeShift;
+    checkNotificationPermission();
+  }
+});
+
+// إدارة الإشعارات
+function checkNotificationPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    $('notif-modal').style.display = 'flex';
+  }
 }
+
+window.requestNotificationPermission = function() {
+  if ('Notification' in window) {
+    Notification.requestPermission().then(permission => {
+      $('notif-modal').style.display = 'none';
+      if (permission === 'granted') showToast('تم تفعيل الإشعارات بنجاح ✓');
+    });
+  } else {
+    $('notif-modal').style.display = 'none';
+  }
+};
+
+function sendNativeNotification(title, body) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    try { new Notification(title, { body: body }); } catch(e){}
+  }
+}
+
+const svgAdd = '<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>';
+const svgDepart = '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>';
+const svgDel = '<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
+const svgPrint = '<svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>';
+
+window.showToast = function(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3500); 
+};
 
 window.toggleTheme = function() {
   document.body.classList.toggle('dark-theme');
   localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-}
+};
 if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
 
 let buses=[]; 
@@ -371,7 +360,7 @@ window.setFilter = function(f) {
   currentFilter = f;
   document.querySelectorAll('#filters button').forEach(b => b.classList.toggle('active', b.dataset.f === f));
   render();
-}
+};
 
 const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
 function parts(d){return Object.fromEntries(fmt.formatToParts(d).filter(x=>x.type!=='literal').map(x=>[x.type,Number(x.value)]))}
@@ -395,27 +384,19 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-const destModal = $('dest-modal');
 let pendingDoneBusId = null;
-
 $('btn-dest-1').onclick = () => confirmDeparture('01 خلف المسجد');
 $('btn-dest-2').onclick = () => confirmDeparture('02 مبنى المجموعات');
-$('btn-dest-cancel').onclick = () => {
-  destModal.style.display = 'none';
-  pendingDoneBusId = null;
-};
 
 function confirmDeparture(dest) {
   if(!pendingDoneBusId) return;
   const b = buses.find(x => String(x.id) === pendingDoneBusId);
   if(b) {
-    b.done = true;
-    b.doneAt = Date.now(); 
-    b.destination = dest; 
+    b.done = true; b.doneAt = Date.now(); b.destination = dest; 
     db.ref('buses/' + b.id).set(b);
-    showToast('تم تسجيل الخروج بنجاح ✓');
+    showToast('تم تسجيل مغادرة باص الرحلة ' + b.flight + ' (' + dest + ') ✓');
   }
-  destModal.style.display = 'none';
+  $('dest-modal').style.display = 'none';
   pendingDoneBusId = null;
 }
 
@@ -423,25 +404,19 @@ async function generatePermit(b) {
   showToast('جاري استخراج التصريح...');
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
-  
   const img = new Image();
   img.crossOrigin = "anonymous"; 
   img.src = "https://i.ibb.co/MDvyKFCY/D2-B69579-1-CA1-4-E0-D-B250-80-B25-B36-D42-E.png"; 
 
   img.onload = () => {
-    canvas.width = img.width;
-    canvas.height = img.height;
+    canvas.width = img.width; canvas.height = img.height;
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    
     ctx.fillStyle = '#0047AB';
-    const fontSize = Math.floor(canvas.height * 0.040); 
-    ctx.font = `bold ${fontSize}px monospace`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.font = `bold ${Math.floor(canvas.height * 0.040)}px monospace`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     
     const dateStr = new Intl.DateTimeFormat('en-GB').format(new Date());
     const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(created(b)));
-    
     const columnX = canvas.width * 0.38; 
     
     ctx.fillText(dateStr, columnX, canvas.height * 0.315);              
@@ -454,17 +429,14 @@ async function generatePermit(b) {
       if (!blob) { showToast('خطأ في توليد الصورة'); return; }
       const file = new File([blob], `Permit_${b.flight}.png`, { type: 'image/png' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try { 
-          await navigator.share({ files: [file], title: 'تصريح دخول باص' }); 
-        } catch (error) {}
+        try { await navigator.share({ files: [file], title: 'تصريح' }); } catch (error) {}
       } else { 
-        const imgURL = URL.createObjectURL(blob); 
-        window.open(imgURL, '_blank'); 
-        showToast('اضغط مطولاً على الصورة لحفظها.'); 
+        window.open(URL.createObjectURL(blob), '_blank'); 
+        showToast('اضغط مطولاً على الصورة لحفظها ✓'); 
       }
     }, 'image/png');
   };
-  img.onerror = () => { showToast('تأكد من الاتصال بالإنترنت.'); };
+  img.onerror = () => showToast('تأكد من الاتصال بالإنترنت');
 }
 
 function busCard(b,i){
@@ -474,19 +446,18 @@ function busCard(b,i){
     sharedHtml = `<div style="margin-top:8px; font-size:11px; font-weight:900; color:var(--shared);">` + extras.map((x,j)=>`
       <div style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border); padding-bottom:6px; margin-bottom:6px;">
         <span>مشترك: ${esc(x.flight)} (${x.pax} راكب)</span>
-        <span data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}" style="color:var(--late); cursor:pointer; font-size:14px; padding:0 5px;">✕</span>
+        <span data-action="removeextra" data-id="${esc(b.id)}" data-index="${j}" style="color:var(--late); cursor:pointer; padding:0 4px;">✕</span>
       </div>`).join('') + `</div>`;
   }
-
   return `<details class="bus-card ${c}">
     <summary class="bus-summary" style="padding:14px 12px; cursor:pointer; display:flex; flex-direction:column; gap:8px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div style="display:flex; align-items:center; gap:10px;">
-          <span style="font-size:15px; font-weight:900; color:var(--text-main);">باص ${i+1}</span>
+          <span style="font-size:15px; font-weight:900;">باص ${i+1}</span>
           <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--shared); border:1px solid var(--border); direction:ltr;">${total(b)} راكب</span>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
-          <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-align:left; line-height:1.5;">
+          <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-align:left; line-height:1.4;">
             تحضير: <span style="color:var(--text-main)">${mins(dep(b)-created(b))}</span><br>
             انتظار: <span data-wait="${esc(b.id)}" style="color:var(--text-main)">${mins(Date.now()-created(b))}</span>
           </div>
@@ -502,9 +473,7 @@ function busCard(b,i){
       </div>
       <div class="bus-action-row">
         <button class="success" data-action="done" data-id="${esc(b.id)}">${svgDepart} غادر</button>
-        <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="استخراج تصريح">
-          ${svgPrint}
-        </button>
+        <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="تصريح">${svgPrint}</button>
       </div>
       <button class="danger" data-action="delete" data-id="${esc(b.id)}" style="width:100%; margin-top:6px">${svgDel} حذف السجل</button>
     </div>
@@ -512,7 +481,9 @@ function busCard(b,i){
 }
 
 function render(){
-  const allActive = buses.filter(b=>!b.done);
+  if(!activeShift) return;
+  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  const allActive = shiftBuses.filter(b=>!b.done);
   $('flight-list').innerHTML = [...new Set(allActive.map(b=>b.flight))].map(f=>`<option value="${esc(f)}">`).join('');
 
   let filteredActive = allActive;
@@ -520,7 +491,7 @@ function render(){
   if(currentFilter === 'shared') filteredActive = allActive.filter(b => (b.extra||[]).length > 0);
   
   const groups = groupBy(filteredActive);
-  const done = buses.filter(b=>b.done);
+  const done = shiftBuses.filter(b=>b.done);
 
   $('kbus').textContent = allActive.length;
   $('kpax').textContent = allActive.reduce((a,b)=>a+total(b),0);
@@ -546,18 +517,13 @@ function render(){
       <div class="buses-container">${g.map((x,i)=>busCard(x,i)).join('')}</div>
       <button class="add-bus-btn" data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص لهذه الرحلة</button>
     </div>`;
-  }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة حالياً بالفرز.</div>';
+  }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة حالياً في هذا الشفت.</div>';
 
   $('done').innerHTML=done.length?done.slice().reverse().map(b=>{
     let dTime = '--:--';
     if (b.doneAt) {
-      try {
-        const dateObj = (typeof b.doneAt === 'string') ? new Date(b.doneAt) : new Date(Number(b.doneAt));
-        if (!isNaN(dateObj.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dateObj);
-      } catch(e) {}
+      try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dt); } catch(e){}
     }
-    const destName = b.destination || 'لم تحدد الوجهة';
-    
     const timeSinceDone = Date.now() - (b.doneAt || 0);
     const isRecent = timeSinceDone <= 50000;
     const recentClass = isRecent ? 'recent-depart' : '';
@@ -567,13 +533,13 @@ function render(){
       <summary class="bus-summary" style="padding:14px 12px; cursor:pointer; display:flex; flex-direction:column; gap:8px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:16px; font-weight:900; color:var(--text-main); letter-spacing:0.5px; direction:ltr;">${esc(b.flight)}</span>
+            <span style="font-size:16px; font-weight:900; color:var(--text-main); direction:ltr;">${esc(b.flight)}</span>
             <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--shared); border:1px solid var(--border); direction:ltr;">${total(b)} راكب</span>
           </div>
           <div style="display:flex; align-items:center; gap:10px;">
-            <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-align:left; line-height:1.5;">
+            <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-align:left;">
               خروج: <b style="color:var(--text-main); font-size:12px; direction:ltr; display:inline-block;">${dTime}</b><br>
-              <span style="color:var(--early)">${destName}</span>
+              <span style="color:var(--early)">${b.destination||''}</span>
             </div>
             <span class="bus-status early" style="font-size:11px; font-weight:900; padding:6px 10px; border-radius:8px;">مغادر ▾</span>
           </div>
@@ -584,19 +550,28 @@ function render(){
         <div class="bus-action-row">
           <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع للفرز</button>
           <button data-action="edit-exit" data-id="${esc(b.id)}" style="color:var(--text-main)">⏱️ تعديل الخروج</button>
-          <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="إعادة طباعة التصريح">
-            ${svgPrint}
-          </button>
+          <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="إعادة طباعة التصريح">${svgPrint}</button>
         </div>
+        <button class="danger" data-action="delete" data-id="${esc(b.id)}" style="width:100%; margin-top:6px">${svgDel} حذف نهائي</button>
       </div>
     </details>`;
-  }).join('') : '<div class="empty-msg">سجل المغادرة فارغ.</div>';
+  }).join('') : '<div class="empty-msg">سجل المغادرة فارغ لهذا الشفت.</div>';
 
-  $('preview').innerHTML = generateTableHTML();
+  $('preview').innerHTML = generateTableHTML(shiftBuses);
   tick();
 }
 
 function tick(){
+  const p = parts(new Date());
+  const tm = p.hour * 60 + p.minute;
+  // التنبيه قبل 3 دقائق من نهاية كل شفت (05:27 = 327, 13:27 = 807, 21:27 = 1287)
+  if ((tm === 327 || tm === 807 || tm === 1287) && lastPromptMinute !== tm && activeShift) {
+      lastPromptMinute = tm;
+      $('shift-msg').textContent = "اقترب موعد انتهاء الشفت الحالي (باقي 3 دقائق). يرجى اختيار الشفت الجديد إذا تم التسليم، أو البقاء على شفتك الحالي:";
+      $('btn-keep-shift').style.display = 'block';
+      $('shift-modal').style.display = 'flex';
+  }
+
   const lookup=new Map(buses.map(b=>[String(b.id),b]));
   document.querySelectorAll('[data-live]').forEach(el=>{const b=lookup.get(el.dataset.live);if(b)el.textContent=until(b)});
   document.querySelectorAll('[data-wait]').forEach(el=>{
@@ -604,8 +579,7 @@ function tick(){
     if(b) {
       let endTime = Date.now();
       if(b.done && b.doneAt) {
-         const dateObj = (typeof b.doneAt === 'string') ? new Date(b.doneAt) : new Date(Number(b.doneAt));
-         if(!isNaN(dateObj.getTime())) endTime = dateObj.getTime();
+         try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) endTime = dt.getTime(); } catch(e){}
       }
       el.textContent = mins(endTime - created(b));
     }
@@ -620,19 +594,20 @@ function tick(){
     }
   });
 
-  const upcoming=buses.filter(b=>!b.done).flatMap(b=>[{flight:b.flight,dep:dep(b)},...(b.extra||[]).map(x=>({flight:x.flight,dep:Number(x.departure)||departure(x.time,created(b))}))]).filter(x=>x.dep>Date.now()).sort((a,b)=>a.dep-b.dep);
+  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift && !b.done);
+  const upcoming=shiftBuses.flatMap(b=>[{flight:b.flight,dep:dep(b)},...(b.extra||[]).map(x=>({flight:x.flight,dep:Number(x.departure)||departure(x.time,created(b))}))]).filter(x=>x.dep>Date.now()).sort((a,b)=>a.dep-b.dep);
   $('nextflight').textContent=upcoming.length?`القادمة: ${upcoming[0].flight}`:'—';
   
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
   $('clock').textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', options).format(new Date());
 }
 
-function generateTextReport(){
-  const a=buses.filter(b=>!b.done), done=buses.filter(b=>b.done), groups=groupBy(a);
+function generateTextReport(shiftBuses){
+  const a=shiftBuses.filter(b=>!b.done), done=shiftBuses.filter(b=>b.done), groups=groupBy(a);
   const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
   
   const lines = [
-    'تقرير عمليات الساحات (T4)',
+    `تقرير عمليات الساحات (T4) - ${activeShift}`,
     'الوقت: ' + d,
     '-------------------------',
     'الباصات بالفرز: ' + a.length,
@@ -640,17 +615,13 @@ function generateTextReport(){
     'المغادرة: ' + done.length,
     '-------------------------'
   ];
-  if (!groups.length) {
-    lines.push('لا توجد باصات حالياً بالفرز.');
-  } else {
+  if (!groups.length) { lines.push('لا توجد باصات حالياً بالفرز.'); } else {
     for (const g of groups) {
       const f = g[0], hasShared = g.some(b => b.extra && b.extra.length > 0);
       lines.push('الرحلة: '+f.flight, 'الإقلاع: '+f.time);
-      if (g.length === 1 && !hasShared) {
-        lines.push('الركاب: '+f.pax);
-      } else if (!hasShared) {
-        lines.push('الباصات: '+g.length, 'الركاب: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`);
-      } else {
+      if (g.length === 1 && !hasShared) { lines.push('الركاب: '+f.pax); } 
+      else if (!hasShared) { lines.push('الباصات: '+g.length, 'الركاب: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`); } 
+      else {
         lines.push('الباصات: '+g.length);
         g.forEach((b, i) => {
           const ex = Array.isArray(b.extra) ? b.extra : [];
@@ -665,83 +636,50 @@ function generateTextReport(){
 }
 
 window.copyTextReport = async function() {
-  try {
-    await navigator.clipboard.writeText(generateTextReport());
-    showToast('تم نسخ التقرير النصي بنجاح ✓');
-  } catch(e) { prompt('انسخ التقرير:', generateTextReport()); }
+  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  try { await navigator.clipboard.writeText(generateTextReport(shiftBuses)); showToast('تم نسخ التقرير النصي بنجاح ✓'); } 
+  catch(e) { prompt('انسخ:', generateTextReport(shiftBuses)); }
 };
 
 window.shareTextWhatsApp = function() {
-  const text = encodeURIComponent(generateTextReport());
-  window.open('https://wa.me/?text=' + text, '_blank');
+  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  window.open('https://wa.me/?text=' + encodeURIComponent(generateTextReport(shiftBuses)), '_blank');
 };
 
-function generateTableHTML(){
-  const a = buses.filter(b => !b.done), done = buses.filter(b => b.done), groups = groupBy(a);
+function generateTableHTML(shiftBuses){
+  const a = shiftBuses.filter(b => !b.done), done = shiftBuses.filter(b => b.done), groups = groupBy(a);
   const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
-
   let html = `<div id="report-content" style="background:#ffffff; color:#0f172a; padding:15px; font-family: 'Segoe UI', Tahoma, sans-serif; direction:rtl; text-align:right; border-radius:8px;">`;
   html += `<div style="text-align:center; border-bottom:2px solid #1e3a8a; padding-bottom:10px; margin-bottom:15px;">
-    <h2 style="margin:0; font-size:17px; color:#1e3a8a; font-weight:900;">عمليات الساحات الخارجية والمواصلات - منطقة الفرز (صالة 4)</h2>
-    <p style="margin:5px 0 0; font-size:11px; color:#475569; font-weight:bold;">تقرير وردية العمل | تاريخ ووقت التقرير: ${d}</p>
+    <h2 style="margin:0; font-size:17px; color:#1e3a8a; font-weight:900;">عمليات الساحات الخارجية والمواصلات - الفرز (صالة 4)</h2>
+    <p style="margin:5px 0 0; font-size:11px; color:#475569; font-weight:bold;">تقرير ${activeShift} | وقت التقرير: ${d}</p>
   </div>`;
-
   html += `<div style="display:flex; justify-content:space-around; background:#f8fafc; padding:8px; border-radius:6px; margin-bottom:15px; border:1px solid #cbd5e1;">
-    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#0f172a; direction:ltr;">${a.length}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">باصات بالفرز</span></div>
-    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#d97706; direction:ltr;">${a.reduce((n,b)=>n+total(b),0)}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">الركاب بالفرز</span></div>
-    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#059669; direction:ltr;">${done.length}</b><span style="font-size:10px; color:#64748b; font-weight:bold;">باصات مغادرة</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#0f172a; direction:ltr;">${a.length}</b><span style="font-size:10px; font-weight:bold;">باصات بالفرز</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#d97706; direction:ltr;">${a.reduce((n,b)=>n+total(b),0)}</b><span style="font-size:10px; font-weight:bold;">الركاب بالفرز</span></div>
+    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#059669; direction:ltr;">${done.length}</b><span style="font-size:10px; font-weight:bold;">باصات مغادرة</span></div>
   </div>`;
-
   html += `<h3 style="font-size:14px; color:#1e3a8a; margin-bottom:8px; border-right:3px solid #1e3a8a; padding-right:6px;">الرحلات الحالية بالفرز (الانتظار)</h3>`;
   html += `<table style="width:100%; border-collapse:collapse; margin-bottom:20px; text-align:center; font-size:11px;">
-    <thead>
-      <tr style="background:#1e3a8a; color:#ffffff;">
-        <th style="padding:6px; border:1px solid #cbd5e1;">الرحلة</th>
-        <th style="padding:6px; border:1px solid #cbd5e1;">وقت الإقلاع</th>
-        <th style="padding:6px; border:1px solid #cbd5e1;">الباصات</th>
-        <th style="padding:6px; border:1px solid #cbd5e1;">الركاب</th>
-      </tr>
-    </thead>
-    <tbody>`;
-  if(!groups.length) html += `<tr><td colspan="4" style="padding:10px; border:1px solid #cbd5e1; color:#64748b;">لا توجد باصات بالفرز حالياً</td></tr>`;
+    <thead><tr style="background:#1e3a8a; color:#ffffff;"><th style="padding:6px; border:1px solid #cbd5e1;">الرحلة</th><th style="padding:6px; border:1px solid #cbd5e1;">الإقلاع</th><th style="padding:6px; border:1px solid #cbd5e1;">الباصات</th><th style="padding:6px; border:1px solid #cbd5e1;">الركاب</th></tr></thead><tbody>`;
+  if(!groups.length) html += `<tr><td colspan="4" style="padding:10px; border:1px solid #cbd5e1;">لا توجد باصات بالفرز حالياً</td></tr>`;
   else {
     groups.forEach(g => {
       const f = g[0], tot = g.reduce((s,b)=>s+total(b),0);
-      const paxDetails = g.length > 1 ? `<div style="font-size:9px; color:#64748b; direction:ltr; margin-top:2px; font-weight:bold;">(${g.map(b=>b.pax).join(' + ')})</div>` : '';
-      html += `<tr>
-        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${f.flight}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold; direction:ltr;">${f.time}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; direction:ltr;">${g.length}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706; direction:ltr;">${tot} ${paxDetails}</td>
-      </tr>`;
+      const paxDetails = g.length > 1 ? `<div style="font-size:9px; color:#64748b; direction:ltr; margin-top:2px;">(${g.map(b=>b.pax).join(' + ')})</div>` : '';
+      html += `<tr><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${f.flight}</td><td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold; direction:ltr;">${f.time}</td><td style="padding:6px; border:1px solid #cbd5e1; direction:ltr;">${g.length}</td><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706; direction:ltr;">${tot} ${paxDetails}</td></tr>`;
     });
   }
   html += `</tbody></table>`;
-
   html += `<h3 style="font-size:14px; color:#059669; margin-bottom:8px; border-right:3px solid #059669; padding-right:6px;">سجل المغادرة (تم الترحيل)</h3>`;
   html += `<table style="width:100%; border-collapse:collapse; text-align:center; font-size:11px;">
-    <thead>
-      <tr style="background:#059669; color:#ffffff;">
-        <th style="padding:6px; border:1px solid #cbd5e1;">الرحلة</th>
-        <th style="padding:6px; border:1px solid #cbd5e1;">وقت الخروج</th>
-        <th style="padding:6px; border:1px solid #cbd5e1;">الوجهة</th>
-        <th style="padding:6px; border:1px solid #cbd5e1;">الركاب</th>
-      </tr>
-    </thead>
-    <tbody>`;
-  if(!done.length) html += `<tr><td colspan="4" style="padding:10px; border:1px solid #cbd5e1; color:#64748b;">لم يغادر أي باص بعد</td></tr>`;
+    <thead><tr style="background:#059669; color:#ffffff;"><th style="padding:6px; border:1px solid #cbd5e1;">الرحلة</th><th style="padding:6px; border:1px solid #cbd5e1;">وقت الخروج</th><th style="padding:6px; border:1px solid #cbd5e1;">الوجهة</th><th style="padding:6px; border:1px solid #cbd5e1;">الركاب</th></tr></thead><tbody>`;
+  if(!done.length) html += `<tr><td colspan="4" style="padding:10px; border:1px solid #cbd5e1;">لم يغادر أي باص بعد</td></tr>`;
   else {
     done.slice().reverse().forEach(b => {
       let dTime = '--:--';
-      if(b.doneAt){
-        try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dt); } catch(e){}
-      }
-      html += `<tr>
-        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${b.flight}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; color:#059669; font-weight:bold; direction:ltr;">${dTime}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1;">${b.destination||'--'}</td>
-        <td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${total(b)}</td>
-      </tr>`;
+      if(b.doneAt){ try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dt); } catch(e){} }
+      html += `<tr><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${b.flight}</td><td style="padding:6px; border:1px solid #cbd5e1; color:#059669; font-weight:bold; direction:ltr;">${dTime}</td><td style="padding:6px; border:1px solid #cbd5e1;">${b.destination||'--'}</td><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${total(b)}</td></tr>`;
     });
   }
   html += `</tbody></table></div>`;
@@ -749,26 +687,21 @@ function generateTableHTML(){
 }
 
 window.exportAsImageAndShare = async function() {
-  const el = document.getElementById('report-content');
+  const el = $('report-content');
   if(!el) return;
   showToast('جاري تجهيز الصورة...');
   try {
     const canvas = await html2canvas(el, { scale: 2, useCORS: true });
     canvas.toBlob(async (blob) => {
       const file = new File([blob], "Report.png", { type: "image/png" });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'تقرير عمليات الساحات' });
-      } else {
-        const imgURL = URL.createObjectURL(blob); 
-        window.open(imgURL, '_blank'); 
-        showToast('اضغط مطولاً على الصورة لحفظها ثم إرسالها.');
-      }
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file] }); } 
+      else { window.open(URL.createObjectURL(blob), '_blank'); showToast('اضغط مطولاً على الصورة لحفظها ✓'); }
     }, "image/png");
-  } catch(e) { showToast('حدث خطأ أثناء استخراج الصورة.'); }
+  } catch(e) { showToast('حدث خطأ أثناء استخراج الصورة'); }
 };
 
 window.exportAsPDF = async function() {
-  const el = document.getElementById('report-content');
+  const el = $('report-content');
   if(!el) return;
   showToast('جاري إنشاء ملف PDF الرسمي...');
   try {
@@ -776,144 +709,114 @@ window.exportAsPDF = async function() {
     const imgData = canvas.toDataURL('image/png');
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'mm', 'a4');
-    
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    let imgWidth = pdfWidth;
-    let imgHeight = (canvas.height * pdfWidth) / canvas.width;
-    
-    if (imgHeight > pageHeight) {
-        imgHeight = pageHeight - 10; 
+    let imgWidth = pdf.internal.pageSize.getWidth();
+    let imgHeight = (canvas.height * imgWidth) / canvas.width;
+    if (imgHeight > pdf.internal.pageSize.getHeight()) {
+        imgHeight = pdf.internal.pageSize.getHeight() - 10; 
         imgWidth = (canvas.width * imgHeight) / canvas.height;
     }
-    
-    const xPos = (pdfWidth - imgWidth) / 2;
-    pdf.addImage(imgData, 'PNG', xPos, 5, imgWidth, imgHeight);
-    pdf.save('Report_T4.pdf');
-    showToast('تم تحميل ملف الـ PDF بنجاح ✓');
-  } catch(e) { showToast('حدث خطأ أثناء استخراج الملف.'); }
+    pdf.addImage(imgData, 'PNG', (pdf.internal.pageSize.getWidth() - imgWidth) / 2, 5, imgWidth, imgHeight);
+    pdf.save(`Report_${activeShift.replace(/\s+/g,'_')}.pdf`);
+    showToast('تم تحميل ملف PDF بنجاح ✓');
+  } catch(e) { showToast('حدث خطأ أثناء استخراج الملف'); }
 };
 
-db.ref('buses').on('child_added', (snapshot) => {
-  if (!isAppLoaded) return; 
-  const b = snapshot.val();
-  if (b.addedBy !== mySessionId) {
-    sendNativeNotification(`باص جديد: ${b.flight}`, `الركاب: ${b.pax} | الإقلاع: ${b.time}`);
-  }
-});
-
+let initialLoad = true;
 db.ref('buses').on('value', (snapshot) => {
   buses = [];
-  snapshot.forEach((childSnapshot) => {
-    buses.push(childSnapshot.val());
-  });
+  snapshot.forEach((childSnapshot) => { buses.push(childSnapshot.val()); });
   buses.sort((a, b) => a.createdAt - b.createdAt);
   render();
+  initialLoad = false;
+});
+
+db.ref('buses').on('child_added', (snapshot) => {
+  if (initialLoad) return; 
+  const b = snapshot.val();
+  if ((b.shift || 'Shift A') === activeShift && b.addedBy !== mySessionId) {
+    sendNativeNotification(`باص جديد (${activeShift}): ${b.flight}`, `الركاب: ${b.pax} | الإقلاع: ${b.time}`);
+    showToast(`🔔 تم تسجيل باص جديد: رحلة ${b.flight} (${b.pax} راكب)`);
+  }
 });
 
 $('entry').addEventListener('submit',e=>{
   e.preventDefault();
+  if(!activeShift){ $('shift-modal').style.display='flex'; return; }
   const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
-  if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){
-    showToast('خطأ: تأكد من صحة البيانات المدخلة');return;
-  }
-  
-  const newBus = {id:newId(),flight,time,pax,departure:departure(time,Date.now()),createdAt:Date.now(),done:false,extra:[], addedBy: mySessionId};
-  
-  db.ref('buses/' + newBus.id).set(newBus).then(() => {
-    showToast('تم التسجيل بنجاح ✓');
-  }).catch((error) => { showToast('خطأ في الاتصال بالسحابة'); });
-  
+  if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){ showToast('تأكد من صحة البيانات المدخلة'); return; }
+  const newBus = {id:newId(), flight, time, pax, departure:departure(time,Date.now()), createdAt:Date.now(), done:false, extra:[], addedBy: mySessionId, shift: activeShift};
+  db.ref('buses/' + newBus.id).set(newBus).then(() => showToast('تم تسجيل باص الرحلة ' + flight + ' (' + pax + ' راكب) بنجاح ✓')).catch(() => showToast('خطأ في الاتصال بالسحابة'));
   e.target.reset();
 });
 
 $('flight').addEventListener('input',()=>{
   const f=$('flight').value.trim().toUpperCase().replace(/\s+/g,'');
-  const b=buses.find(b=>!b.done&&b.flight===f);
+  const b=buses.find(b=>!b.done && b.flight===f && (b.shift||'Shift A')===activeShift);
   if(b&&!$('time').value)$('time').value=b.time;
 });
 
 function action(e){
-  let btn = e.target.closest('button[data-action]');
-  if(!btn) { btn = e.target.closest('span[data-action]'); }
+  let btn = e.target.closest('button[data-action]') || e.target.closest('span[data-action]');
   if(!btn) return;
   const a=btn.dataset.action,b=buses.find(b=>String(b.id)===btn.dataset.id);
   if(!b)return;
 
   if(a==='permit'){ generatePermit(b); return; }
   else if(a==='delete'){
-    if(!confirm('تأكيد الحذف النهائي للباص للجميع؟'))return;
+    if(!confirm('تأكيد الحذف النهائي للباص؟'))return;
     db.ref('buses/' + b.id).remove();
-    showToast('تم الحذف');
+    showToast('تم حذف الباص نهائياً ✓');
     return;
   }
   else if(a==='addsame'){
     const val=prompt('باص إضافي للرحلة '+b.flight+'\nأدخل عدد الركاب:');
     if(val===null)return;
     const pax=Number(val.trim());
-    if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح');return}
-    const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[], addedBy: mySessionId};
+    if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح');return;}
+    const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[], addedBy: mySessionId, shift: activeShift};
     db.ref('buses/' + newBus.id).set(newBus);
-    showToast('تمت الإضافة');
+    showToast('تم إضافة باص للرحلة ' + b.flight + ' (' + pax + ' راكب) ✓');
     return;
   }
-  
   if(a==='addextra'){
     const f=prompt('رقم الرحلة المشتركة:');if(f===null)return;
     const flight=f.trim().toUpperCase().replace(/\s+/g,'');
-    if(!/^[A-Z0-9-\u0600-\u06FF]{2,18}$/.test(flight)){showToast('رقم غير صحيح');return}
+    if(!/^[A-Z0-9-\u0600-\u06FF]{2,18}$/.test(flight)){showToast('رقم غير صحيح');return;}
     const time=prompt('وقت إقلاع الرحلة المشتركة (مثال 15:30):');if(time===null)return;
-    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){showToast('وقت غير صحيح');return}
+    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){showToast('وقت غير صحيح');return;}
     const val=prompt('عدد الركاب للرحلة المشتركة:');if(val===null)return;
     const pax=Number(val.trim());
-    if(!Number.isInteger(pax)||pax<1||pax>150){showToast('عدد غير صحيح');return}
+    if(!Number.isInteger(pax)||pax<1||pax>150){showToast('عدد غير صحيح');return;}
     if(!b.extra) b.extra = [];
     b.extra.push({flight,time:time.trim(),pax,departure:departure(time.trim(),created(b)),createdAt:Date.now()});
-    showToast('تمت إضافة المشترك');
+    showToast('تمت إضافة الرحلة المشتركة بنجاح ✓');
   }
   else if(a==='removeextra'){
-    if(!confirm('هل أنت متأكد من حذف المشترك؟'))return;
+    if(!confirm('حذف الرحلة المشتركة؟'))return;
     b.extra.splice(Number(btn.dataset.index),1);
-    showToast('تم الحذف');
+    showToast('تم حذف المشترك ✓');
   }
-  else if(a==='done'){ 
-    pendingDoneBusId = b.id;
-    destModal.style.display = 'flex';
-    return;
-  }
-  else if(a==='restore'){ 
-    b.done=false; 
-    delete b.doneAt; 
-    delete b.destination;
-    showToast('تم إرجاع الباص للفرز ✓'); 
-  }
+  else if(a==='done'){ pendingDoneBusId = b.id; $('dest-modal').style.display = 'flex'; return; }
+  else if(a==='restore'){ b.done=false; delete b.doneAt; delete b.destination; showToast('تم إرجاع باص الرحلة ' + b.flight + ' للفرز ✓'); }
   else if(a==='edit-entry'){
-    const time = prompt('أدخل وقت الدخول الصحيح (مثال 14:30):');
-    if(time === null) return;
-    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){showToast('تنسيق الوقت غير صحيح');return;}
-    const [h, m] = time.trim().split(':').map(Number);
-    const d = new Date(created(b));
-    d.setHours(h, m, 0, 0);
-    b.createdAt = d.getTime();
-    showToast('تم تعديل وقت الدخول ✓');
+    const t = prompt('أدخل وقت الدخول الصحيح (مثال 14:30):');
+    if(t && /^([01]\d|2[0-3]):[0-5]\d$/.test(t.trim())){
+      const [h, m] = t.trim().split(':').map(Number);
+      const d = new Date(created(b)); d.setHours(h, m, 0, 0); b.createdAt = d.getTime(); showToast('تم تعديل وقت الدخول بنجاح ✓');
+    } else if(t!==null) { showToast('تنسيق الوقت غير صحيح'); return; }
   }
   else if(a==='edit-exit'){
-    const time = prompt('أدخل وقت الخروج الصحيح (مثال 14:30):');
-    if(time === null) return;
-    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){showToast('تنسيق الوقت غير صحيح');return;}
-    const [h, m] = time.trim().split(':').map(Number);
-    const d = new Date(b.doneAt || Date.now());
-    d.setHours(h, m, 0, 0);
-    b.doneAt = d.getTime();
-    showToast('تم تعديل وقت الخروج ✓');
+    const t = prompt('أدخل وقت الخروج الصحيح (مثال 14:30):');
+    if(t && /^([01]\d|2[0-3]):[0-5]\d$/.test(t.trim())){
+      const [h, m] = t.trim().split(':').map(Number);
+      const d = new Date(b.doneAt || Date.now()); d.setHours(h, m, 0, 0); b.doneAt = d.getTime(); showToast('تم تعديل وقت الخروج بنجاح ✓');
+    } else if(t!==null) { showToast('تنسيق الوقت غير صحيح'); return; }
   }
-  
   db.ref('buses/' + b.id).set(b);
 }
 
 $('active').addEventListener('click',action);
 $('done').addEventListener('click',action);
-
 setInterval(tick,1000);
 })();
 </script>
