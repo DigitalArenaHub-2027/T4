@@ -47,7 +47,9 @@ header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); padding:
 .right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; display: flex; align-items: center; gap: 8px; }
 .shift-badge-header { background: #2563eb; color: #fff; padding: 3px 10px; border-radius: 8px; font-size: 12px; font-weight: 900; direction: ltr; display: inline-block; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); }
 .theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; backdrop-filter: blur(5px); }
-#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-align: left; max-width: 800px; margin: 10px auto 0; direction: ltr; }
+#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-align: left; max-width: 800px; margin: 10px auto 0; direction: ltr; display: flex; justify-content: space-between; align-items: center; }
+.live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px #10b981; animation: pulse-live 1.5s infinite; }
+@keyframes pulse-live { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
 main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
 
@@ -115,7 +117,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 450px; overflow-y: auto; margin-top: 15px; }
 .empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
 
-/* الإشعار السفلي باللون الأخضر والخط الأبيض الواضح دائماً */
 .toast { 
   position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); 
   background: #10b981 !important; color: #ffffff !important; 
@@ -153,13 +154,13 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
   </div>
 </div>
 
-<!-- شاشة طلب الإشعارات الإجبارية -->
+<!-- شاشة طلب الإشعارات والاتصال اللحظي الإجبارية -->
 <div id="notif-modal" class="modal-overlay">
   <div class="modal-box">
-    <h3>تفعيل الإشعارات 🔔</h3>
-    <p>لضمان وصول التنبيهات اللحظية لك فور تسجيل أي باص في شفتك، يرجى السماح بتفعيل الإشعارات.</p>
-    <button class="btn-notif" onclick="requestNotificationPermission()">تفعيل الإشعارات والدخول</button>
-    <button style="background:transparent; border-color:transparent; color:var(--text-muted);" onclick="document.getElementById('notif-modal').style.display='none'">دخول بدون إشعارات</button>
+    <h3>تفعيل الإشعارات الفورية 🔔</h3>
+    <p>لضمان وصول التنبيهات والصوت لك في نفس الثانية حتى لو الشاشة بوضع الانتظار، اضغط للتفعيل:</p>
+    <button class="btn-notif" onclick="requestNotificationPermission()">تفعيل الإشعارات الفورية والدخول</button>
+    <button style="background:transparent; border-color:transparent; color:var(--text-muted);" onclick="skipNotifications()">دخول بدون إشعارات</button>
   </div>
 </div>
 
@@ -175,7 +176,10 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
       </button>
     </div>
   </div>
-  <div id="clock">جاري التحميل...</div>
+  <div id="clock">
+    <span id="clock-time">جاري التحميل...</span>
+    <span style="font-size:11px; color:#34d399; direction:rtl;"><i class="live-dot"></i>متصل لحظياً</span>
+  </div>
 </header>
 
 <main>
@@ -232,9 +236,9 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
     <summary class="panel-header"><h2>التقارير اليومية الرسمية</h2></summary>
     <div class="tools-grid">
       <button type="button" onclick="exportAsImageAndShare()" class="btn-whatsapp-img">صورة (واتساب)</button>
-      <button type="button" onclick="shareTextWhatsApp()" class="btn-whatsapp-text">نص (واتساب)</button>
+      <button type="button" onclick="shareTextWhatsApp()" class="btn-whatsapp-text">نص (English واتساب)</button>
       <button type="button" onclick="exportAsPDF()" class="btn-pdf">تحميل كـ PDF</button>
-      <button type="button" onclick="copyTextReport()" class="btn-copy">نسخ كنص</button>
+      <button type="button" onclick="copyTextReport()" class="btn-copy">نسخ نص (English)</button>
     </div>
     <div id="preview" class="report-view"></div>
   </details>
@@ -274,6 +278,78 @@ const $=id=>document.getElementById(id);
 let activeShift = localStorage.getItem('activeShift');
 let lastPromptMinute = -1;
 
+// ----------------- محرك منع تجميد الجوال والإشعارات اللحظية -----------------
+let audioCtx = null;
+let keepAliveStarted = false;
+
+function startBackgroundKeepAlive() {
+  if (keepAliveStarted) return;
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
+    // تشغيل تردد صامت جداً (غير مسموع) يمنع الجوال من قطع الإنترنت عن المتصفح في الخلفية
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    gain.gain.value = 0.00001; 
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    keepAliveStarted = true;
+  } catch (e) {}
+
+  // Web Worker يعمل في الخلفية لإجبار الاتصال على البقاء حياً كل 4 ثواني
+  try {
+    const blob = new Blob([`setInterval(()=>postMessage('ping'), 4000);`], {type: 'application/javascript'});
+    const worker = new Worker(URL.createObjectURL(blob));
+    worker.onmessage = () => {
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      // تنشيط اتصال Firebase
+      db.ref('.info/connected').once('value', snap => {
+        if (!snap.val()) { db.goOffline(); db.goOnline(); }
+      });
+    };
+  } catch (e) {}
+
+  // منع قفل الشاشة التلقائي إن أمكن (Wake Lock API)
+  if ('wakeLock' in navigator) {
+    navigator.wakeLock.request('screen').catch(()=>{});
+  }
+}
+
+// تشغيل نغمة تنبيه مسموعة واهتزاز فور وصول باص جديد
+function playInstantAlertSound() {
+  try {
+    if (!audioCtx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, audioCtx.currentTime); // نغمة واضحة
+    osc.frequency.setValueAtTime(1046.5, audioCtx.currentTime + 0.12);
+    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.4);
+    if (navigator.vibrate) navigator.vibrate([250, 100, 250]);
+  } catch(e){}
+}
+
+// إعادة الاتصال الفوري عند لمس الجوال أو فتح الشاشة
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    db.goOnline();
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  }
+});
+document.addEventListener('touchstart', startBackgroundKeepAlive, { once: true });
+document.addEventListener('click', startBackgroundKeepAlive, { once: true });
+// -------------------------------------------------------------------------
+
 // أيقونة التطبيق
 function generateAppIcon() {
   const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 512; const ctx = canvas.getContext('2d');
@@ -289,6 +365,7 @@ generateAppIcon();
 
 // إدارة الشفتات
 window.setShift = function(s) {
+  startBackgroundKeepAlive();
   activeShift = s;
   localStorage.setItem('activeShift', s);
   $('shift-modal').style.display = 'none';
@@ -321,19 +398,36 @@ function checkNotificationPermission() {
 }
 
 window.requestNotificationPermission = function() {
+  startBackgroundKeepAlive();
   if ('Notification' in window) {
     Notification.requestPermission().then(permission => {
       $('notif-modal').style.display = 'none';
-      if (permission === 'granted') showToast('تم تفعيل الإشعارات بنجاح ✓');
+      if (permission === 'granted') {
+        playInstantAlertSound();
+        showToast('تم تفعيل الإشعارات الفورية والصوت ✓');
+      }
     });
   } else {
     $('notif-modal').style.display = 'none';
   }
 };
 
+window.skipNotifications = function() {
+  startBackgroundKeepAlive();
+  $('notif-modal').style.display = 'none';
+};
+
 function sendNativeNotification(title, body) {
+  playInstantAlertSound(); // تشغيل الصوت والاهتزاز في نفس الثانية
   if ('Notification' in window && Notification.permission === 'granted') {
-    try { new Notification(title, { body: body }); } catch(e){}
+    try {
+      const n = new Notification(title, { 
+        body: body, 
+        requireInteraction: true, // يبقي الإشعار ظاهر على الشاشة
+        tag: 'bus-' + Date.now()
+      });
+      n.onclick = () => { window.focus(); n.close(); };
+    } catch(e){}
   }
 }
 
@@ -567,6 +661,7 @@ function tick(){
   // التنبيه قبل 3 دقائق من نهاية كل شفت (05:27 = 327, 13:27 = 807, 21:27 = 1287)
   if ((tm === 327 || tm === 807 || tm === 1287) && lastPromptMinute !== tm && activeShift) {
       lastPromptMinute = tm;
+      playInstantAlertSound();
       $('shift-msg').textContent = "اقترب موعد انتهاء الشفت الحالي (باقي 3 دقائق). يرجى اختيار الشفت الجديد إذا تم التسليم، أو البقاء على شفتك الحالي:";
       $('btn-keep-shift').style.display = 'block';
       $('shift-modal').style.display = 'flex';
@@ -599,46 +694,51 @@ function tick(){
   $('nextflight').textContent=upcoming.length?`القادمة: ${upcoming[0].flight}`:'—';
   
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
-  $('clock').textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', options).format(new Date());
+  $('clock-time').textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', options).format(new Date());
 }
 
+// التقرير النصي باللغة الإنجليزية بالكامل (للنسخ والواتساب)
 function generateTextReport(shiftBuses){
   const a=shiftBuses.filter(b=>!b.done), done=shiftBuses.filter(b=>b.done), groups=groupBy(a);
-  const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
+  const d = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Riyadh',dateStyle:'short',timeStyle:'short',hour12:false}).format(new Date());
   
   const lines = [
-    `تقرير عمليات الساحات (T4) - ${activeShift}`,
-    'الوقت: ' + d,
+    `Landside Ops Report (T4) - ${activeShift}`,
+    'Time: ' + d,
     '-------------------------',
-    'الباصات بالفرز: ' + a.length,
-    'إجمالي الركاب: ' + a.reduce((n,b)=>n+total(b),0),
-    'المغادرة: ' + done.length,
+    'Active Buses: ' + a.length,
+    'Total Pax: ' + a.reduce((n,b)=>n+total(b),0),
+    'Departed Buses: ' + done.length,
     '-------------------------'
   ];
-  if (!groups.length) { lines.push('لا توجد باصات حالياً بالفرز.'); } else {
+  if (!groups.length) { 
+    lines.push('No active buses in staging.'); 
+  } else {
     for (const g of groups) {
       const f = g[0], hasShared = g.some(b => b.extra && b.extra.length > 0);
-      lines.push('الرحلة: '+f.flight, 'الإقلاع: '+f.time);
-      if (g.length === 1 && !hasShared) { lines.push('الركاب: '+f.pax); } 
-      else if (!hasShared) { lines.push('الباصات: '+g.length, 'الركاب: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`); } 
-      else {
-        lines.push('الباصات: '+g.length);
+      lines.push('Flight: ' + f.flight, 'Dep Time: ' + f.time);
+      if (g.length === 1 && !hasShared) { 
+        lines.push('Pax: ' + f.pax); 
+      } else if (!hasShared) { 
+        lines.push('Buses: ' + g.length, 'Pax: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`); 
+      } else {
+        lines.push('Buses: ' + g.length);
         g.forEach((b, i) => {
           const ex = Array.isArray(b.extra) ? b.extra : [];
-          if (!ex.length) lines.push('- باص '+(i+1)+': '+b.pax+' راكب');
-          else lines.push('- باص '+(i+1)+': '+b.pax+' راكب', '  (مشترك: '+ex.map(x=>x.flight+' '+x.pax).join(' ، ')+')', '  إجمالي: '+total(b));
+          if (!ex.length) lines.push('- Bus ' + (i+1) + ': ' + b.pax + ' Pax');
+          else lines.push('- Bus ' + (i+1) + ': ' + b.pax + ' Pax', '  (Shared: ' + ex.map(x=>x.flight+' ['+x.pax+']').join(', ') + ')', '  Total: ' + total(b) + ' Pax');
         });
       }
       lines.push('-------------------------');
     }
   }
-  return '\u200f' + lines.join('\n\u200f');
+  return lines.join('\n');
 }
 
 window.copyTextReport = async function() {
   const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  try { await navigator.clipboard.writeText(generateTextReport(shiftBuses)); showToast('تم نسخ التقرير النصي بنجاح ✓'); } 
-  catch(e) { prompt('انسخ:', generateTextReport(shiftBuses)); }
+  try { await navigator.clipboard.writeText(generateTextReport(shiftBuses)); showToast('تم نسخ التقرير (English) بنجاح ✓'); } 
+  catch(e) { prompt('Copy Report:', generateTextReport(shiftBuses)); }
 };
 
 window.shareTextWhatsApp = function() {
@@ -721,30 +821,39 @@ window.exportAsPDF = async function() {
   } catch(e) { showToast('حدث خطأ أثناء استخراج الملف'); }
 };
 
+// تتبع الباصات المسجلة لضمان عدم تفويت أي إشعار حتى لو رمشت الشبكة
+const notifiedBusIds = new Set();
 let initialLoad = true;
+
 db.ref('buses').on('value', (snapshot) => {
-  buses = [];
-  snapshot.forEach((childSnapshot) => { buses.push(childSnapshot.val()); });
-  buses.sort((a, b) => a.createdAt - b.createdAt);
+  const incoming = [];
+  snapshot.forEach((childSnapshot) => {
+    const b = childSnapshot.val();
+    incoming.push(b);
+    if (initialLoad) {
+      notifiedBusIds.add(String(b.id));
+    } else if (!notifiedBusIds.has(String(b.id))) {
+      notifiedBusIds.add(String(b.id));
+      // إذا الباص يخص نفس الشفت ومن جهاز زميل آخر، أطلق التنبيه الفوري
+      if ((b.shift || 'Shift A') === activeShift && b.addedBy !== mySessionId) {
+        sendNativeNotification(`New Bus (${activeShift}): ${b.flight}`, `Pax: ${b.pax} | Dep: ${b.time}`);
+        showToast(`🔔 باص جديد: رحلة ${b.flight} (${b.pax} راكب)`);
+      }
+    }
+  });
+  buses = incoming.sort((a, b) => a.createdAt - b.createdAt);
   render();
   initialLoad = false;
 });
 
-db.ref('buses').on('child_added', (snapshot) => {
-  if (initialLoad) return; 
-  const b = snapshot.val();
-  if ((b.shift || 'Shift A') === activeShift && b.addedBy !== mySessionId) {
-    sendNativeNotification(`باص جديد (${activeShift}): ${b.flight}`, `الركاب: ${b.pax} | الإقلاع: ${b.time}`);
-    showToast(`🔔 تم تسجيل باص جديد: رحلة ${b.flight} (${b.pax} راكب)`);
-  }
-});
-
 $('entry').addEventListener('submit',e=>{
   e.preventDefault();
+  startBackgroundKeepAlive();
   if(!activeShift){ $('shift-modal').style.display='flex'; return; }
   const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
   if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){ showToast('تأكد من صحة البيانات المدخلة'); return; }
   const newBus = {id:newId(), flight, time, pax, departure:departure(time,Date.now()), createdAt:Date.now(), done:false, extra:[], addedBy: mySessionId, shift: activeShift};
+  notifiedBusIds.add(String(newBus.id));
   db.ref('buses/' + newBus.id).set(newBus).then(() => showToast('تم تسجيل باص الرحلة ' + flight + ' (' + pax + ' راكب) بنجاح ✓')).catch(() => showToast('خطأ في الاتصال بالسحابة'));
   e.target.reset();
 });
@@ -774,6 +883,7 @@ function action(e){
     const pax=Number(val.trim());
     if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح');return;}
     const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[], addedBy: mySessionId, shift: activeShift};
+    notifiedBusIds.add(String(newBus.id));
     db.ref('buses/' + newBus.id).set(newBus);
     showToast('تم إضافة باص للرحلة ' + b.flight + ' (' + pax + ' راكب) ✓');
     return;
