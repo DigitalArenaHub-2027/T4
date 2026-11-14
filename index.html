@@ -97,6 +97,18 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .bus-status.early { background: var(--early-bg); color: var(--early); }
 .bus-status.normal { background: var(--normal-bg); color: var(--normal); }
 
+.shared-mini-pill {
+  font-size: 11px;
+  font-weight: 900;
+  background: var(--shared-bg);
+  color: var(--shared);
+  border: 1px dashed var(--shared);
+  padding: 2px 6px;
+  border-radius: 6px;
+  direction: ltr;
+  display: inline-block;
+}
+
 @keyframes pulse-recent { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 @keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 .recent-depart { border-color: var(--early) !important; background-color: var(--early-bg) !important; animation: pulse-recent 2s infinite; }
@@ -287,7 +299,6 @@ function startBackgroundKeepAlive() {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     audioCtx = new AudioContext();
-    // تشغيل تردد صامت جداً (غير مسموع) يمنع الجوال من قطع الإنترنت عن المتصفح في الخلفية
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     gain.gain.value = 0.00001; 
@@ -297,26 +308,22 @@ function startBackgroundKeepAlive() {
     keepAliveStarted = true;
   } catch (e) {}
 
-  // Web Worker يعمل في الخلفية لإجبار الاتصال على البقاء حياً كل 4 ثواني
   try {
     const blob = new Blob([`setInterval(()=>postMessage('ping'), 4000);`], {type: 'application/javascript'});
     const worker = new Worker(URL.createObjectURL(blob));
     worker.onmessage = () => {
       if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-      // تنشيط اتصال Firebase
       db.ref('.info/connected').once('value', snap => {
         if (!snap.val()) { db.goOffline(); db.goOnline(); }
       });
     };
   } catch (e) {}
 
-  // منع قفل الشاشة التلقائي إن أمكن (Wake Lock API)
   if ('wakeLock' in navigator) {
     navigator.wakeLock.request('screen').catch(()=>{});
   }
 }
 
-// تشغيل نغمة تنبيه مسموعة واهتزاز فور وصول باص جديد
 function playInstantAlertSound() {
   try {
     if (!audioCtx) {
@@ -327,7 +334,7 @@ function playInstantAlertSound() {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(880, audioCtx.currentTime); // نغمة واضحة
+    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
     osc.frequency.setValueAtTime(1046.5, audioCtx.currentTime + 0.12);
     gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
@@ -339,7 +346,6 @@ function playInstantAlertSound() {
   } catch(e){}
 }
 
-// إعادة الاتصال الفوري عند لمس الجوال أو فتح الشاشة
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') {
     db.goOnline();
@@ -350,7 +356,6 @@ document.addEventListener('touchstart', startBackgroundKeepAlive, { once: true }
 document.addEventListener('click', startBackgroundKeepAlive, { once: true });
 // -------------------------------------------------------------------------
 
-// أيقونة التطبيق
 function generateAppIcon() {
   const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 512; const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 512, 512);
@@ -363,7 +368,6 @@ function generateAppIcon() {
 }
 generateAppIcon();
 
-// إدارة الشفتات
 window.setShift = function(s) {
   startBackgroundKeepAlive();
   activeShift = s;
@@ -390,7 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// إدارة الإشعارات
 function checkNotificationPermission() {
   if ('Notification' in window && Notification.permission === 'default') {
     $('notif-modal').style.display = 'flex';
@@ -418,12 +421,12 @@ window.skipNotifications = function() {
 };
 
 function sendNativeNotification(title, body) {
-  playInstantAlertSound(); // تشغيل الصوت والاهتزاز في نفس الثانية
+  playInstantAlertSound();
   if ('Notification' in window && Notification.permission === 'granted') {
     try {
       const n = new Notification(title, { 
         body: body, 
-        requireInteraction: true, // يبقي الإشعار ظاهر على الشاشة
+        requireInteraction: true,
         tag: 'bus-' + Date.now()
       });
       n.onclick = () => { window.focus(); n.close(); };
@@ -470,7 +473,14 @@ function created(b){return Number(b.createdAt)||Number(String(b.id).slice(0,13))
 function dep(b){return Number(b.departure)||departure(b.time,created(b))}
 function mins(ms){const n=Math.max(0,Math.floor(ms/60000));return Math.floor(n/60)+'س '+(n%60)+'د'}
 function until(b){const d=dep(b)-Date.now();return d<=0?'إقلاع':mins(d)}
-function classification(b){const d=dep(b)-created(b); if(d<18000000)return 'late'; if(d>21600000)return 'early'; return 'normal';}
+
+// تعديل معيار الوقت: تحت 4 ساعات متأخر (14,400,000 ms)، وفوق 6 ساعات مبكر (21,600,000 ms)
+function classification(b){
+  const d = dep(b) - created(b); 
+  if(d < 14400000) return 'late'; 
+  if(d > 21600000) return 'early'; 
+  return 'normal';
+}
 function classLabel(c){ return c==='late'?'متأخر':c==='early'?'مبكر':'عادي'; }
 function total(b){return Number(b.pax||0)+(Array.isArray(b.extra)?b.extra:[]).reduce((a,x)=>a+Number(x.pax||0),0)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -535,6 +545,13 @@ async function generatePermit(b) {
 
 function busCard(b,i){
   const c=classification(b), extras=Array.isArray(b.extra)?b.extra:[];
+  
+  // شارات صغيرة للرحلات المشتركة تظهر بجانب عدد ركاب الباص الأساسي بدلاً من دمجها في توتل واحد
+  let inlineSharedBadges = '';
+  if(extras.length) {
+    inlineSharedBadges = extras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
+  }
+
   let sharedHtml = '';
   if(extras.length) {
     sharedHtml = `<div style="margin-top:8px; font-size:11px; font-weight:900; color:var(--shared);">` + extras.map((x,j)=>`
@@ -546,11 +563,12 @@ function busCard(b,i){
   return `<details class="bus-card ${c}">
     <summary class="bus-summary" style="padding:14px 12px; cursor:pointer; display:flex; flex-direction:column; gap:8px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div style="display:flex; align-items:center; gap:10px;">
+        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
           <span style="font-size:15px; font-weight:900;">باص ${i+1}</span>
-          <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--shared); border:1px solid var(--border); direction:ltr;">${total(b)} راكب</span>
+          <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--text-main); border:1px solid var(--border); direction:ltr;">${b.pax} راكب</span>
+          ${inlineSharedBadges}
         </div>
-        <div style="display:flex; align-items:center; gap:10px;">
+        <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
           <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-align:left; line-height:1.4;">
             تحضير: <span style="color:var(--text-main)">${mins(dep(b)-created(b))}</span><br>
             انتظار: <span data-wait="${esc(b.id)}" style="color:var(--text-main)">${mins(Date.now()-created(b))}</span>
@@ -594,19 +612,25 @@ function render(){
   $('donecount').textContent = done.length;
 
   $('active').innerHTML=groups.length?groups.map(g=>{
-    const b=g[0], p=g.reduce((a,x)=>a+total(x),0);
+    const b = g[0];
+    // عرض ركاب الرحلة الأساسية فقط بدون خلطها مع المشترك، وإظهار المشترك بجانبها بشكل صغير وواضح
+    const basePax = g.reduce((a,x)=>a+Number(x.pax||0),0);
+    const allExtras = g.flatMap(x => Array.isArray(x.extra) ? x.extra : []);
+    const headerSharedHtml = allExtras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
+
     return `<div class="flight-block">
       <div style="background:var(--surface); padding:12px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); border-right:4px solid var(--accent);">
         <div style="display:flex; flex-direction:column; gap:4px;">
-          <div style="display:flex; align-items:baseline; gap:10px;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span style="font-size:18px; font-weight:900; color:var(--primary); direction:ltr; letter-spacing:1px;">${esc(b.flight)}</span>
-            <span style="font-size:13px; font-weight:800; color:var(--shared); direction:ltr;">(${p} راكب)</span>
+            <span style="font-size:13px; font-weight:800; color:var(--accent); direction:ltr;">(${basePax} راكب)</span>
+            ${headerSharedHtml}
           </div>
           <div style="font-size:12px; font-weight:800; color:var(--text-muted);">
             إقلاع: <b style="color:var(--text-main); margin-right:4px; font-size:13px; direction:ltr; display:inline-block;">${esc(b.time)}</b> | إجمالي الباصات: <span style="direction:ltr; display:inline-block;">${g.length}</span>
           </div>
         </div>
-        <div class="flight-countdown" data-live="${esc(b.id)}" style="font-size:13px; font-weight:900; color:var(--normal); background:var(--normal-bg); padding:6px 12px; border-radius:8px; border:1px solid var(--normal);">${until(b)}</div>
+        <div class="flight-countdown" data-live="${esc(b.id)}" style="font-size:13px; font-weight:900; color:var(--normal); background:var(--normal-bg); padding:6px 12px; border-radius:8px; border:1px solid var(--normal); flex-shrink:0;">${until(b)}</div>
       </div>
       <div class="buses-container">${g.map((x,i)=>busCard(x,i)).join('')}</div>
       <button class="add-bus-btn" data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص لهذه الرحلة</button>
@@ -622,15 +646,18 @@ function render(){
     const isRecent = timeSinceDone <= 50000;
     const recentClass = isRecent ? 'recent-depart' : '';
     const recentBadge = isRecent ? `<span class="recent-badge-text" style="margin-right:6px;">(غادر للتو)</span>` : '';
+    const extras = Array.isArray(b.extra) ? b.extra : [];
+    const doneSharedBadges = extras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
 
     return `<details class="bus-card early ${recentClass}" data-done-time="${b.doneAt}" style="margin-bottom:12px;">
       <summary class="bus-summary" style="padding:14px 12px; cursor:pointer; display:flex; flex-direction:column; gap:8px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div style="display:flex; align-items:center; gap:10px;">
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
             <span style="font-size:16px; font-weight:900; color:var(--text-main); direction:ltr;">${esc(b.flight)}</span>
-            <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--shared); border:1px solid var(--border); direction:ltr;">${total(b)} راكب</span>
+            <span style="font-size:12px; font-weight:900; background:var(--input-bg); padding:4px 8px; border-radius:6px; color:var(--text-main); border:1px solid var(--border); direction:ltr;">${b.pax} راكب</span>
+            ${doneSharedBadges}
           </div>
-          <div style="display:flex; align-items:center; gap:10px;">
+          <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
             <div style="font-size:11px; color:var(--text-muted); font-weight:800; text-align:left;">
               خروج: <b style="color:var(--text-main); font-size:12px; direction:ltr; display:inline-block;">${dTime}</b><br>
               <span style="color:var(--early)">${b.destination||''}</span>
@@ -658,7 +685,6 @@ function render(){
 function tick(){
   const p = parts(new Date());
   const tm = p.hour * 60 + p.minute;
-  // التنبيه قبل 3 دقائق من نهاية كل شفت (05:27 = 327, 13:27 = 807, 21:27 = 1287)
   if ((tm === 327 || tm === 807 || tm === 1287) && lastPromptMinute !== tm && activeShift) {
       lastPromptMinute = tm;
       playInstantAlertSound();
@@ -697,9 +723,9 @@ function tick(){
   $('clock-time').textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', options).format(new Date());
 }
 
-// التقرير النصي باللغة الإنجليزية بالكامل (للنسخ والواتساب)
+// التقرير النصي بالإنجليزي (تم حذف الباصات المغادرة، وفصل المشترك بوضوح)
 function generateTextReport(shiftBuses){
-  const a=shiftBuses.filter(b=>!b.done), done=shiftBuses.filter(b=>b.done), groups=groupBy(a);
+  const a=shiftBuses.filter(b=>!b.done), groups=groupBy(a);
   const d = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Riyadh',dateStyle:'short',timeStyle:'short',hour12:false}).format(new Date());
   
   const lines = [
@@ -708,7 +734,6 @@ function generateTextReport(shiftBuses){
     '-------------------------',
     'Active Buses: ' + a.length,
     'Total Pax: ' + a.reduce((n,b)=>n+total(b),0),
-    'Departed Buses: ' + done.length,
     '-------------------------'
   ];
   if (!groups.length) { 
@@ -726,7 +751,7 @@ function generateTextReport(shiftBuses){
         g.forEach((b, i) => {
           const ex = Array.isArray(b.extra) ? b.extra : [];
           if (!ex.length) lines.push('- Bus ' + (i+1) + ': ' + b.pax + ' Pax');
-          else lines.push('- Bus ' + (i+1) + ': ' + b.pax + ' Pax', '  (Shared: ' + ex.map(x=>x.flight+' ['+x.pax+']').join(', ') + ')', '  Total: ' + total(b) + ' Pax');
+          else lines.push('- Bus ' + (i+1) + ': ' + b.pax + ' Pax + Shared: ' + ex.map(x=>x.flight+' ('+x.pax+')').join(', '));
         });
       }
       lines.push('-------------------------');
@@ -765,9 +790,11 @@ function generateTableHTML(shiftBuses){
   if(!groups.length) html += `<tr><td colspan="4" style="padding:10px; border:1px solid #cbd5e1;">لا توجد باصات بالفرز حالياً</td></tr>`;
   else {
     groups.forEach(g => {
-      const f = g[0], tot = g.reduce((s,b)=>s+total(b),0);
+      const f = g[0], basePax = g.reduce((s,b)=>s+Number(b.pax||0),0);
+      const allEx = g.flatMap(b => Array.isArray(b.extra) ? b.extra : []);
       const paxDetails = g.length > 1 ? `<div style="font-size:9px; color:#64748b; direction:ltr; margin-top:2px;">(${g.map(b=>b.pax).join(' + ')})</div>` : '';
-      html += `<tr><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${f.flight}</td><td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold; direction:ltr;">${f.time}</td><td style="padding:6px; border:1px solid #cbd5e1; direction:ltr;">${g.length}</td><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706; direction:ltr;">${tot} ${paxDetails}</td></tr>`;
+      const sharedDetails = allEx.length ? `<div style="font-size:9px; color:#d97706; direction:ltr; margin-top:2px;">+ ${allEx.map(x=>`${x.flight} (${x.pax})`).join(' , ')}</div>` : '';
+      html += `<tr><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${f.flight}</td><td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold; direction:ltr;">${f.time}</td><td style="padding:6px; border:1px solid #cbd5e1; direction:ltr;">${g.length}</td><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#0f172a; direction:ltr;">${basePax} ${paxDetails} ${sharedDetails}</td></tr>`;
     });
   }
   html += `</tbody></table>`;
@@ -779,7 +806,9 @@ function generateTableHTML(shiftBuses){
     done.slice().reverse().forEach(b => {
       let dTime = '--:--';
       if(b.doneAt){ try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dt); } catch(e){} }
-      html += `<tr><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${b.flight}</td><td style="padding:6px; border:1px solid #cbd5e1; color:#059669; font-weight:bold; direction:ltr;">${dTime}</td><td style="padding:6px; border:1px solid #cbd5e1;">${b.destination||'--'}</td><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${total(b)}</td></tr>`;
+      const ex = Array.isArray(b.extra) ? b.extra : [];
+      const shTxt = ex.length ? `<div style="font-size:9px; color:#d97706; direction:ltr;">+ ${ex.map(x=>`${x.flight} (${x.pax})`).join(', ')}</div>` : '';
+      html += `<tr><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${b.flight}</td><td style="padding:6px; border:1px solid #cbd5e1; color:#059669; font-weight:bold; direction:ltr;">${dTime}</td><td style="padding:6px; border:1px solid #cbd5e1;">${b.destination||'--'}</td><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${b.pax} ${shTxt}</td></tr>`;
     });
   }
   html += `</tbody></table></div>`;
@@ -821,7 +850,6 @@ window.exportAsPDF = async function() {
   } catch(e) { showToast('حدث خطأ أثناء استخراج الملف'); }
 };
 
-// تتبع الباصات المسجلة لضمان عدم تفويت أي إشعار حتى لو رمشت الشبكة
 const notifiedBusIds = new Set();
 let initialLoad = true;
 
@@ -834,7 +862,6 @@ db.ref('buses').on('value', (snapshot) => {
       notifiedBusIds.add(String(b.id));
     } else if (!notifiedBusIds.has(String(b.id))) {
       notifiedBusIds.add(String(b.id));
-      // إذا الباص يخص نفس الشفت ومن جهاز زميل آخر، أطلق التنبيه الفوري
       if ((b.shift || 'Shift A') === activeShift && b.addedBy !== mySessionId) {
         sendNativeNotification(`New Bus (${activeShift}): ${b.flight}`, `Pax: ${b.pax} | Dep: ${b.time}`);
         showToast(`🔔 باص جديد: رحلة ${b.flight} (${b.pax} راكب)`);
