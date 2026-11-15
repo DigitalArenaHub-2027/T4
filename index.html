@@ -88,6 +88,10 @@ body.dark-theme .filters button.active { background: var(--accent); color: #fff;
 .flight-block { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 15px; background: var(--bg-color); overflow: hidden; }
 .buses-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
+.editable-header { cursor: pointer; padding: 4px 6px; margin: -4px -6px; border-radius: 8px; transition: 0.2s; }
+.editable-header:active { background: var(--normal-bg); transform: scale(0.98); }
+.edit-pen-badge { font-size: 11px; color: var(--accent); background: var(--normal-bg); padding: 2px 6px; border-radius: 6px; font-weight: 900; display: inline-flex; align-items: center; gap: 3px; border: 1px dashed var(--accent); }
+
 details.bus-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); transition: 0.3s; }
 details.bus-card.late { border-right: 5px solid var(--late); }
 details.bus-card.early { border-right: 5px solid var(--early); }
@@ -126,6 +130,72 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .tools-grid button:active { transform: scale(0.97); }
 .btn-whatsapp-img { background: #10b981; } .btn-whatsapp-text { background: #2563eb; } .btn-pdf { background: #dc2626; } .btn-copy { background: #475569; }
 
+/* تصميم قسم تقرير الـ Status ودمج الصور الجديد */
+.status-box { margin-top: 18px; padding: 15px; background: var(--input-bg); border: 2px solid var(--border); border-radius: var(--radius-md); }
+.status-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.status-box-header h3 { margin: 0; font-size: 14px; font-weight: 900; color: var(--primary); }
+.status-preview-text {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  direction: ltr;
+  text-align: left;
+  color: var(--text-main);
+  max-height: 280px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.photo-merger-card {
+  background: var(--surface);
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-top: 12px;
+  text-align: center;
+}
+.photo-Upload-btn {
+  width: 100%;
+  background: var(--normal-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 900;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.thumbs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+.thumb-item {
+  position: relative;
+  height: 75px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.thumb-item img { width: 100%; height: 100%; object-fit: cover; }
+.thumb-del {
+  position: absolute; top: 3px; right: 3px;
+  background: rgba(239, 68, 68, 0.9); color: #fff;
+  width: 22px; height: 22px; border-radius: 50%;
+  font-size: 12px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+
 .report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 450px; overflow-y: auto; margin-top: 15px; }
 .empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
 
@@ -142,7 +212,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15, 23, 42, 0.85); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(8px); }
 .modal-box { background: var(--surface); padding: 25px 20px; border-radius: var(--radius-lg); width: 100%; max-width: 350px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow-md); }
 .modal-box h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 18px; font-weight: 900; }
-.modal-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; font-weight: 700; line-height: 1.6; }
+.modal-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-weight: 700; line-height: 1.6; }
 .modal-box button { width: 100%; padding: 16px; margin-bottom: 12px; border-radius: var(--radius-md); font-size: 15px; font-weight: 900; border: 2px solid var(--border); background: var(--input-bg); color: var(--text-main); }
 .modal-box button:active { transform: scale(0.97); }
 .modal-box button.btn-mosque { border-color: var(--early); background: var(--early-bg); color: var(--early); }
@@ -173,6 +243,30 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
     <p>لضمان وصول التنبيهات والصوت لك في نفس الثانية حتى لو الشاشة بوضع الانتظار، اضغط للتفعيل:</p>
     <button class="btn-notif" onclick="requestNotificationPermission()">تفعيل الإشعارات الفورية والدخول</button>
     <button style="background:transparent; border-color:transparent; color:var(--text-muted);" onclick="skipNotifications()">دخول بدون إشعارات</button>
+  </div>
+</div>
+
+<!-- نافذة تعديل وقت ورقم الرحلة المباشر -->
+<div id="edit-flight-modal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>تعديل بيانات الرحلة ✎</h3>
+    <p>يمكنك تصحيح رقم الرحلة أو وقت الإقلاع لجميع باصات هذه الرحلة مباشرة:</p>
+    <div class="form-grid" style="text-align:right; margin-bottom:16px;">
+      <div class="form-field">
+        <label>رقم الرحلة</label>
+        <input id="edit-flight-input" class="form-input" maxlength="14" autocapitalize="characters">
+      </div>
+      <div class="form-field">
+        <label>وقت الإقلاع الصحيح</label>
+        <input id="edit-time-input" type="time" class="form-input">
+      </div>
+      <div class="form-field" id="edit-pax-wrapper" style="display:none;">
+        <label>عدد ركاب هذا الباص</label>
+        <input id="edit-pax-input" type="number" min="1" max="150" inputmode="numeric" class="form-input">
+      </div>
+    </div>
+    <button class="btn-notif" onclick="saveFlightEdit()">حفظ التعديلات ✓</button>
+    <button style="background:transparent; border-color:transparent; color:var(--text-muted); margin-bottom:0;" onclick="document.getElementById('edit-flight-modal').style.display='none'">إلغاء الأمر</button>
   </div>
 </div>
 
@@ -246,13 +340,43 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
 
   <details class="panel">
     <summary class="panel-header"><h2>التقارير اليومية الرسمية</h2></summary>
-    <div class="tools-grid">
-      <button type="button" onclick="exportAsImageAndShare()" class="btn-whatsapp-img">صورة (واتساب)</button>
-      <button type="button" onclick="shareTextWhatsApp()" class="btn-whatsapp-text">نص (English واتساب)</button>
-      <button type="button" onclick="exportAsPDF()" class="btn-pdf">تحميل كـ PDF</button>
-      <button type="button" onclick="copyTextReport()" class="btn-copy">نسخ نص (English)</button>
+
+    <!-- قسم التقرير الإنجليزي الذكي (Status Report) ودمج الصور -->
+    <div class="status-box">
+      <div class="status-box-header">
+        <h3>📋 T4 Landside Status Report</h3>
+        <span class="panel-badge" id="next-hour-badge">Auto Time</span>
+      </div>
+      
+      <div id="status-report-preview" class="status-preview-text"></div>
+
+      <div class="tools-grid" style="margin-top:0; margin-bottom:12px;">
+        <button type="button" onclick="copyTextReport()" class="btn-copy">نسخ التقرير النصي</button>
+        <button type="button" onclick="shareTextWhatsApp()" class="btn-whatsapp-text">إرسال نص للواتساب</button>
+      </div>
+
+      <!-- خانة إضافة ودمج الصور مع التقرير -->
+      <div class="photo-merger-card">
+        <input type="file" id="status-photos-input" accept="image/*" multiple style="display:none" onchange="handleStatusPhotos(event)">
+        <button type="button" class="photo-Upload-btn" onclick="document.getElementById('status-photos-input').click()">
+          📸 إضافة صور من الاستديو لدمجها مع التقرير
+        </button>
+        <div id="status-thumbs" class="thumbs-grid"></div>
+        <button type="button" id="btn-merge-share" onclick="mergePhotosAndShareStatus()" class="btn-whatsapp-img" style="width:100%; margin-top:12px; padding:14px; border-radius:10px; font-weight:900; font-size:14px; color:#fff; display:none;">
+          🚀 دمج الصور وإرسالها مع التقرير للواتساب
+        </button>
+      </div>
     </div>
-    <div id="preview" class="report-view"></div>
+
+    <!-- قسم جدول الـ PDF والصورة الرسمية للجدول -->
+    <div style="margin-top:18px; border-top:1px dashed var(--border); padding-top:14px;">
+      <h3 style="margin:0 0 10px 0; font-size:14px; font-weight:900; color:var(--primary);">📊 الجدول الرسمي للشفت (صورة / PDF)</h3>
+      <div class="tools-grid">
+        <button type="button" onclick="exportAsImageAndShare()" class="btn-whatsapp-img">مشاركة الجدول كصورة</button>
+        <button type="button" onclick="exportAsPDF()" class="btn-pdf">تحميل الجدول كـ PDF</button>
+      </div>
+      <div id="preview" class="report-view"></div>
+    </div>
   </details>
 </main>
 
@@ -474,7 +598,7 @@ function dep(b){return Number(b.departure)||departure(b.time,created(b))}
 function mins(ms){const n=Math.max(0,Math.floor(ms/60000));return Math.floor(n/60)+'س '+(n%60)+'د'}
 function until(b){const d=dep(b)-Date.now();return d<=0?'إقلاع':mins(d)}
 
-// تعديل معيار الوقت: تحت 4 ساعات متأخر (14,400,000 ms)، وفوق 6 ساعات مبكر (21,600,000 ms)
+// تحت 4 ساعات متأخر (14,400,000 ms)، وفوق 6 ساعات مبكر (21,600,000 ms)
 function classification(b){
   const d = dep(b) - created(b); 
   if(d < 14400000) return 'late'; 
@@ -487,6 +611,75 @@ function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;',
 function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
+
+// ----------------- نافذة تعديل بيانات الرحلة والوقت المباشرة -----------------
+let editingFlightContext = null;
+
+window.openEditFlightModal = function(busId, isSingleBus = false) {
+  const b = buses.find(x => String(x.id) === String(busId));
+  if (!b) return;
+  editingFlightContext = {
+    oldFlight: b.flight,
+    oldTime: b.time,
+    busId: b.id,
+    isSingleBus: isSingleBus,
+    doneState: !!b.done
+  };
+  $('edit-flight-input').value = b.flight;
+  $('edit-time-input').value = b.time;
+  if (isSingleBus) {
+    $('edit-pax-wrapper').style.display = 'flex';
+    $('edit-pax-input').value = b.pax;
+  } else {
+    $('edit-pax-wrapper').style.display = 'none';
+  }
+  $('edit-flight-modal').style.display = 'flex';
+};
+
+window.saveFlightEdit = function() {
+  if (!editingFlightContext) return;
+  const newFlight = $('edit-flight-input').value.trim().toUpperCase().replace(/\s+/g, '');
+  const newTime = $('edit-time-input').value.trim();
+
+  if (!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(newFlight) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(newTime)) {
+    showToast('تأكد من صحة رقم الرحلة أو وقت الإقلاع');
+    return;
+  }
+
+  if (editingFlightContext.isSingleBus) {
+    const newPax = Number($('edit-pax-input').value);
+    if (!Number.isInteger(newPax) || newPax < 1 || newPax > 150) {
+      showToast('تأكد من عدد الركاب (1 - 150)');
+      return;
+    }
+    const b = buses.find(x => String(x.id) === String(editingFlightContext.busId));
+    if (b) {
+      b.flight = newFlight;
+      b.time = newTime;
+      b.pax = newPax;
+      b.departure = departure(newTime, created(b));
+      db.ref('buses/' + b.id).set(b);
+    }
+  } else {
+    const targetBuses = buses.filter(x =>
+      (x.shift || 'Shift A') === activeShift &&
+      Boolean(x.done) === editingFlightContext.doneState &&
+      x.flight === editingFlightContext.oldFlight &&
+      x.time === editingFlightContext.oldTime
+    );
+    targetBuses.forEach(b => {
+      b.flight = newFlight;
+      b.time = newTime;
+      b.departure = departure(newTime, created(b));
+      db.ref('buses/' + b.id).set(b);
+    });
+  }
+
+  $('edit-flight-modal').style.display = 'none';
+  editingFlightContext = null;
+  showToast('تم تعديل بيانات الرحلة والوقت بنجاح ✓');
+};
+// -------------------------------------------------------------------------
 
 let pendingDoneBusId = null;
 $('btn-dest-1').onclick = () => confirmDeparture('01 خلف المسجد');
@@ -546,7 +739,6 @@ async function generatePermit(b) {
 function busCard(b,i){
   const c=classification(b), extras=Array.isArray(b.extra)?b.extra:[];
   
-  // شارات صغيرة للرحلات المشتركة تظهر بجانب عدد ركاب الباص الأساسي بدلاً من دمجها في توتل واحد
   let inlineSharedBadges = '';
   if(extras.length) {
     inlineSharedBadges = extras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
@@ -581,7 +773,8 @@ function busCard(b,i){
       ${sharedHtml}
       <div class="bus-action-row" style="margin-bottom:6px;">
         <button data-action="addextra" data-id="${esc(b.id)}">${svgAdd} مشترك</button>
-        <button data-action="edit-entry" data-id="${esc(b.id)}">⏱️ تعديل الدخول</button>
+        <button data-action="edit-bus" data-id="${esc(b.id)}">✎ تعديل الباص</button>
+        <button data-action="edit-entry" data-id="${esc(b.id)}">⏱️ الدخول</button>
       </div>
       <div class="bus-action-row">
         <button class="success" data-action="done" data-id="${esc(b.id)}">${svgDepart} غادر</button>
@@ -613,21 +806,21 @@ function render(){
 
   $('active').innerHTML=groups.length?groups.map(g=>{
     const b = g[0];
-    // عرض ركاب الرحلة الأساسية فقط بدون خلطها مع المشترك، وإظهار المشترك بجانبها بشكل صغير وواضح
     const basePax = g.reduce((a,x)=>a+Number(x.pax||0),0);
     const allExtras = g.flatMap(x => Array.isArray(x.extra) ? x.extra : []);
     const headerSharedHtml = allExtras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
 
     return `<div class="flight-block">
       <div style="background:var(--surface); padding:12px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); border-right:4px solid var(--accent);">
-        <div style="display:flex; flex-direction:column; gap:4px;">
+        <div class="editable-header" data-action="edit-flight-group" data-id="${esc(b.id)}" title="اضغط لتعديل وقت الإقلاع أو رقم الرحلة" style="display:flex; flex-direction:column; gap:4px; flex:1;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span style="font-size:18px; font-weight:900; color:var(--primary); direction:ltr; letter-spacing:1px;">${esc(b.flight)}</span>
             <span style="font-size:13px; font-weight:800; color:var(--accent); direction:ltr;">(${basePax} راكب)</span>
             ${headerSharedHtml}
+            <span class="edit-pen-badge">✎ تعديل الوقت</span>
           </div>
           <div style="font-size:12px; font-weight:800; color:var(--text-muted);">
-            إقلاع: <b style="color:var(--text-main); margin-right:4px; font-size:13px; direction:ltr; display:inline-block;">${esc(b.time)}</b> | إجمالي الباصات: <span style="direction:ltr; display:inline-block;">${g.length}</span>
+            إقلاع: <b style="color:var(--text-main); margin-right:4px; font-size:13px; direction:ltr; display:inline-block; text-decoration:underline dotted var(--accent);">${esc(b.time)}</b> | إجمالي الباصات: <span style="direction:ltr; display:inline-block;">${g.length}</span>
           </div>
         </div>
         <div class="flight-countdown" data-live="${esc(b.id)}" style="font-size:13px; font-weight:900; color:var(--normal); background:var(--normal-bg); padding:6px 12px; border-radius:8px; border:1px solid var(--normal); flex-shrink:0;">${until(b)}</div>
@@ -670,7 +863,8 @@ function render(){
       <div class="bus-actions">
         <div class="bus-action-row">
           <button data-action="restore" data-id="${esc(b.id)}" style="color:var(--text-main)">تراجع للفرز</button>
-          <button data-action="edit-exit" data-id="${esc(b.id)}" style="color:var(--text-main)">⏱️ تعديل الخروج</button>
+          <button data-action="edit-bus" data-id="${esc(b.id)}" style="color:var(--text-main)">✎ تعديل الرحلة</button>
+          <button data-action="edit-exit" data-id="${esc(b.id)}" style="color:var(--text-main)">⏱️ الخروج</button>
           <button data-action="permit" data-id="${esc(b.id)}" style="flex: 0 0 45px; padding: 0; display:flex; justify-content:center; align-items:center;" title="إعادة طباعة التصريح">${svgPrint}</button>
         </div>
         <button class="danger" data-action="delete" data-id="${esc(b.id)}" style="width:100%; margin-top:6px">${svgDel} حذف نهائي</button>
@@ -678,6 +872,7 @@ function render(){
     </details>`;
   }).join('') : '<div class="empty-msg">سجل المغادرة فارغ لهذا الشفت.</div>';
 
+  $('status-report-preview').textContent = generateTextReport(shiftBuses);
   $('preview').innerHTML = generateTableHTML(shiftBuses);
   tick();
 }
@@ -721,48 +916,91 @@ function tick(){
   
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
   $('clock-time').textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', options).format(new Date());
+
+  // تحديث معاينة التقرير الإنجليزي كل دقيقة لضمان دقة الساعة القادمة
+  const srp = $('status-report-preview');
+  if (srp && activeShift) {
+    const allShiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+    srp.textContent = generateTextReport(allShiftBuses);
+  }
 }
 
-// التقرير النصي بالإنجليزي (تم حذف الباصات المغادرة، وفصل المشترك بوضوح)
-function generateTextReport(shiftBuses){
-  const a=shiftBuses.filter(b=>!b.done), groups=groupBy(a);
-  const d = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Riyadh',dateStyle:'short',timeStyle:'short',hour12:false}).format(new Date());
+// حساب الساعة القادمة تلقائياً (مثلاً 09:15 تصبح 10:00) مع التاريخ الإنجليزي
+function getNextHourFormatted() {
+  const now = new Date();
+  const riyadhStr = now.toLocaleString('en-US', { timeZone: 'Asia/Riyadh' });
+  const rDate = new Date(riyadhStr);
   
-  const lines = [
-    `Landside Ops Report (T4) - ${activeShift}`,
-    'Time: ' + d,
-    '-------------------------',
-    'Active Buses: ' + a.length,
-    'Total Pax: ' + a.reduce((n,b)=>n+total(b),0),
-    '-------------------------'
-  ];
-  if (!groups.length) { 
-    lines.push('No active buses in staging.'); 
+  if (rDate.getMinutes() > 0 || rDate.getSeconds() > 0) {
+    rDate.setHours(rDate.getHours() + 1, 0, 0, 0);
   } else {
+    rDate.setMinutes(0, 0, 0);
+  }
+
+  const day = rDate.getDate();
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const monthName = months[rDate.getMonth()];
+  const year = rDate.getFullYear();
+  const hourStr = String(rDate.getHours()).padStart(2, '0') + ':00';
+
+  const badge = $('next-hour-badge');
+  if (badge) badge.textContent = hourStr;
+
+  return `${day} ${monthName}${year} |${hourStr}`;
+}
+
+// التقرير النصي الإنجليزي المعتمد (Status Report)
+function generateTextReport(shiftBuses){
+  const a = shiftBuses.filter(b => !b.done);
+  const groups = groupBy(a);
+  const headerDateTime = getNextHourFormatted();
+
+  const lines = [
+    'T4 Landside Operation Status Report',
+    headerDateTime,
+    '',
+    '',
+    '🟢 Overall Status: All locations operation are running smoothly.',
+    `🟢 EBHA :(${a.length} Buses)`
+  ];
+
+  if (groups.length > 0) {
     for (const g of groups) {
-      const f = g[0], hasShared = g.some(b => b.extra && b.extra.length > 0);
-      lines.push('Flight: ' + f.flight, 'Dep Time: ' + f.time);
-      if (g.length === 1 && !hasShared) { 
-        lines.push('Pax: ' + f.pax); 
-      } else if (!hasShared) { 
-        lines.push('Buses: ' + g.length, 'Pax: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`); 
-      } else {
-        lines.push('Buses: ' + g.length);
-        g.forEach((b, i) => {
-          const ex = Array.isArray(b.extra) ? b.extra : [];
-          if (!ex.length) lines.push('- Bus ' + (i+1) + ': ' + b.pax + ' Pax');
-          else lines.push('- Bus ' + (i+1) + ': ' + b.pax + ' Pax + Shared: ' + ex.map(x=>x.flight+' ('+x.pax+')').join(', '));
-        });
-      }
-      lines.push('-------------------------');
+      const f = g[0];
+      const basePax = g.reduce((sum, b) => sum + Number(b.pax || 0), 0);
+      const paxBreakdown = g.length > 1 ? ` (${g.map(b => b.pax).join('+')})` : '';
+      const allEx = g.flatMap(b => Array.isArray(b.extra) ? b.extra : []);
+      const sharedStr = allEx.length ? ` + Shared: ${allEx.map(x => `${x.flight} (${x.pax} Pax)`).join(', ')}` : '';
+      
+      lines.push(`Flight: ${f.flight} | Dep: ${f.time} | Pax: ${basePax}${paxBreakdown}${sharedStr}`);
     }
   }
+
+  lines.push(
+    '',
+    '🟢 Drop off Behind the Mosuq : Normal',
+    '🟢 The Mosuq: Normal',
+    '',
+    '',
+    '🟢 Curbside-1( Departure): Normal',
+    '🟢 Curbside-2 ( Arrival): Normal',
+    '🟢 GCIF : Normal',
+    '',
+    '',
+    '🟢 Arrival Corridor ( West): Normal',
+    '🟢 Curbside -3 ( Arrival  west): Normal',
+    '',
+    '',
+    '',
+    'All landside teams have been deployed to their assigned locations and are fully prepared to provide the necessary support.'
+  );
+
   return lines.join('\n');
 }
 
 window.copyTextReport = async function() {
   const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  try { await navigator.clipboard.writeText(generateTextReport(shiftBuses)); showToast('تم نسخ التقرير (English) بنجاح ✓'); } 
+  try { await navigator.clipboard.writeText(generateTextReport(shiftBuses)); showToast('تم نسخ تقرير الـ Status بنجاح ✓'); } 
   catch(e) { prompt('Copy Report:', generateTextReport(shiftBuses)); }
 };
 
@@ -770,6 +1008,124 @@ window.shareTextWhatsApp = function() {
   const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
   window.open('https://wa.me/?text=' + encodeURIComponent(generateTextReport(shiftBuses)), '_blank');
 };
+
+// ----------------- ميزة رفع ودمج الصور وإرسالها مع التقرير للواتساب -----------------
+let selectedStatusImages = [];
+
+window.handleStatusPhotos = function(e) {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        selectedStatusImages.push({ src: ev.target.result, img: img });
+        renderStatusThumbs();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+};
+
+window.removeStatusPhoto = function(idx) {
+  selectedStatusImages.splice(idx, 1);
+  renderStatusThumbs();
+};
+
+function renderStatusThumbs() {
+  const container = $('status-thumbs');
+  const mergeBtn = $('btn-merge-share');
+  if (!selectedStatusImages.length) {
+    container.innerHTML = '';
+    mergeBtn.style.display = 'none';
+    return;
+  }
+  mergeBtn.style.display = 'block';
+  mergeBtn.textContent = `🚀 دمج (${selectedStatusImages.length}) صور وإرسالها مع التقرير للواتساب`;
+  container.innerHTML = selectedStatusImages.map((item, idx) => `
+    <div class="thumb-item">
+      <img src="${item.src}">
+      <div class="thumb-del" onclick="removeStatusPhoto(${idx})">✕</div>
+    </div>
+  `).join('');
+}
+
+window.mergePhotosAndShareStatus = async function() {
+  if (!selectedStatusImages.length) {
+    showToast('الرجاء اختيار الصور أولاً');
+    return;
+  }
+  showToast('جاري دمج الصور وتجهيز التقرير...');
+
+  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  const reportText = generateTextReport(shiftBuses);
+
+  try {
+    await navigator.clipboard.writeText(reportText);
+  } catch (e) {}
+
+  // دمج الصور في شبكة احترافية (عمودين لسهولة القراءة في الواتساب)
+  const count = selectedStatusImages.length;
+  const cols = count === 1 ? 1 : 2;
+  const rows = Math.ceil(count / cols);
+  const cellW = 800;
+  const cellH = 600;
+  const pad = 16;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = cols * cellW + (cols + 1) * pad;
+  canvas.height = rows * cellH + (rows + 1) * pad;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  selectedStatusImages.forEach((item, index) => {
+    const r = Math.floor(index / cols);
+    const c = index % cols;
+    const isLastOdd = (count % 2 !== 0 && index === count - 1 && cols === 2);
+    
+    const x = isLastOdd ? pad : pad + c * (cellW + pad);
+    const y = pad + r * (cellH + pad);
+    const currentCellW = isLastOdd ? (cellW * 2 + pad) : cellW;
+
+    const img = item.img;
+    const scale = Math.max(currentCellW / img.width, cellH / img.height);
+    const nw = img.width * scale;
+    const nh = img.height * scale;
+    const cx = x + (currentCellW - nw) / 2;
+    const cy = y + (cellH - nh) / 2;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(x, y, currentCellW, cellH, 16);
+    ctx.clip();
+    ctx.drawImage(img, cx, cy, nw, nh);
+    ctx.restore();
+  });
+
+  canvas.toBlob(async (blob) => {
+    if (!blob) { showToast('حدث خطأ أثناء دمج الصور'); return; }
+    const file = new File([blob], `T4_Landside_Report.jpg`, { type: 'image/jpeg' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          text: reportText
+        });
+        showToast('تم تجهيز الصور والتقرير للواتساب ✓');
+      } catch (err) {}
+    } else {
+      window.open(URL.createObjectURL(blob), '_blank');
+      showToast('تم نسخ التقرير! احفظ الصورة المدمجة وأرسلها ✓');
+    }
+  }, 'image/jpeg', 0.9);
+};
+// -------------------------------------------------------------------------
 
 function generateTableHTML(shiftBuses){
   const a = shiftBuses.filter(b => !b.done), done = shiftBuses.filter(b => b.done), groups = groupBy(a);
@@ -892,12 +1248,14 @@ $('flight').addEventListener('input',()=>{
 });
 
 function action(e){
-  let btn = e.target.closest('button[data-action]') || e.target.closest('span[data-action]');
+  let btn = e.target.closest('[data-action]');
   if(!btn) return;
   const a=btn.dataset.action,b=buses.find(b=>String(b.id)===btn.dataset.id);
   if(!b)return;
 
-  if(a==='permit'){ generatePermit(b); return; }
+  if(a==='edit-flight-group'){ openEditFlightModal(b.id, false); return; }
+  else if(a==='edit-bus'){ openEditFlightModal(b.id, true); return; }
+  else if(a==='permit'){ generatePermit(b); return; }
   else if(a==='delete'){
     if(!confirm('تأكيد الحذف النهائي للباص؟'))return;
     db.ref('buses/' + b.id).remove();
