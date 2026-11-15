@@ -14,10 +14,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
-<!-- مكتبات استخراج التقارير الرسمية (PDF وصور) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <style>
 :root {
   --bg-color: #f4f7f9; --surface: #ffffff; --primary: #0f172a; --primary-light: #334155;
@@ -128,10 +124,10 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .tools-grid button { padding: 14px 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 .tools-grid button:active { transform: scale(0.97); }
-.btn-whatsapp-img { background: #10b981; } .btn-whatsapp-text { background: #2563eb; } .btn-pdf { background: #dc2626; } .btn-copy { background: #475569; }
+.btn-whatsapp-img { background: #10b981; } .btn-whatsapp-text { background: #2563eb; } .btn-copy { background: #475569; }
 
-/* تصميم قسم تقرير الـ Status ودمج الصور الجديد */
-.status-box { margin-top: 18px; padding: 15px; background: var(--input-bg); border: 2px solid var(--border); border-radius: var(--radius-md); }
+/* تصميم صناديق التقارير النصية */
+.status-box { margin-top: 14px; padding: 15px; background: var(--input-bg); border: 2px solid var(--border); border-radius: var(--radius-md); }
 .status-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .status-box-header h3 { margin: 0; font-size: 14px; font-weight: 900; color: var(--primary); }
 .status-preview-text {
@@ -146,7 +142,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
   direction: ltr;
   text-align: left;
   color: var(--text-main);
-  max-height: 280px;
+  max-height: 260px;
   overflow-y: auto;
   margin-bottom: 12px;
   font-weight: 700;
@@ -196,7 +192,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
   cursor: pointer;
 }
 
-.report-view { background: var(--input-bg); border: 1px solid var(--border); padding: 5px; border-radius: var(--radius-md); max-height: 450px; overflow-y: auto; margin-top: 15px; }
 .empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
 
 .toast { 
@@ -341,7 +336,7 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
   <details class="panel">
     <summary class="panel-header"><h2>التقارير اليومية الرسمية</h2></summary>
 
-    <!-- قسم التقرير الإنجليزي الذكي (Status Report) ودمج الصور -->
+    <!-- 1. التقرير الأساسي فوق: Status Report مع دمج الصور -->
     <div class="status-box">
       <div class="status-box-header">
         <h3>📋 T4 Landside Status Report</h3>
@@ -351,8 +346,8 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
       <div id="status-report-preview" class="status-preview-text"></div>
 
       <div class="tools-grid" style="margin-top:0; margin-bottom:12px;">
-        <button type="button" onclick="copyTextReport()" class="btn-copy">نسخ التقرير النصي</button>
-        <button type="button" onclick="shareTextWhatsApp()" class="btn-whatsapp-text">إرسال نص للواتساب</button>
+        <button type="button" onclick="copyStatusReport()" class="btn-copy">نسخ التقرير الأساسي</button>
+        <button type="button" onclick="shareStatusWhatsApp()" class="btn-whatsapp-text">واتساب (نص فقط)</button>
       </div>
 
       <!-- خانة إضافة ودمج الصور مع التقرير -->
@@ -368,14 +363,19 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
       </div>
     </div>
 
-    <!-- قسم جدول الـ PDF والصورة الرسمية للجدول -->
-    <div style="margin-top:18px; border-top:1px dashed var(--border); padding-top:14px;">
-      <h3 style="margin:0 0 10px 0; font-size:14px; font-weight:900; color:var(--primary);">📊 الجدول الرسمي للشفت (صورة / PDF)</h3>
-      <div class="tools-grid">
-        <button type="button" onclick="exportAsImageAndShare()" class="btn-whatsapp-img">مشاركة الجدول كصورة</button>
-        <button type="button" onclick="exportAsPDF()" class="btn-pdf">تحميل الجدول كـ PDF</button>
+    <!-- 2. التقرير الثاني تحت: التقرير النصي لرحلات الموقع (النسخ النصي الأول) -->
+    <div class="status-box" style="margin-top:16px;">
+      <div class="status-box-header">
+        <h3>🚌 تقرير رحلات الموقع (Landside Ops Report)</h3>
+        <span class="panel-badge">English Text</span>
       </div>
-      <div id="preview" class="report-view"></div>
+      
+      <div id="site-flights-preview" class="status-preview-text"></div>
+
+      <div class="tools-grid" style="margin-top:0;">
+        <button type="button" onclick="copySiteFlightsReport()" class="btn-copy">نسخ رحلات الموقع</button>
+        <button type="button" onclick="shareSiteFlightsWhatsApp()" class="btn-whatsapp-text">إرسال للواتساب</button>
+      </div>
     </div>
   </details>
 </main>
@@ -872,8 +872,8 @@ function render(){
     </details>`;
   }).join('') : '<div class="empty-msg">سجل المغادرة فارغ لهذا الشفت.</div>';
 
-  $('status-report-preview').textContent = generateTextReport(shiftBuses);
-  $('preview').innerHTML = generateTableHTML(shiftBuses);
+  $('status-report-preview').textContent = generateStatusReportText(shiftBuses);
+  $('site-flights-preview').textContent = generateSiteFlightsText(shiftBuses);
   tick();
 }
 
@@ -917,11 +917,12 @@ function tick(){
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
   $('clock-time').textContent = new Intl.DateTimeFormat('ar-SA-u-nu-latn', options).format(new Date());
 
-  // تحديث معاينة التقرير الإنجليزي كل دقيقة لضمان دقة الساعة القادمة
-  const srp = $('status-report-preview');
-  if (srp && activeShift) {
+  if (activeShift) {
     const allShiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-    srp.textContent = generateTextReport(allShiftBuses);
+    const srp = $('status-report-preview');
+    if (srp) srp.textContent = generateStatusReportText(allShiftBuses);
+    const sfp = $('site-flights-preview');
+    if (sfp) sfp.textContent = generateSiteFlightsText(allShiftBuses);
   }
 }
 
@@ -949,8 +950,8 @@ function getNextHourFormatted() {
   return `${day} ${monthName}${year} |${hourStr}`;
 }
 
-// التقرير النصي الإنجليزي المعتمد (Status Report)
-function generateTextReport(shiftBuses){
+// 1. التقرير الأساسي فوق: T4 Landside Operation Status Report
+function generateStatusReportText(shiftBuses){
   const a = shiftBuses.filter(b => !b.done);
   const groups = groupBy(a);
   const headerDateTime = getNextHourFormatted();
@@ -998,15 +999,65 @@ function generateTextReport(shiftBuses){
   return lines.join('\n');
 }
 
-window.copyTextReport = async function() {
+// 2. التقرير الثاني تحت: النسخ النصي الأول لرحلات الموقع (Landside Ops Report)
+function generateSiteFlightsText(shiftBuses){
+  const a = shiftBuses.filter(b => !b.done), groups = groupBy(a);
+  const d = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Riyadh',dateStyle:'short',timeStyle:'short',hour12:false}).format(new Date());
+  
+  const lines = [
+    `Landside Ops Report (T4) - ${activeShift}`,
+    'Time: ' + d,
+    '-------------------------',
+    'Active Buses: ' + a.length,
+    'Total Pax: ' + a.reduce((n,b)=>n+total(b),0),
+    '-------------------------'
+  ];
+  if (!groups.length) { 
+    lines.push('No active buses in staging.'); 
+  } else {
+    for (const g of groups) {
+      const f = g[0], hasShared = g.some(b => b.extra && b.extra.length > 0);
+      lines.push('Flight: ' + f.flight, 'Dep Time: ' + f.time);
+      if (g.length === 1 && !hasShared) { 
+        lines.push('Pax: ' + f.pax); 
+      } else if (!hasShared) { 
+        lines.push('Buses: ' + g.length, 'Pax: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`); 
+      } else {
+        lines.push('Buses: ' + g.length);
+        g.forEach((b, i) => {
+          const ex = Array.isArray(b.extra) ? b.extra : [];
+          if (!ex.length) lines.push('- Bus ' + (i+1) + ': ' + b.pax + ' Pax');
+          else lines.push('- Bus ' + (i+1) + ': ' + b.pax + ' Pax + Shared: ' + ex.map(x=>x.flight+' ('+x.pax+')').join(', '));
+        });
+      }
+      lines.push('-------------------------');
+    }
+  }
+  return lines.join('\n');
+}
+
+// أزرار التقرير الأول (Status Report)
+window.copyStatusReport = async function() {
   const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  try { await navigator.clipboard.writeText(generateTextReport(shiftBuses)); showToast('تم نسخ تقرير الـ Status بنجاح ✓'); } 
-  catch(e) { prompt('Copy Report:', generateTextReport(shiftBuses)); }
+  try { await navigator.clipboard.writeText(generateStatusReportText(shiftBuses)); showToast('تم نسخ التقرير الأساسي (Status) بنجاح ✓'); } 
+  catch(e) { prompt('Copy Report:', generateStatusReportText(shiftBuses)); }
 };
 
-window.shareTextWhatsApp = function() {
+window.shareStatusWhatsApp = function() {
   const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  window.open('https://wa.me/?text=' + encodeURIComponent(generateTextReport(shiftBuses)), '_blank');
+  window.open('https://wa.me/?text=' + encodeURIComponent(generateStatusReportText(shiftBuses)), '_blank');
+};
+
+// أزرار التقرير الثاني (رحلات الموقع النصي)
+window.copySiteFlightsReport = async function() {
+  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  try { await navigator.clipboard.writeText(generateSiteFlightsText(shiftBuses)); showToast('تم نسخ تقرير رحلات الموقع بنجاح ✓'); } 
+  catch(e) { prompt('Copy Flights Report:', generateSiteFlightsText(shiftBuses)); }
+};
+
+window.shareSiteFlightsWhatsApp = function() {
+  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  window.open('https://wa.me/?text=' + encodeURIComponent(generateSiteFlightsText(shiftBuses)), '_blank');
 };
 
 // ----------------- ميزة رفع ودمج الصور وإرسالها مع التقرير للواتساب -----------------
@@ -1062,13 +1113,12 @@ window.mergePhotosAndShareStatus = async function() {
   showToast('جاري دمج الصور وتجهيز التقرير...');
 
   const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  const reportText = generateTextReport(shiftBuses);
+  const reportText = generateStatusReportText(shiftBuses);
 
   try {
     await navigator.clipboard.writeText(reportText);
   } catch (e) {}
 
-  // دمج الصور في شبكة احترافية (عمودين لسهولة القراءة في الواتساب)
   const count = selectedStatusImages.length;
   const cols = count === 1 ? 1 : 2;
   const rows = Math.ceil(count / cols);
@@ -1126,85 +1176,6 @@ window.mergePhotosAndShareStatus = async function() {
   }, 'image/jpeg', 0.9);
 };
 // -------------------------------------------------------------------------
-
-function generateTableHTML(shiftBuses){
-  const a = shiftBuses.filter(b => !b.done), done = shiftBuses.filter(b => b.done), groups = groupBy(a);
-  const d = new Intl.DateTimeFormat('ar-SA-u-nu-latn',{timeZone:'Asia/Riyadh',dateStyle:'medium',timeStyle:'short'}).format(new Date());
-  let html = `<div id="report-content" style="background:#ffffff; color:#0f172a; padding:15px; font-family: 'Segoe UI', Tahoma, sans-serif; direction:rtl; text-align:right; border-radius:8px;">`;
-  html += `<div style="text-align:center; border-bottom:2px solid #1e3a8a; padding-bottom:10px; margin-bottom:15px;">
-    <h2 style="margin:0; font-size:17px; color:#1e3a8a; font-weight:900;">عمليات الساحات الخارجية والمواصلات - الفرز (صالة 4)</h2>
-    <p style="margin:5px 0 0; font-size:11px; color:#475569; font-weight:bold;">تقرير ${activeShift} | وقت التقرير: ${d}</p>
-  </div>`;
-  html += `<div style="display:flex; justify-content:space-around; background:#f8fafc; padding:8px; border-radius:6px; margin-bottom:15px; border:1px solid #cbd5e1;">
-    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#0f172a; direction:ltr;">${a.length}</b><span style="font-size:10px; font-weight:bold;">باصات بالفرز</span></div>
-    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#d97706; direction:ltr;">${a.reduce((n,b)=>n+total(b),0)}</b><span style="font-size:10px; font-weight:bold;">الركاب بالفرز</span></div>
-    <div style="text-align:center;"><b style="display:block; font-size:16px; color:#059669; direction:ltr;">${done.length}</b><span style="font-size:10px; font-weight:bold;">باصات مغادرة</span></div>
-  </div>`;
-  html += `<h3 style="font-size:14px; color:#1e3a8a; margin-bottom:8px; border-right:3px solid #1e3a8a; padding-right:6px;">الرحلات الحالية بالفرز (الانتظار)</h3>`;
-  html += `<table style="width:100%; border-collapse:collapse; margin-bottom:20px; text-align:center; font-size:11px;">
-    <thead><tr style="background:#1e3a8a; color:#ffffff;"><th style="padding:6px; border:1px solid #cbd5e1;">الرحلة</th><th style="padding:6px; border:1px solid #cbd5e1;">الإقلاع</th><th style="padding:6px; border:1px solid #cbd5e1;">الباصات</th><th style="padding:6px; border:1px solid #cbd5e1;">الركاب</th></tr></thead><tbody>`;
-  if(!groups.length) html += `<tr><td colspan="4" style="padding:10px; border:1px solid #cbd5e1;">لا توجد باصات بالفرز حالياً</td></tr>`;
-  else {
-    groups.forEach(g => {
-      const f = g[0], basePax = g.reduce((s,b)=>s+Number(b.pax||0),0);
-      const allEx = g.flatMap(b => Array.isArray(b.extra) ? b.extra : []);
-      const paxDetails = g.length > 1 ? `<div style="font-size:9px; color:#64748b; direction:ltr; margin-top:2px;">(${g.map(b=>b.pax).join(' + ')})</div>` : '';
-      const sharedDetails = allEx.length ? `<div style="font-size:9px; color:#d97706; direction:ltr; margin-top:2px;">+ ${allEx.map(x=>`${x.flight} (${x.pax})`).join(' , ')}</div>` : '';
-      html += `<tr><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${f.flight}</td><td style="padding:6px; border:1px solid #cbd5e1; color:#dc2626; font-weight:bold; direction:ltr;">${f.time}</td><td style="padding:6px; border:1px solid #cbd5e1; direction:ltr;">${g.length}</td><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; color:#0f172a; direction:ltr;">${basePax} ${paxDetails} ${sharedDetails}</td></tr>`;
-    });
-  }
-  html += `</tbody></table>`;
-  html += `<h3 style="font-size:14px; color:#059669; margin-bottom:8px; border-right:3px solid #059669; padding-right:6px;">سجل المغادرة (تم الترحيل)</h3>`;
-  html += `<table style="width:100%; border-collapse:collapse; text-align:center; font-size:11px;">
-    <thead><tr style="background:#059669; color:#ffffff;"><th style="padding:6px; border:1px solid #cbd5e1;">الرحلة</th><th style="padding:6px; border:1px solid #cbd5e1;">وقت الخروج</th><th style="padding:6px; border:1px solid #cbd5e1;">الوجهة</th><th style="padding:6px; border:1px solid #cbd5e1;">الركاب</th></tr></thead><tbody>`;
-  if(!done.length) html += `<tr><td colspan="4" style="padding:10px; border:1px solid #cbd5e1;">لم يغادر أي باص بعد</td></tr>`;
-  else {
-    done.slice().reverse().forEach(b => {
-      let dTime = '--:--';
-      if(b.doneAt){ try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dt); } catch(e){} }
-      const ex = Array.isArray(b.extra) ? b.extra : [];
-      const shTxt = ex.length ? `<div style="font-size:9px; color:#d97706; direction:ltr;">+ ${ex.map(x=>`${x.flight} (${x.pax})`).join(', ')}</div>` : '';
-      html += `<tr><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${b.flight}</td><td style="padding:6px; border:1px solid #cbd5e1; color:#059669; font-weight:bold; direction:ltr;">${dTime}</td><td style="padding:6px; border:1px solid #cbd5e1;">${b.destination||'--'}</td><td style="padding:6px; border:1px solid #cbd5e1; font-weight:bold; direction:ltr;">${b.pax} ${shTxt}</td></tr>`;
-    });
-  }
-  html += `</tbody></table></div>`;
-  return html;
-}
-
-window.exportAsImageAndShare = async function() {
-  const el = $('report-content');
-  if(!el) return;
-  showToast('جاري تجهيز الصورة...');
-  try {
-    const canvas = await html2canvas(el, { scale: 2, useCORS: true });
-    canvas.toBlob(async (blob) => {
-      const file = new File([blob], "Report.png", { type: "image/png" });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file] }); } 
-      else { window.open(URL.createObjectURL(blob), '_blank'); showToast('اضغط مطولاً على الصورة لحفظها ✓'); }
-    }, "image/png");
-  } catch(e) { showToast('حدث خطأ أثناء استخراج الصورة'); }
-};
-
-window.exportAsPDF = async function() {
-  const el = $('report-content');
-  if(!el) return;
-  showToast('جاري إنشاء ملف PDF الرسمي...');
-  try {
-    const canvas = await html2canvas(el, { scale: 2, useCORS: true });
-    const imgData = canvas.toDataURL('image/png');
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    let imgWidth = pdf.internal.pageSize.getWidth();
-    let imgHeight = (canvas.height * imgWidth) / canvas.width;
-    if (imgHeight > pdf.internal.pageSize.getHeight()) {
-        imgHeight = pdf.internal.pageSize.getHeight() - 10; 
-        imgWidth = (canvas.width * imgHeight) / canvas.height;
-    }
-    pdf.addImage(imgData, 'PNG', (pdf.internal.pageSize.getWidth() - imgWidth) / 2, 5, imgWidth, imgHeight);
-    pdf.save(`Report_${activeShift.replace(/\s+/g,'_')}.pdf`);
-    showToast('تم تحميل ملف PDF بنجاح ✓');
-  } catch(e) { showToast('حدث خطأ أثناء استخراج الملف'); }
-};
 
 const notifiedBusIds = new Set();
 let initialLoad = true;
