@@ -37,7 +37,6 @@ button, input { outline: none; font: inherit; margin: 0; }
 button { cursor: pointer; border: none; transition: 0.2s ease; }
 svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; margin-left: 4px; }
 
-/* إنزال الهيدر بشكل آمن تحت شريط الساعة والـ Dynamic Island في الآيفون */
 header {
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
   padding: calc(env(safe-area-inset-top, 20px) + 38px) 20px 20px;
@@ -91,11 +90,15 @@ body.dark-theme .filters button { background: rgba(30, 41, 59, 0.5); border: 1px
 body.dark-theme .filters button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 .flight-block { border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 15px; background: var(--bg-color); overflow: hidden; }
+.flight-block.urgent-block { border: 2px solid var(--late); }
 .buses-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
 .editable-header { cursor: pointer; padding: 4px 6px; margin: -4px -6px; border-radius: 8px; transition: 0.2s; }
 .editable-header:active { background: var(--normal-bg); transform: scale(0.98); }
 .edit-pen-badge { font-size: 11px; color: var(--accent); background: var(--normal-bg); padding: 2px 6px; border-radius: 6px; font-weight: 900; display: inline-flex; align-items: center; gap: 3px; border: 1px dashed var(--accent); }
+
+.urgent-pill { font-size: 11px; font-weight: 900; background: var(--late); color: #fff; padding: 2px 8px; border-radius: 6px; animation: pulse-text 1.2s infinite; display: inline-block; }
+.flight-countdown.urgent { color: var(--late) !important; background: var(--late-bg) !important; border-color: var(--late) !important; }
 
 details.bus-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); transition: 0.3s; }
 details.bus-card.late { border-right: 5px solid var(--late); }
@@ -108,7 +111,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 
 .shared-mini-pill { font-size: 11px; font-weight: 900; background: var(--shared-bg); color: var(--shared); border: 1px dashed var(--shared); padding: 2px 6px; border-radius: 6px; direction: ltr; display: inline-block; }
 
-/* نبض وتمييز الباص المغادر حديثاً لمدة 60 ثانية */
 @keyframes pulse-recent { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 @keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.45; } 100% { opacity: 1; } }
 .recent-depart { border: 2px solid var(--early) !important; background-color: var(--early-bg) !important; animation: pulse-recent 1.8s infinite; }
@@ -120,6 +122,9 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .bus-actions button.success { background: var(--early); border-color: var(--early); color: #fff; }
 .bus-actions button.danger { background: var(--late-bg); border-color: var(--late); color: var(--late); }
 .add-bus-btn { width: 100%; background: transparent; color: var(--accent); padding: 12px; font-size: 13px; font-weight: 900; border-top: 1px solid var(--border); }
+
+.btn-clear-done { width: 100%; background: var(--late-bg); color: var(--late); border: 2px solid var(--late); padding: 12px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.btn-clear-done:active { transform: scale(0.98); background: var(--late); color: #fff; }
 
 .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .tools-grid button { padding: 14px 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
@@ -269,12 +274,15 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
     <div id="active"></div>
   </section>
 
-  <!-- سجل المغادرة مقفل افتراضياً ويفتح عند الضغط -->
+  <!-- سجل المغادرة مقفل افتراضياً ويفتح عند الضغط مع زر حذف الكل -->
   <details class="panel">
     <summary class="panel-header">
       <h2>سجل المغادرة (الأحدث في الأعلى)</h2>
       <span class="panel-badge" id="donecount">0</span>
     </summary>
+    <button type="button" id="btn-clear-all-done" class="btn-clear-done" style="display:none;" onclick="clearAllDeparted()">
+      🗑️ حذف كل الباصات في سجل المغادرة
+    </button>
     <div id="done"></div>
   </details>
 
@@ -371,6 +379,8 @@ function getNextShiftName(curr) {
 
 let activeShift = localStorage.getItem('activeShift') || detectSmartShift();
 let lastPromptMinute = -1;
+let lastPreEndAlertMin = -1;
+let lastOverlapAlertMin = -1;
 
 // ----------------- محرك منع تجميد الجوال والإشعارات اللحظية -----------------
 let audioCtx = null;
@@ -522,7 +532,7 @@ const svgPrint = '<svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6
 
 window.showToast = function(msg) {
   const t = $('toast'); t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3500);
+  setTimeout(()=>t.classList.remove('show'), 3800);
 };
 
 window.toggleTheme = function() {
@@ -566,6 +576,16 @@ function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;',
 function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
+
+// زر حذف كل الباصات في سجل المغادرة للشفت الحالي (مع تأكيد مزدوج)
+window.clearAllDeparted = function() {
+  const doneInShift = buses.filter(b => (b.shift || 'Shift A') === activeShift && b.done);
+  if (!doneInShift.length) { showToast('سجل المغادرة فارغ بالفعل'); return; }
+  if (!confirm(`هل تريد حذف جميع الباصات (${doneInShift.length}) من سجل المغادرة لـ ${activeShift}؟`)) return;
+  if (!confirm('تأكيد نهائي: سيتم مسح سجل المغادرة بالكامل ولا يمكن التراجع. متابعة؟')) return;
+  doneInShift.forEach(b => db.ref('buses/' + b.id).remove());
+  showToast('تم تفريغ سجل المغادرة بالكامل ✓');
+};
 
 // ----------------- نافذة تعديل بيانات الرحلة والوقت المباشرة -----------------
 let editingFlightContext = null;
@@ -710,6 +730,7 @@ function render(){
   $('kflight').textContent = new Set(allActive.flatMap(b=>[b.flight,...(b.extra||[]).map(x=>x.flight)])).size;
   $('klate').textContent = allActive.filter(b=>classification(b)==='late').length;
   $('donecount').textContent = done.length;
+  $('btn-clear-all-done').style.display = done.length > 0 ? 'flex' : 'none';
 
   $('active').innerHTML=groups.length?groups.map(g=>{
     const b = g[0];
@@ -717,20 +738,25 @@ function render(){
     const allExtras = g.flatMap(x => Array.isArray(x.extra) ? x.extra : []);
     const headerSharedHtml = allExtras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
 
-    return `<div class="flight-block">
-      <div style="background:var(--surface); padding:12px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); border-right:4px solid var(--accent);">
+    // ميزة 6: تمييز الرحلات القريبة من الإقلاع (أقل من ساعتين)
+    const remMs = dep(b) - Date.now();
+    const isUrgent = remMs > 0 && remMs <= 7200000;
+
+    return `<div class="flight-block ${isUrgent ? 'urgent-block' : ''}" data-flight-block="${esc(b.id)}">
+      <div style="background:var(--surface); padding:12px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); border-right:4px solid ${isUrgent ? 'var(--late)' : 'var(--accent)'};">
         <div class="editable-header" data-action="edit-flight-group" data-id="${esc(b.id)}" style="display:flex; flex-direction:column; gap:4px; flex:1;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span style="font-size:18px; font-weight:900; color:var(--primary); direction:ltr; letter-spacing:1px;">${esc(b.flight)}</span>
             <span style="font-size:13px; font-weight:800; color:var(--accent); direction:ltr;">(${basePax} راكب)</span>
             ${headerSharedHtml}
+            ${isUrgent ? '<span class="urgent-pill">⚠️ إقلاع قريب</span>' : ''}
             <span class="edit-pen-badge">✎ تعديل الوقت</span>
           </div>
           <div style="font-size:12px; font-weight:800; color:var(--text-muted);">
             إقلاع: <b style="color:var(--text-main); margin-right:4px; font-size:13px; direction:ltr; display:inline-block; text-decoration:underline dotted var(--accent);">${esc(b.time)}</b> | إجمالي الباصات: <span style="direction:ltr; display:inline-block;">${g.length}</span>
           </div>
         </div>
-        <div class="flight-countdown" data-live="${esc(b.id)}" style="font-size:13px; font-weight:900; color:var(--normal); background:var(--normal-bg); padding:6px 12px; border-radius:8px; border:1px solid var(--normal); flex-shrink:0;">${until(b)}</div>
+        <div class="flight-countdown ${isUrgent ? 'urgent' : ''}" data-live="${esc(b.id)}" style="font-size:13px; font-weight:900; color:var(--normal); background:var(--normal-bg); padding:6px 12px; border-radius:8px; border:1px solid var(--normal); flex-shrink:0;">${until(b)}</div>
       </div>
       <div class="buses-container">${g.map((x,i)=>busCard(x,i)).join('')}</div>
       <button class="add-bus-btn" data-action="addsame" data-id="${esc(b.id)}">+ إضافة باص لهذه الرحلة</button>
@@ -794,7 +820,21 @@ function tick(){
   const ob = $('overlap-badge');
   if (ob) ob.style.display = isOverlap ? 'inline-block' : 'none';
 
-  // تنبيه تسليم الشفت تلقائياً عند نهاية النوبة (06:30 = 390, 14:30 = 870, 22:30 = 1350)
+  // ميزة 3: إشعار دخول ساعة التداخل والتسليم (05:30=330, 13:30=810, 21:30=1290)
+  if ((tm === 330 || tm === 810 || tm === 1290) && lastOverlapAlertMin !== tm && activeShift) {
+    lastOverlapAlertMin = tm;
+    sendNativeNotification('بداية ساعة التسليم والتداخل 🔄', `بدأت فترة تسليم واستلام النوبة بين ${activeShift} و ${getNextShiftName(activeShift)}.`);
+    showToast('🔄 بدأت ساعة التسليم والتداخل بين الشفتين');
+  }
+
+  // ميزة 2: تنبيه قبل نهاية الشفت بـ 15 دقيقة (06:15=375, 14:15=855, 22:15=1335)
+  if ((tm === 375 || tm === 855 || tm === 1335) && lastPreEndAlertMin !== tm && activeShift) {
+    lastPreEndAlertMin = tm;
+    sendNativeNotification(`تنبيه نهاية ${activeShift} ⏳`, 'متبقي 15 دقيقة على انتهاء النوبة، يرجى تجهيز التسليم.');
+    showToast(`⏳ متبقي 15 دقيقة على نهاية ${activeShift}`);
+  }
+
+  // تنبيه تسليم الشفت تلقائياً عند نهاية النوبة (06:30=390, 14:30=870, 22:30=1350)
   if ((tm === 390 || tm === 870 || tm === 1350) && lastPromptMinute !== tm && activeShift) {
       lastPromptMinute = tm;
       playInstantAlertSound();
@@ -805,7 +845,14 @@ function tick(){
   }
 
   const lookup=new Map(buses.map(b=>[String(b.id),b]));
-  document.querySelectorAll('[data-live]').forEach(el=>{const b=lookup.get(el.dataset.live);if(b)el.textContent=until(b)});
+  document.querySelectorAll('[data-live]').forEach(el=>{
+    const b=lookup.get(el.dataset.live);
+    if(b){
+      el.textContent=until(b);
+      const rem = dep(b) - Date.now();
+      el.classList.toggle('urgent', rem > 0 && rem <= 7200000);
+    }
+  });
   document.querySelectorAll('[data-wait]').forEach(el=>{
     const b=lookup.get(el.dataset.wait);
     if(b) {
@@ -1009,6 +1056,19 @@ $('entry').addEventListener('submit',e=>{
   e.preventDefault(); startBackgroundKeepAlive();
   const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
   if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){ showToast('تأكد من صحة البيانات المدخلة'); return; }
+
+  // ميزة 7: تنبيه منع تكرار الباص بالغلط (خلال آخر 5 دقائق)
+  const isDuplicate = buses.some(b =>
+    !b.done &&
+    (b.shift || 'Shift A') === activeShift &&
+    b.flight === flight &&
+    Number(b.pax) === pax &&
+    (Date.now() - created(b)) < 300000
+  );
+  if (isDuplicate) {
+    if (!confirm(`⚠️ تنبيه تكرار محتمل!\nتم تسجيل باص للرحلة ${flight} بنفس عدد الركاب (${pax}) قبل قليل.\nهل أنت متأكد من إضافته مرة أخرى؟`)) return;
+  }
+
   const newBus = {id:newId(), flight, time, pax, departure:departure(time,Date.now()), createdAt:Date.now(), done:false, extra:[], addedBy: mySessionId, shift: activeShift};
   notifiedBusIds.add(String(newBus.id));
   db.ref('buses/' + newBus.id).set(newBus).then(() => showToast('تم تسجيل باص ' + flight + ' (' + pax + ' راكب) ✓')).catch(() => showToast('خطأ في الاتصال'));
