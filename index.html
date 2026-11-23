@@ -37,28 +37,31 @@ button, input { outline: none; font: inherit; margin: 0; }
 button { cursor: pointer; border: none; transition: 0.2s ease; }
 svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; margin-left: 4px; }
 
-header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); padding: 25px 20px 20px; color: #fff; border-radius: 0 0 24px 24px; box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15); margin-bottom: 15px; }
+/* إنزال الهيدر بشكل آمن تحت شريط الساعة والـ Dynamic Island في الآيفون */
+header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  padding: calc(env(safe-area-inset-top, 20px) + 38px) 20px 20px;
+  color: #fff;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+  margin-bottom: 15px;
+}
 .header-content { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
-.right-titles h1 { font-size: 17px; font-weight: 900; margin: 0 0 4px 0; color: #f8fafc; line-height: 1.4; }
+.right-titles h1 { font-size: 17px; font-weight: 900; margin: 0 0 6px 0; color: #f8fafc; line-height: 1.4; }
 .right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .shift-badge-header { background: #2563eb; color: #fff; padding: 3px 10px; border-radius: 8px; font-size: 12px; font-weight: 900; direction: ltr; display: inline-block; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); }
 .overlap-pill { background: #f59e0b; color: #0f172a; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 900; display: none; }
 .theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; backdrop-filter: blur(5px); }
-#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-align: left; max-width: 800px; margin: 10px auto 0; direction: ltr; display: flex; justify-content: space-between; align-items: center; }
+#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.85); text-align: left; max-width: 800px; margin: 12px auto 0; direction: ltr; display: flex; justify-content: space-between; align-items: center; }
 .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px #10b981; animation: pulse-live 1.5s infinite; }
 @keyframes pulse-live { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
 main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
 
-.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
 .kpi-card { background: var(--surface); padding: 12px 6px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: 0.3s; }
 .kpi-card b { display: block; font-size: 22px; font-weight: 900; color: var(--accent); margin-bottom: 2px; }
 .kpi-card span { font-size: 11px; color: var(--text-muted); font-weight: 800; }
-
-/* شريط مؤشرات الإدارة الذكي */
-.exec-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
-.exec-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 6px; text-align: center; font-size: 11px; font-weight: 800; color: var(--text-muted); }
-.exec-item b { display: block; font-size: 14px; font-weight: 900; color: var(--primary); margin-top: 2px; }
 
 .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 15px; box-shadow: var(--shadow-md); transition: 0.3s; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
@@ -121,7 +124,7 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .tools-grid button { padding: 14px 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 .tools-grid button:active { transform: scale(0.97); }
-.btn-whatsapp-img { background: #10b981; } .btn-whatsapp-text { background: #2563eb; } .btn-copy { background: #475569; } .btn-danger-solid { background: #dc2626; }
+.btn-whatsapp-img { background: #10b981; } .btn-whatsapp-text { background: #2563eb; } .btn-copy { background: #475569; }
 
 .status-box { margin-top: 14px; padding: 15px; background: var(--input-bg); border: 2px solid var(--border); border-radius: var(--radius-md); }
 .status-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -134,10 +137,6 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .thumb-item { position: relative; height: 75px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
 .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
 .thumb-del { position: absolute; top: 3px; right: 3px; background: rgba(239, 68, 68, 0.9); color: #fff; width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-.history-card { background: var(--input-bg); border: 1px solid var(--border); border-right: 4px solid var(--accent); border-radius: var(--radius-md); padding: 12px; margin-bottom: 10px; font-size: 12px; }
-.history-card-top { display: flex; justify-content: space-between; font-weight: 900; color: var(--primary); margin-bottom: 6px; }
-.history-card-stats { display: flex; gap: 10px; flex-wrap: wrap; color: var(--text-muted); font-weight: 800; }
 
 .empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
 
@@ -236,13 +235,6 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
     <div class="kpi-card"><b id="klate">0</b><span>متأخر</span></div>
   </div>
 
-  <!-- مؤشرات الأداء السريعة للإدارة -->
-  <div class="exec-bar">
-    <div class="exec-item">متوسط الانتظار<b id="k-avg-wait">0 د</b></div>
-    <div class="exec-item">خلف المسجد / مجموعات<b id="k-dest-split">0 / 0</b></div>
-    <div class="exec-item">الباصات المشتركة<b id="k-shared-cnt">0</b></div>
-  </div>
-
   <section class="panel" id="add-section">
     <div class="panel-header">
       <h2>تسجيل باص جديد</h2>
@@ -277,7 +269,8 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
     <div id="active"></div>
   </section>
 
-  <details class="panel" open>
+  <!-- سجل المغادرة مقفل افتراضياً ويفتح عند الضغط -->
+  <details class="panel">
     <summary class="panel-header">
       <h2>سجل المغادرة (الأحدث في الأعلى)</h2>
       <span class="panel-badge" id="donecount">0</span>
@@ -324,19 +317,6 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
       </div>
     </div>
   </details>
-
-  <!-- إدارة الشفت وأرشيف النوبات السابقة للإدارة -->
-  <details class="panel">
-    <summary class="panel-header">
-      <h2>إدارة النوبة وأرشيف الشفتات (للإدارة)</h2>
-      <span class="panel-badge" id="history-count">0</span>
-    </summary>
-    <div class="tools-grid" style="margin-top:0; margin-bottom:15px;">
-      <button type="button" onclick="archiveAndResetShift(false)" class="btn-whatsapp-text">📦 أرشفة وحفظ ملخص الشفت</button>
-      <button type="button" onclick="archiveAndResetShift(true)" class="btn-danger-solid">🔄 إقفال وتجديد الشفت (تصفير)</button>
-    </div>
-    <div id="shift-history-list"></div>
-  </details>
 </main>
 
 <!-- نافذة الوجهة -->
@@ -378,9 +358,9 @@ function parts(d){return Object.fromEntries(fmt.formatToParts(d).filter(x=>x.typ
 function detectSmartShift() {
   const p = parts(new Date());
   const tm = p.hour * 60 + p.minute;
-  if (tm >= 390 && tm < 870) return 'Shift A';   // 06:30 - 14:30
-  if (tm >= 870 && tm < 1350) return 'Shift B';  // 14:30 - 22:30
-  return 'Shift C';                               // 22:30 - 06:30
+  if (tm >= 390 && tm < 870) return 'Shift A';
+  if (tm >= 870 && tm < 1350) return 'Shift B';
+  return 'Shift C';
 }
 
 function getNextShiftName(curr) {
@@ -478,15 +458,12 @@ window.setShift = function(s) {
 window.carryOverAndSwitch = function() {
   const nextShift = getNextShiftName(activeShift);
   const activeInCurrent = buses.filter(b => (b.shift || 'Shift A') === activeShift && !b.done);
-  // حفظ ملخص الشفت المنتهي في الأرشيف أولاً
-  saveShiftSummaryToHistory(activeShift);
-  // ترحيل الباصات المتبقية للشفت الجديد
   activeInCurrent.forEach(b => {
     b.shift = nextShift;
     db.ref('buses/' + b.id).set(b);
   });
   setShift(nextShift);
-  showToast(`تم أرشفة الشفت وترحيل (${activeInCurrent.length}) باص إلى ${nextShift} ✓`);
+  showToast(`تم ترحيل (${activeInCurrent.length}) باص إلى ${nextShift} ✓`);
 };
 
 window.openShiftModalManual = function() {
@@ -555,7 +532,6 @@ window.toggleTheme = function() {
 if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
 
 let buses=[];
-let shiftHistory=[];
 let currentFilter = 'all';
 
 window.setFilter = function(f) {
@@ -735,19 +711,6 @@ function render(){
   $('klate').textContent = allActive.filter(b=>classification(b)==='late').length;
   $('donecount').textContent = done.length;
 
-  // تحديث مؤشرات الأداء الإدارية
-  const mosqueCnt = done.filter(b => (b.destination||'').includes('المسجد')).length;
-  const groupsCnt = done.filter(b => (b.destination||'').includes('المجموعات')).length;
-  $('k-dest-split').textContent = `${mosqueCnt} / ${groupsCnt}`;
-  $('k-shared-cnt').textContent = shiftBuses.filter(b => (b.extra||[]).length > 0).length;
-  if (shiftBuses.length) {
-    const totalWaitMs = shiftBuses.reduce((sum, b) => sum + Math.max(0, (b.done && b.doneAt ? Number(b.doneAt) : Date.now()) - created(b)), 0);
-    const avgMin = Math.round((totalWaitMs / shiftBuses.length) / 60000);
-    $('k-avg-wait').textContent = avgMin >= 60 ? `${Math.floor(avgMin/60)}س ${avgMin%60}د` : `${avgMin} د`;
-  } else {
-    $('k-avg-wait').textContent = '0 د';
-  }
-
   $('active').innerHTML=groups.length?groups.map(g=>{
     const b = g[0];
     const basePax = g.reduce((a,x)=>a+Number(x.pax||0),0);
@@ -819,60 +782,8 @@ function render(){
 
   $('status-report-preview').textContent = generateStatusReportText(shiftBuses);
   $('site-flights-preview').textContent = generateSiteFlightsText(shiftBuses);
-  renderHistory();
   tick();
 }
-
-function renderHistory() {
-  $('history-count').textContent = shiftHistory.length;
-  $('shift-history-list').innerHTML = shiftHistory.length ? shiftHistory.slice().reverse().slice(0, 10).map(h => `
-    <div class="history-card">
-      <div class="history-card-top">
-        <span style="direction:ltr;">${esc(h.shift)}</span>
-        <span style="direction:ltr; color:var(--text-muted); font-size:11px;">${esc(h.date)}</span>
-      </div>
-      <div class="history-card-stats">
-        <span>الباصات: <b>${h.totalBuses}</b></span>
-        <span>المغادرة: <b>${h.departed}</b></span>
-        <span>الركاب: <b>${h.totalPax}</b></span>
-        <span>المسجد/مجموعات: <b>${h.mosque}/${h.groups}</b></span>
-      </div>
-    </div>
-  `).join('') : '<div class="empty-msg">لا توجد نوبات مؤرشفة بعد.</div>';
-}
-
-function saveShiftSummaryToHistory(shiftName) {
-  const sb = buses.filter(b => (b.shift || 'Shift A') === shiftName);
-  if (!sb.length) return;
-  const done = sb.filter(b => b.done);
-  const summary = {
-    id: newId(),
-    shift: shiftName,
-    date: new Intl.DateTimeFormat('en-GB', { timeZone:'Asia/Riyadh', dateStyle:'short', timeStyle:'short', hour12:false }).format(new Date()),
-    totalBuses: sb.length,
-    departed: done.length,
-    totalPax: sb.reduce((n,b)=>n+total(b), 0),
-    mosque: done.filter(b => (b.destination||'').includes('المسجد')).length,
-    groups: done.filter(b => (b.destination||'').includes('المجموعات')).length,
-    savedAt: Date.now()
-  };
-  db.ref('shift_history/' + summary.id).set(summary);
-}
-
-window.archiveAndResetShift = function(clearDeparted) {
-  const sb = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  if (!sb.length) { showToast('لا توجد بيانات في الشفت الحالي للأرشفة'); return; }
-  if (!clearDeparted) {
-    saveShiftSummaryToHistory(activeShift);
-    showToast('تم حفظ ملخص ' + activeShift + ' في أرشيف الإدارة ✓');
-    return;
-  }
-  if (!confirm(`تأكيد إقفال وتجديد ${activeShift}؟\nسيتم حفظ الملخص في الأرشيف وحذف الباصات المغادرة لبدء دورة جديدة نظيفة.`)) return;
-  if (!confirm('تأكيد نهائي: هل أنت متأكد من تصفير سجل المغادرة لهذا الشفت؟')) return;
-  saveShiftSummaryToHistory(activeShift);
-  sb.filter(b => b.done).forEach(b => db.ref('buses/' + b.id).remove());
-  showToast('تم أرشفة وتجديد ' + activeShift + ' بنجاح ✓');
-};
 
 function tick(){
   const p = parts(new Date());
@@ -883,7 +794,7 @@ function tick(){
   const ob = $('overlap-badge');
   if (ob) ob.style.display = isOverlap ? 'inline-block' : 'none';
 
-  // تنبيه إقفال وتسليم الشفت تلقائياً عند نهاية النوبة (06:30 = 390, 14:30 = 870, 22:30 = 1350)
+  // تنبيه تسليم الشفت تلقائياً عند نهاية النوبة (06:30 = 390, 14:30 = 870, 22:30 = 1350)
   if ((tm === 390 || tm === 870 || tm === 1350) && lastPromptMinute !== tm && activeShift) {
       lastPromptMinute = tm;
       playInstantAlertSound();
@@ -1092,13 +1003,6 @@ db.ref('buses').on('value', (snapshot) => {
   buses = incoming.sort((a, b) => a.createdAt - b.createdAt);
   render();
   initialLoad = false;
-});
-
-db.ref('shift_history').on('value', (snapshot) => {
-  shiftHistory = [];
-  snapshot.forEach(c => shiftHistory.push(c.val()));
-  shiftHistory.sort((a, b) => (a.savedAt || 0) - (b.savedAt || 0));
-  renderHistory();
 });
 
 $('entry').addEventListener('submit',e=>{
