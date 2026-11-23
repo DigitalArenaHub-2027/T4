@@ -40,8 +40,9 @@ svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; mar
 header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); padding: 25px 20px 20px; color: #fff; border-radius: 0 0 24px 24px; box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15); margin-bottom: 15px; }
 .header-content { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
 .right-titles h1 { font-size: 17px; font-weight: 900; margin: 0 0 4px 0; color: #f8fafc; line-height: 1.4; }
-.right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; display: flex; align-items: center; gap: 8px; }
+.right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .shift-badge-header { background: #2563eb; color: #fff; padding: 3px 10px; border-radius: 8px; font-size: 12px; font-weight: 900; direction: ltr; display: inline-block; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); }
+.overlap-pill { background: #f59e0b; color: #0f172a; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 900; display: none; }
 .theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; backdrop-filter: blur(5px); }
 #clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-align: left; max-width: 800px; margin: 10px auto 0; direction: ltr; display: flex; justify-content: space-between; align-items: center; }
 .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px #10b981; animation: pulse-live 1.5s infinite; }
@@ -49,10 +50,15 @@ header { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); padding:
 
 main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
 
-.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
 .kpi-card { background: var(--surface); padding: 12px 6px; text-align: center; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: 0.3s; }
 .kpi-card b { display: block; font-size: 22px; font-weight: 900; color: var(--accent); margin-bottom: 2px; }
 .kpi-card span { font-size: 11px; color: var(--text-muted); font-weight: 800; }
+
+/* شريط مؤشرات الإدارة الذكي */
+.exec-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+.exec-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 6px; text-align: center; font-size: 11px; font-weight: 800; color: var(--text-muted); }
+.exec-item b { display: block; font-size: 14px; font-weight: 900; color: var(--primary); margin-top: 2px; }
 
 .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 15px; box-shadow: var(--shadow-md); transition: 0.3s; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
@@ -97,22 +103,13 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .bus-status.early { background: var(--early-bg); color: var(--early); }
 .bus-status.normal { background: var(--normal-bg); color: var(--normal); }
 
-.shared-mini-pill {
-  font-size: 11px;
-  font-weight: 900;
-  background: var(--shared-bg);
-  color: var(--shared);
-  border: 1px dashed var(--shared);
-  padding: 2px 6px;
-  border-radius: 6px;
-  direction: ltr;
-  display: inline-block;
-}
+.shared-mini-pill { font-size: 11px; font-weight: 900; background: var(--shared-bg); color: var(--shared); border: 1px dashed var(--shared); padding: 2px 6px; border-radius: 6px; direction: ltr; display: inline-block; }
 
-@keyframes pulse-recent { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
-@keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-.recent-depart { border-color: var(--early) !important; background-color: var(--early-bg) !important; animation: pulse-recent 2s infinite; }
-.recent-badge-text { color: var(--early); font-weight: 900; font-size: 12px; animation: pulse-text 1.2s infinite; display: inline-block; }
+/* نبض وتمييز الباص المغادر حديثاً لمدة 60 ثانية */
+@keyframes pulse-recent { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+@keyframes pulse-text { 0% { opacity: 1; } 50% { opacity: 0.45; } 100% { opacity: 1; } }
+.recent-depart { border: 2px solid var(--early) !important; background-color: var(--early-bg) !important; animation: pulse-recent 1.8s infinite; }
+.recent-badge-text { color: #ffffff; background: #10b981; padding: 3px 10px; border-radius: 12px; font-weight: 900; font-size: 11px; animation: pulse-text 1.4s infinite; display: inline-block; }
 
 .bus-actions { padding: 12px; background: var(--input-bg); border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 8px; }
 .bus-action-row { display: flex; gap: 8px; width: 100%; align-items: stretch; }
@@ -124,84 +121,27 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .tools-grid button { padding: 14px 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 900; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 .tools-grid button:active { transform: scale(0.97); }
-.btn-whatsapp-img { background: #10b981; } .btn-whatsapp-text { background: #2563eb; } .btn-copy { background: #475569; }
+.btn-whatsapp-img { background: #10b981; } .btn-whatsapp-text { background: #2563eb; } .btn-copy { background: #475569; } .btn-danger-solid { background: #dc2626; }
 
-/* تصميم صناديق التقارير النصية */
 .status-box { margin-top: 14px; padding: 15px; background: var(--input-bg); border: 2px solid var(--border); border-radius: var(--radius-md); }
 .status-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .status-box-header h3 { margin: 0; font-size: 14px; font-weight: 900; color: var(--primary); }
-.status-preview-text {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 12px;
-  line-height: 1.65;
-  white-space: pre-wrap;
-  direction: ltr;
-  text-align: left;
-  color: var(--text-main);
-  max-height: 260px;
-  overflow-y: auto;
-  margin-bottom: 12px;
-  font-weight: 700;
-}
-.photo-merger-card {
-  background: var(--surface);
-  border: 2px dashed var(--accent);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  margin-top: 12px;
-  text-align: center;
-}
-.photo-Upload-btn {
-  width: 100%;
-  background: var(--normal-bg);
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: 900;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.thumbs-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 12px;
-}
-.thumb-item {
-  position: relative;
-  height: 75px;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
+.status-preview-text { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; line-height: 1.65; white-space: pre-wrap; direction: ltr; text-align: left; color: var(--text-main); max-height: 260px; overflow-y: auto; margin-bottom: 12px; font-weight: 700; }
+
+.photo-merger-card { background: var(--surface); border: 2px dashed var(--accent); border-radius: var(--radius-md); padding: 14px; margin-top: 12px; text-align: center; }
+.photo-Upload-btn { width: 100%; background: var(--normal-bg); color: var(--accent); border: 1px solid var(--accent); padding: 12px; border-radius: 10px; font-weight: 900; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.thumbs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.thumb-item { position: relative; height: 75px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
 .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
-.thumb-del {
-  position: absolute; top: 3px; right: 3px;
-  background: rgba(239, 68, 68, 0.9); color: #fff;
-  width: 22px; height: 22px; border-radius: 50%;
-  font-size: 12px; font-weight: 900;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-}
+.thumb-del { position: absolute; top: 3px; right: 3px; background: rgba(239, 68, 68, 0.9); color: #fff; width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: 900; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-.empty-msg { text-align: center; padding: 30px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
+.history-card { background: var(--input-bg); border: 1px solid var(--border); border-right: 4px solid var(--accent); border-radius: var(--radius-md); padding: 12px; margin-bottom: 10px; font-size: 12px; }
+.history-card-top { display: flex; justify-content: space-between; font-weight: 900; color: var(--primary); margin-bottom: 6px; }
+.history-card-stats { display: flex; gap: 10px; flex-wrap: wrap; color: var(--text-muted); font-weight: 800; }
 
-.toast { 
-  position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); 
-  background: #10b981 !important; color: #ffffff !important; 
-  padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 15px; 
-  opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; 
-  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); pointer-events: none; text-align: center; 
-  width: max-content; max-width: 90%; border: 2px solid #059669;
-}
+.empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
+
+.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981 !important; color: #ffffff !important; padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 15px; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); pointer-events: none; text-align: center; width: max-content; max-width: 90%; border: 2px solid #059669; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
 .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15, 23, 42, 0.85); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(8px); }
@@ -219,14 +159,15 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
 </head>
 <body>
 
-<!-- شاشة اختيار النوبة (Shift) -->
+<!-- شاشة اختيار النوبة (Shift) حسب جدول صالة 4 الرسمي -->
 <div id="shift-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>تسجيل الدخول للنوبة (Shift)</h3>
-    <p id="shift-msg">الرجاء اختيار الشفت الخاص بك للبدء. التقارير والإشعارات ستكون مخصصة لشفتك فقط:</p>
-    <button class="btn-shift-select" onclick="setShift('Shift A')">Shift A (05:30 - 13:30)</button>
-    <button class="btn-shift-select" onclick="setShift('Shift B')">Shift B (13:30 - 21:30)</button>
-    <button class="btn-shift-select" onclick="setShift('Shift C')">Shift C (21:30 - 05:30)</button>
+    <p id="shift-msg">جدول عمليات صالة 4 المعتمد (مع ساعة التداخل للتسليم):</p>
+    <button class="btn-shift-select" onclick="setShift('Shift A')">Shift A (05:30 - 14:30)</button>
+    <button class="btn-shift-select" onclick="setShift('Shift B')">Shift B (13:30 - 22:30)</button>
+    <button class="btn-shift-select" onclick="setShift('Shift C')">Shift C (21:30 - 06:30)</button>
+    <button id="btn-carryover" style="display:none; border-color:#10b981; background:#ecfdf5; color:#059669;" onclick="carryOverAndSwitch()">ترحيل الباصات المتبقية وبدء الشفت الجديد ➔</button>
     <button id="btn-keep-shift" style="display:none; background:transparent; border-color:transparent; color:var(--text-muted);" onclick="document.getElementById('shift-modal').style.display='none'">البقاء على الشفت الحالي</button>
   </div>
 </div>
@@ -235,7 +176,7 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
 <div id="notif-modal" class="modal-overlay">
   <div class="modal-box">
     <h3>تفعيل الإشعارات الفورية 🔔</h3>
-    <p>لضمان وصول التنبيهات والصوت لك في نفس الثانية حتى لو الشاشة بوضع الانتظار، اضغط للتفعيل:</p>
+    <p>لضمان وصول التنبيهات والصوت لك في نفس الثانية، اضغط للتفعيل:</p>
     <button class="btn-notif" onclick="requestNotificationPermission()">تفعيل الإشعارات الفورية والدخول</button>
     <button style="background:transparent; border-color:transparent; color:var(--text-muted);" onclick="skipNotifications()">دخول بدون إشعارات</button>
   </div>
@@ -269,7 +210,11 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
   <div class="header-content">
     <div class="right-titles">
       <h1>عمليات الساحات الخارجية والمواصلات</h1>
-      <p>منطقة الفرز صالة 4 <span id="active-shift-badge" class="shift-badge-header" onclick="openShiftModalManual()" title="اضغط لتغيير الشفت">تحديد الشفت</span></p>
+      <p>
+        منطقة الفرز صالة 4
+        <span id="active-shift-badge" class="shift-badge-header" onclick="openShiftModalManual()" title="اضغط لتغيير الشفت">تحديد الشفت</span>
+        <span id="overlap-badge" class="overlap-pill">ساعة تسليم</span>
+      </p>
     </div>
     <div>
       <button class="theme-toggle" onclick="toggleTheme()" title="تغيير المظهر">
@@ -289,6 +234,13 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
     <div class="kpi-card"><b id="kpax">0</b><span>الركاب</span></div>
     <div class="kpi-card"><b id="kflight">0</b><span>الرحلات</span></div>
     <div class="kpi-card"><b id="klate">0</b><span>متأخر</span></div>
+  </div>
+
+  <!-- مؤشرات الأداء السريعة للإدارة -->
+  <div class="exec-bar">
+    <div class="exec-item">متوسط الانتظار<b id="k-avg-wait">0 د</b></div>
+    <div class="exec-item">خلف المسجد / مجموعات<b id="k-dest-split">0 / 0</b></div>
+    <div class="exec-item">الباصات المشتركة<b id="k-shared-cnt">0</b></div>
   </div>
 
   <section class="panel" id="add-section">
@@ -325,9 +277,9 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
     <div id="active"></div>
   </section>
 
-  <details class="panel">
+  <details class="panel" open>
     <summary class="panel-header">
-      <h2>سجل المغادرة (الوجهة ووقت الخروج)</h2>
+      <h2>سجل المغادرة (الأحدث في الأعلى)</h2>
       <span class="panel-badge" id="donecount">0</span>
     </summary>
     <div id="done"></div>
@@ -342,15 +294,11 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
         <h3>📋 T4 Landside Status Report</h3>
         <span class="panel-badge" id="next-hour-badge">Auto Time</span>
       </div>
-      
       <div id="status-report-preview" class="status-preview-text"></div>
-
       <div class="tools-grid" style="margin-top:0; margin-bottom:12px;">
         <button type="button" onclick="copyStatusReport()" class="btn-copy">نسخ التقرير الأساسي</button>
         <button type="button" onclick="shareStatusWhatsApp()" class="btn-whatsapp-text">واتساب (نص فقط)</button>
       </div>
-
-      <!-- خانة إضافة ودمج الصور مع التقرير -->
       <div class="photo-merger-card">
         <input type="file" id="status-photos-input" accept="image/*" multiple style="display:none" onchange="handleStatusPhotos(event)">
         <button type="button" class="photo-Upload-btn" onclick="document.getElementById('status-photos-input').click()">
@@ -363,20 +311,31 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
       </div>
     </div>
 
-    <!-- 2. التقرير الثاني تحت: التقرير النصي لرحلات الموقع (النسخ النصي الأول) -->
+    <!-- 2. التقرير الثاني تحت: التقرير النصي لرحلات الموقع -->
     <div class="status-box" style="margin-top:16px;">
       <div class="status-box-header">
         <h3>🚌 تقرير رحلات الموقع (Landside Ops Report)</h3>
         <span class="panel-badge">English Text</span>
       </div>
-      
       <div id="site-flights-preview" class="status-preview-text"></div>
-
       <div class="tools-grid" style="margin-top:0;">
         <button type="button" onclick="copySiteFlightsReport()" class="btn-copy">نسخ رحلات الموقع</button>
         <button type="button" onclick="shareSiteFlightsWhatsApp()" class="btn-whatsapp-text">إرسال للواتساب</button>
       </div>
     </div>
+  </details>
+
+  <!-- إدارة الشفت وأرشيف النوبات السابقة للإدارة -->
+  <details class="panel">
+    <summary class="panel-header">
+      <h2>إدارة النوبة وأرشيف الشفتات (للإدارة)</h2>
+      <span class="panel-badge" id="history-count">0</span>
+    </summary>
+    <div class="tools-grid" style="margin-top:0; margin-bottom:15px;">
+      <button type="button" onclick="archiveAndResetShift(false)" class="btn-whatsapp-text">📦 أرشفة وحفظ ملخص الشفت</button>
+      <button type="button" onclick="archiveAndResetShift(true)" class="btn-danger-solid">🔄 إقفال وتجديد الشفت (تصفير)</button>
+    </div>
+    <div id="shift-history-list"></div>
   </details>
 </main>
 
@@ -400,7 +359,7 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
 const firebaseConfig = {
   apiKey: "AIzaSyD4uNU92bklhMMd1RGju24TgbRT-f6M83U",
   authDomain: "land-t4.firebaseapp.com",
-  databaseURL: "https://land-t4-default-rtdb.firebaseio.com", 
+  databaseURL: "https://land-t4-default-rtdb.firebaseio.com",
   projectId: "land-t4",
   storageBucket: "land-t4.firebasestorage.app",
   messagingSenderId: "396514710711",
@@ -411,7 +370,26 @@ const db = firebase.database();
 const mySessionId = String(Date.now()) + Math.random().toString(36).slice(2);
 
 const $=id=>document.getElementById(id);
-let activeShift = localStorage.getItem('activeShift');
+
+const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+function parts(d){return Object.fromEntries(fmt.formatToParts(d).filter(x=>x.type!=='literal').map(x=>[x.type,Number(x.value)]))}
+
+// تحديد الشفت تلقائياً حسب جدول صالة 4 (A: 05:30-14:30, B: 13:30-22:30, C: 21:30-06:30)
+function detectSmartShift() {
+  const p = parts(new Date());
+  const tm = p.hour * 60 + p.minute;
+  if (tm >= 390 && tm < 870) return 'Shift A';   // 06:30 - 14:30
+  if (tm >= 870 && tm < 1350) return 'Shift B';  // 14:30 - 22:30
+  return 'Shift C';                               // 22:30 - 06:30
+}
+
+function getNextShiftName(curr) {
+  if (curr === 'Shift A') return 'Shift B';
+  if (curr === 'Shift B') return 'Shift C';
+  return 'Shift A';
+}
+
+let activeShift = localStorage.getItem('activeShift') || detectSmartShift();
 let lastPromptMinute = -1;
 
 // ----------------- محرك منع تجميد الجوال والإشعارات اللحظية -----------------
@@ -425,11 +403,9 @@ function startBackgroundKeepAlive() {
     audioCtx = new AudioContext();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    gain.gain.value = 0.00001; 
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    keepAliveStarted = true;
+    gain.gain.value = 0.00001;
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); keepAliveStarted = true;
   } catch (e) {}
 
   try {
@@ -443,9 +419,7 @@ function startBackgroundKeepAlive() {
     };
   } catch (e) {}
 
-  if ('wakeLock' in navigator) {
-    navigator.wakeLock.request('screen').catch(()=>{});
-  }
+  if ('wakeLock' in navigator) navigator.wakeLock.request('screen').catch(()=>{});
 }
 
 function playInstantAlertSound() {
@@ -462,10 +436,8 @@ function playInstantAlertSound() {
     osc.frequency.setValueAtTime(1046.5, audioCtx.currentTime + 0.12);
     gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.4);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
     if (navigator.vibrate) navigator.vibrate([250, 100, 250]);
   } catch(e){}
 }
@@ -478,7 +450,6 @@ document.addEventListener('visibilitychange', () => {
 });
 document.addEventListener('touchstart', startBackgroundKeepAlive, { once: true });
 document.addEventListener('click', startBackgroundKeepAlive, { once: true });
-// -------------------------------------------------------------------------
 
 function generateAppIcon() {
   const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 512; const ctx = canvas.getContext('2d');
@@ -497,25 +468,38 @@ window.setShift = function(s) {
   activeShift = s;
   localStorage.setItem('activeShift', s);
   $('shift-modal').style.display = 'none';
+  $('btn-carryover').style.display = 'none';
   $('active-shift-badge').textContent = s;
   showToast('تم تفعيل ' + s + ' بنجاح ✓');
   checkNotificationPermission();
   render();
 };
 
+window.carryOverAndSwitch = function() {
+  const nextShift = getNextShiftName(activeShift);
+  const activeInCurrent = buses.filter(b => (b.shift || 'Shift A') === activeShift && !b.done);
+  // حفظ ملخص الشفت المنتهي في الأرشيف أولاً
+  saveShiftSummaryToHistory(activeShift);
+  // ترحيل الباصات المتبقية للشفت الجديد
+  activeInCurrent.forEach(b => {
+    b.shift = nextShift;
+    db.ref('buses/' + b.id).set(b);
+  });
+  setShift(nextShift);
+  showToast(`تم أرشفة الشفت وترحيل (${activeInCurrent.length}) باص إلى ${nextShift} ✓`);
+};
+
 window.openShiftModalManual = function() {
-  $('shift-msg').textContent = 'تغيير النوبة يدوياً: اختر الشفت المطلوب لعرض وتحديث بياناته:';
+  $('shift-msg').textContent = 'تغيير النوبة يدوياً حسب جدول صالة 4 المعتمد:';
   $('btn-keep-shift').style.display = 'block';
+  $('btn-carryover').style.display = 'block';
   $('shift-modal').style.display = 'flex';
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (!activeShift) {
-    $('shift-modal').style.display = 'flex';
-  } else {
-    $('active-shift-badge').textContent = activeShift;
-    checkNotificationPermission();
-  }
+  localStorage.setItem('activeShift', activeShift);
+  $('active-shift-badge').textContent = activeShift;
+  checkNotificationPermission();
 });
 
 function checkNotificationPermission() {
@@ -548,11 +532,7 @@ function sendNativeNotification(title, body) {
   playInstantAlertSound();
   if ('Notification' in window && Notification.permission === 'granted') {
     try {
-      const n = new Notification(title, { 
-        body: body, 
-        requireInteraction: true,
-        tag: 'bus-' + Date.now()
-      });
+      const n = new Notification(title, { body: body, requireInteraction: true, tag: 'bus-' + Date.now() });
       n.onclick = () => { window.focus(); n.close(); };
     } catch(e){}
   }
@@ -565,7 +545,7 @@ const svgPrint = '<svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6
 
 window.showToast = function(msg) {
   const t = $('toast'); t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3500); 
+  setTimeout(()=>t.classList.remove('show'), 3500);
 };
 
 window.toggleTheme = function() {
@@ -574,7 +554,8 @@ window.toggleTheme = function() {
 };
 if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
 
-let buses=[]; 
+let buses=[];
+let shiftHistory=[];
 let currentFilter = 'all';
 
 window.setFilter = function(f) {
@@ -583,8 +564,6 @@ window.setFilter = function(f) {
   render();
 };
 
-const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
-function parts(d){return Object.fromEntries(fmt.formatToParts(d).filter(x=>x.type!=='literal').map(x=>[x.type,Number(x.value)]))}
 function departure(t, refMs){
   const base=refMs?new Date(Number(refMs)):new Date();
   const p=parts(base),[h,m]=String(t||'00:00').split(':').map(Number);
@@ -598,11 +577,11 @@ function dep(b){return Number(b.departure)||departure(b.time,created(b))}
 function mins(ms){const n=Math.max(0,Math.floor(ms/60000));return Math.floor(n/60)+'س '+(n%60)+'د'}
 function until(b){const d=dep(b)-Date.now();return d<=0?'إقلاع':mins(d)}
 
-// تحت 4 ساعات متأخر (14,400,000 ms)، وفوق 6 ساعات مبكر (21,600,000 ms)
+// تحت 4 ساعات متأخر، فوق 6 ساعات مبكر
 function classification(b){
-  const d = dep(b) - created(b); 
-  if(d < 14400000) return 'late'; 
-  if(d > 21600000) return 'early'; 
+  const d = dep(b) - created(b);
+  if(d < 14400000) return 'late';
+  if(d > 21600000) return 'early';
   return 'normal';
 }
 function classLabel(c){ return c==='late'?'متأخر':c==='early'?'مبكر':'عادي'; }
@@ -618,21 +597,11 @@ let editingFlightContext = null;
 window.openEditFlightModal = function(busId, isSingleBus = false) {
   const b = buses.find(x => String(x.id) === String(busId));
   if (!b) return;
-  editingFlightContext = {
-    oldFlight: b.flight,
-    oldTime: b.time,
-    busId: b.id,
-    isSingleBus: isSingleBus,
-    doneState: !!b.done
-  };
+  editingFlightContext = { oldFlight: b.flight, oldTime: b.time, busId: b.id, isSingleBus: isSingleBus, doneState: !!b.done };
   $('edit-flight-input').value = b.flight;
   $('edit-time-input').value = b.time;
-  if (isSingleBus) {
-    $('edit-pax-wrapper').style.display = 'flex';
-    $('edit-pax-input').value = b.pax;
-  } else {
-    $('edit-pax-wrapper').style.display = 'none';
-  }
+  if (isSingleBus) { $('edit-pax-wrapper').style.display = 'flex'; $('edit-pax-input').value = b.pax; }
+  else { $('edit-pax-wrapper').style.display = 'none'; }
   $('edit-flight-modal').style.display = 'flex';
 };
 
@@ -640,46 +609,22 @@ window.saveFlightEdit = function() {
   if (!editingFlightContext) return;
   const newFlight = $('edit-flight-input').value.trim().toUpperCase().replace(/\s+/g, '');
   const newTime = $('edit-time-input').value.trim();
-
   if (!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(newFlight) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(newTime)) {
-    showToast('تأكد من صحة رقم الرحلة أو وقت الإقلاع');
-    return;
+    showToast('تأكد من صحة رقم الرحلة أو وقت الإقلاع'); return;
   }
-
   if (editingFlightContext.isSingleBus) {
     const newPax = Number($('edit-pax-input').value);
-    if (!Number.isInteger(newPax) || newPax < 1 || newPax > 150) {
-      showToast('تأكد من عدد الركاب (1 - 150)');
-      return;
-    }
+    if (!Number.isInteger(newPax) || newPax < 1 || newPax > 150) { showToast('تأكد من عدد الركاب'); return; }
     const b = buses.find(x => String(x.id) === String(editingFlightContext.busId));
-    if (b) {
-      b.flight = newFlight;
-      b.time = newTime;
-      b.pax = newPax;
-      b.departure = departure(newTime, created(b));
-      db.ref('buses/' + b.id).set(b);
-    }
+    if (b) { b.flight = newFlight; b.time = newTime; b.pax = newPax; b.departure = departure(newTime, created(b)); db.ref('buses/' + b.id).set(b); }
   } else {
-    const targetBuses = buses.filter(x =>
-      (x.shift || 'Shift A') === activeShift &&
-      Boolean(x.done) === editingFlightContext.doneState &&
-      x.flight === editingFlightContext.oldFlight &&
-      x.time === editingFlightContext.oldTime
-    );
-    targetBuses.forEach(b => {
-      b.flight = newFlight;
-      b.time = newTime;
-      b.departure = departure(newTime, created(b));
-      db.ref('buses/' + b.id).set(b);
-    });
+    buses.filter(x => (x.shift || 'Shift A') === activeShift && Boolean(x.done) === editingFlightContext.doneState && x.flight === editingFlightContext.oldFlight && x.time === editingFlightContext.oldTime)
+      .forEach(b => { b.flight = newFlight; b.time = newTime; b.departure = departure(newTime, created(b)); db.ref('buses/' + b.id).set(b); });
   }
-
   $('edit-flight-modal').style.display = 'none';
   editingFlightContext = null;
   showToast('تم تعديل بيانات الرحلة والوقت بنجاح ✓');
 };
-// -------------------------------------------------------------------------
 
 let pendingDoneBusId = null;
 $('btn-dest-1').onclick = () => confirmDeparture('01 خلف المسجد');
@@ -689,9 +634,9 @@ function confirmDeparture(dest) {
   if(!pendingDoneBusId) return;
   const b = buses.find(x => String(x.id) === pendingDoneBusId);
   if(b) {
-    b.done = true; b.doneAt = Date.now(); b.destination = dest; 
+    b.done = true; b.doneAt = Date.now(); b.destination = dest;
     db.ref('buses/' + b.id).set(b);
-    showToast('تم تسجيل مغادرة باص الرحلة ' + b.flight + ' (' + dest + ') ✓');
+    showToast('تم تسجيل مغادرة ' + b.flight + ' (' + dest + ') ✓');
   }
   $('dest-modal').style.display = 'none';
   pendingDoneBusId = null;
@@ -699,38 +644,28 @@ function confirmDeparture(dest) {
 
 async function generatePermit(b) {
   showToast('جاري استخراج التصريح...');
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const img = new Image();
-  img.crossOrigin = "anonymous"; 
-  img.src = "https://i.ibb.co/MDvyKFCY/D2-B69579-1-CA1-4-E0-D-B250-80-B25-B36-D42-E.png"; 
-
+  const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+  const img = new Image(); img.crossOrigin = "anonymous";
+  img.src = "https://i.ibb.co/MDvyKFCY/D2-B69579-1-CA1-4-E0-D-B250-80-B25-B36-D42-E.png";
   img.onload = () => {
     canvas.width = img.width; canvas.height = img.height;
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#0047AB';
-    ctx.font = `bold ${Math.floor(canvas.height * 0.040)}px monospace`;
+    ctx.fillStyle = '#0047AB'; ctx.font = `bold ${Math.floor(canvas.height * 0.040)}px monospace`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    
     const dateStr = new Intl.DateTimeFormat('en-GB').format(new Date());
     const timeIn = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(created(b)));
-    const columnX = canvas.width * 0.38; 
-    
-    ctx.fillText(dateStr, columnX, canvas.height * 0.315);              
-    ctx.fillText(b.flight, columnX, canvas.height * 0.385);             
-    ctx.fillText(b.time, columnX, canvas.height * 0.455);               
-    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.525);  
-    ctx.fillText(timeIn, columnX, canvas.height * 0.595);               
-
+    const columnX = canvas.width * 0.38;
+    ctx.fillText(dateStr, columnX, canvas.height * 0.315);
+    ctx.fillText(b.flight, columnX, canvas.height * 0.385);
+    ctx.fillText(b.time, columnX, canvas.height * 0.455);
+    ctx.fillText(total(b).toString(), columnX, canvas.height * 0.525);
+    ctx.fillText(timeIn, columnX, canvas.height * 0.595);
     canvas.toBlob(async (blob) => {
-      if (!blob) { showToast('خطأ في توليد الصورة'); return; }
+      if (!blob) return;
       const file = new File([blob], `Permit_${b.flight}.png`, { type: 'image/png' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try { await navigator.share({ files: [file], title: 'تصريح' }); } catch (error) {}
-      } else { 
-        window.open(URL.createObjectURL(blob), '_blank'); 
-        showToast('اضغط مطولاً على الصورة لحفظها ✓'); 
-      }
+        try { await navigator.share({ files: [file], title: 'تصريح' }); } catch (e) {}
+      } else { window.open(URL.createObjectURL(blob), '_blank'); showToast('اضغط مطولاً على الصورة لحفظها ✓'); }
     }, 'image/png');
   };
   img.onerror = () => showToast('تأكد من الاتصال بالإنترنت');
@@ -738,12 +673,7 @@ async function generatePermit(b) {
 
 function busCard(b,i){
   const c=classification(b), extras=Array.isArray(b.extra)?b.extra:[];
-  
-  let inlineSharedBadges = '';
-  if(extras.length) {
-    inlineSharedBadges = extras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
-  }
-
+  const inlineSharedBadges = extras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
   let sharedHtml = '';
   if(extras.length) {
     sharedHtml = `<div style="margin-top:8px; font-size:11px; font-weight:900; color:var(--shared);">` + extras.map((x,j)=>`
@@ -789,20 +719,34 @@ function render(){
   if(!activeShift) return;
   const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
   const allActive = shiftBuses.filter(b=>!b.done);
+  // ترتيب المغادرة دائماً بحيث يكون الأحدث خروجاً في الأعلى تماماً
+  const done = shiftBuses.filter(b=>b.done).sort((a,b) => (Number(b.doneAt)||0) - (Number(a.doneAt)||0));
+
   $('flight-list').innerHTML = [...new Set(allActive.map(b=>b.flight))].map(f=>`<option value="${esc(f)}">`).join('');
 
   let filteredActive = allActive;
   if(currentFilter === 'late') filteredActive = allActive.filter(b => classification(b) === 'late');
   if(currentFilter === 'shared') filteredActive = allActive.filter(b => (b.extra||[]).length > 0);
-  
   const groups = groupBy(filteredActive);
-  const done = shiftBuses.filter(b=>b.done);
 
   $('kbus').textContent = allActive.length;
   $('kpax').textContent = allActive.reduce((a,b)=>a+total(b),0);
   $('kflight').textContent = new Set(allActive.flatMap(b=>[b.flight,...(b.extra||[]).map(x=>x.flight)])).size;
   $('klate').textContent = allActive.filter(b=>classification(b)==='late').length;
   $('donecount').textContent = done.length;
+
+  // تحديث مؤشرات الأداء الإدارية
+  const mosqueCnt = done.filter(b => (b.destination||'').includes('المسجد')).length;
+  const groupsCnt = done.filter(b => (b.destination||'').includes('المجموعات')).length;
+  $('k-dest-split').textContent = `${mosqueCnt} / ${groupsCnt}`;
+  $('k-shared-cnt').textContent = shiftBuses.filter(b => (b.extra||[]).length > 0).length;
+  if (shiftBuses.length) {
+    const totalWaitMs = shiftBuses.reduce((sum, b) => sum + Math.max(0, (b.done && b.doneAt ? Number(b.doneAt) : Date.now()) - created(b)), 0);
+    const avgMin = Math.round((totalWaitMs / shiftBuses.length) / 60000);
+    $('k-avg-wait').textContent = avgMin >= 60 ? `${Math.floor(avgMin/60)}س ${avgMin%60}د` : `${avgMin} د`;
+  } else {
+    $('k-avg-wait').textContent = '0 د';
+  }
 
   $('active').innerHTML=groups.length?groups.map(g=>{
     const b = g[0];
@@ -812,7 +756,7 @@ function render(){
 
     return `<div class="flight-block">
       <div style="background:var(--surface); padding:12px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); border-right:4px solid var(--accent);">
-        <div class="editable-header" data-action="edit-flight-group" data-id="${esc(b.id)}" title="اضغط لتعديل وقت الإقلاع أو رقم الرحلة" style="display:flex; flex-direction:column; gap:4px; flex:1;">
+        <div class="editable-header" data-action="edit-flight-group" data-id="${esc(b.id)}" style="display:flex; flex-direction:column; gap:4px; flex:1;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span style="font-size:18px; font-weight:900; color:var(--primary); direction:ltr; letter-spacing:1px;">${esc(b.flight)}</span>
             <span style="font-size:13px; font-weight:800; color:var(--accent); direction:ltr;">(${basePax} راكب)</span>
@@ -830,19 +774,20 @@ function render(){
     </div>`;
   }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة حالياً في هذا الشفت.</div>';
 
-  $('done').innerHTML=done.length?done.slice().reverse().map(b=>{
+  // سجل المغادرة: الأحدث في الأعلى + نبض لمدة 60 ثانية كاملة (دقيقة)
+  $('done').innerHTML=done.length?done.map(b=>{
     let dTime = '--:--';
     if (b.doneAt) {
       try { const dt = new Date(Number(b.doneAt) || b.doneAt); if(!isNaN(dt.getTime())) dTime = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false}).format(dt); } catch(e){}
     }
-    const timeSinceDone = Date.now() - (b.doneAt || 0);
-    const isRecent = timeSinceDone <= 50000;
+    const elapsedSec = Math.floor((Date.now() - (Number(b.doneAt) || 0)) / 1000);
+    const isRecent = elapsedSec >= 0 && elapsedSec < 60;
+    const remSec = Math.max(0, 60 - elapsedSec);
     const recentClass = isRecent ? 'recent-depart' : '';
-    const recentBadge = isRecent ? `<span class="recent-badge-text" style="margin-right:6px;">(غادر للتو)</span>` : '';
     const extras = Array.isArray(b.extra) ? b.extra : [];
     const doneSharedBadges = extras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
 
-    return `<details class="bus-card early ${recentClass}" data-done-time="${b.doneAt}" style="margin-bottom:12px;">
+    return `<details class="bus-card early ${recentClass}" data-done-time="${b.doneAt || 0}" style="margin-bottom:12px;">
       <summary class="bus-summary" style="padding:14px 12px; cursor:pointer; display:flex; flex-direction:column; gap:8px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
@@ -858,7 +803,7 @@ function render(){
             <span class="bus-status early" style="font-size:11px; font-weight:900; padding:6px 10px; border-radius:8px;">مغادر ▾</span>
           </div>
         </div>
-        ${isRecent ? `<div style="text-align:left;">${recentBadge}</div>` : ''}
+        ${isRecent ? `<div style="text-align:left;"><span class="recent-badge-text" data-rem-badge>غادر للتو (${remSec}ث)</span></div>` : ''}
       </summary>
       <div class="bus-actions">
         <div class="bus-action-row">
@@ -874,16 +819,76 @@ function render(){
 
   $('status-report-preview').textContent = generateStatusReportText(shiftBuses);
   $('site-flights-preview').textContent = generateSiteFlightsText(shiftBuses);
+  renderHistory();
   tick();
 }
+
+function renderHistory() {
+  $('history-count').textContent = shiftHistory.length;
+  $('shift-history-list').innerHTML = shiftHistory.length ? shiftHistory.slice().reverse().slice(0, 10).map(h => `
+    <div class="history-card">
+      <div class="history-card-top">
+        <span style="direction:ltr;">${esc(h.shift)}</span>
+        <span style="direction:ltr; color:var(--text-muted); font-size:11px;">${esc(h.date)}</span>
+      </div>
+      <div class="history-card-stats">
+        <span>الباصات: <b>${h.totalBuses}</b></span>
+        <span>المغادرة: <b>${h.departed}</b></span>
+        <span>الركاب: <b>${h.totalPax}</b></span>
+        <span>المسجد/مجموعات: <b>${h.mosque}/${h.groups}</b></span>
+      </div>
+    </div>
+  `).join('') : '<div class="empty-msg">لا توجد نوبات مؤرشفة بعد.</div>';
+}
+
+function saveShiftSummaryToHistory(shiftName) {
+  const sb = buses.filter(b => (b.shift || 'Shift A') === shiftName);
+  if (!sb.length) return;
+  const done = sb.filter(b => b.done);
+  const summary = {
+    id: newId(),
+    shift: shiftName,
+    date: new Intl.DateTimeFormat('en-GB', { timeZone:'Asia/Riyadh', dateStyle:'short', timeStyle:'short', hour12:false }).format(new Date()),
+    totalBuses: sb.length,
+    departed: done.length,
+    totalPax: sb.reduce((n,b)=>n+total(b), 0),
+    mosque: done.filter(b => (b.destination||'').includes('المسجد')).length,
+    groups: done.filter(b => (b.destination||'').includes('المجموعات')).length,
+    savedAt: Date.now()
+  };
+  db.ref('shift_history/' + summary.id).set(summary);
+}
+
+window.archiveAndResetShift = function(clearDeparted) {
+  const sb = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  if (!sb.length) { showToast('لا توجد بيانات في الشفت الحالي للأرشفة'); return; }
+  if (!clearDeparted) {
+    saveShiftSummaryToHistory(activeShift);
+    showToast('تم حفظ ملخص ' + activeShift + ' في أرشيف الإدارة ✓');
+    return;
+  }
+  if (!confirm(`تأكيد إقفال وتجديد ${activeShift}؟\nسيتم حفظ الملخص في الأرشيف وحذف الباصات المغادرة لبدء دورة جديدة نظيفة.`)) return;
+  if (!confirm('تأكيد نهائي: هل أنت متأكد من تصفير سجل المغادرة لهذا الشفت؟')) return;
+  saveShiftSummaryToHistory(activeShift);
+  sb.filter(b => b.done).forEach(b => db.ref('buses/' + b.id).remove());
+  showToast('تم أرشفة وتجديد ' + activeShift + ' بنجاح ✓');
+};
 
 function tick(){
   const p = parts(new Date());
   const tm = p.hour * 60 + p.minute;
-  if ((tm === 327 || tm === 807 || tm === 1287) && lastPromptMinute !== tm && activeShift) {
+
+  // إظهار شارة ساعة التداخل (05:30-06:30, 13:30-14:30, 21:30-22:30)
+  const isOverlap = (tm >= 330 && tm < 390) || (tm >= 810 && tm < 870) || (tm >= 1290 && tm < 1350);
+  const ob = $('overlap-badge');
+  if (ob) ob.style.display = isOverlap ? 'inline-block' : 'none';
+
+  // تنبيه إقفال وتسليم الشفت تلقائياً عند نهاية النوبة (06:30 = 390, 14:30 = 870, 22:30 = 1350)
+  if ((tm === 390 || tm === 870 || tm === 1350) && lastPromptMinute !== tm && activeShift) {
       lastPromptMinute = tm;
       playInstantAlertSound();
-      $('shift-msg').textContent = "اقترب موعد انتهاء الشفت الحالي (باقي 3 دقائق). يرجى اختيار الشفت الجديد إذا تم التسليم، أو البقاء على شفتك الحالي:";
+      $('shift-msg').textContent = `انتهى وقت ${activeShift} رسمياً. يمكنك ترحيل الباصات المتبقية وبدء الشفت الجديد أو البقاء على الحالي:`;
+      $('btn-carryover').style.display = 'block';
       $('btn-keep-shift').style.display = 'block';
       $('shift-modal').style.display = 'flex';
   }
@@ -901,12 +906,16 @@ function tick(){
     }
   });
 
+  // تحديث عدّاد الدقيقة للباصات المغادرة حديثاً وإزالة التمييز بعد 60 ثانية
   document.querySelectorAll('.recent-depart').forEach(el => {
     const doneTime = Number(el.dataset.doneTime);
-    if (Date.now() - doneTime > 50000) {
+    const elapsedSec = Math.floor((Date.now() - doneTime) / 1000);
+    const badge = el.querySelector('[data-rem-badge]');
+    if (elapsedSec >= 60) {
       el.classList.remove('recent-depart');
-      const badge = el.querySelector('.recent-badge-text');
-      if(badge) badge.style.display = 'none';
+      if (badge) badge.style.display = 'none';
+    } else if (badge) {
+      badge.textContent = `غادر للتو (${60 - elapsedSec}ث)`;
     }
   });
 
@@ -926,45 +935,25 @@ function tick(){
   }
 }
 
-// حساب الساعة القادمة تلقائياً (مثلاً 09:15 تصبح 10:00) مع التاريخ الإنجليزي
 function getNextHourFormatted() {
   const now = new Date();
-  const riyadhStr = now.toLocaleString('en-US', { timeZone: 'Asia/Riyadh' });
-  const rDate = new Date(riyadhStr);
-  
-  if (rDate.getMinutes() > 0 || rDate.getSeconds() > 0) {
-    rDate.setHours(rDate.getHours() + 1, 0, 0, 0);
-  } else {
-    rDate.setMinutes(0, 0, 0);
-  }
-
-  const day = rDate.getDate();
+  const rDate = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Riyadh' }));
+  if (rDate.getMinutes() > 0 || rDate.getSeconds() > 0) rDate.setHours(rDate.getHours() + 1, 0, 0, 0);
+  else rDate.setMinutes(0, 0, 0);
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  const monthName = months[rDate.getMonth()];
-  const year = rDate.getFullYear();
   const hourStr = String(rDate.getHours()).padStart(2, '0') + ':00';
-
-  const badge = $('next-hour-badge');
-  if (badge) badge.textContent = hourStr;
-
-  return `${day} ${monthName}${year} |${hourStr}`;
+  const badge = $('next-hour-badge'); if (badge) badge.textContent = hourStr;
+  return `${rDate.getDate()} ${months[rDate.getMonth()]}${rDate.getFullYear()} |${hourStr}`;
 }
 
-// 1. التقرير الأساسي فوق: T4 Landside Operation Status Report
 function generateStatusReportText(shiftBuses){
-  const a = shiftBuses.filter(b => !b.done);
-  const groups = groupBy(a);
-  const headerDateTime = getNextHourFormatted();
-
+  const a = shiftBuses.filter(b => !b.done), groups = groupBy(a);
   const lines = [
     'T4 Landside Operation Status Report',
-    headerDateTime,
-    '',
-    '',
+    getNextHourFormatted(), '', '',
     '🟢 Overall Status: All locations operation are running smoothly.',
     `🟢 EBHA :(${a.length} Buses)`
   ];
-
   if (groups.length > 0) {
     for (const g of groups) {
       const f = g[0];
@@ -972,57 +961,33 @@ function generateStatusReportText(shiftBuses){
       const paxBreakdown = g.length > 1 ? ` (${g.map(b => b.pax).join('+')})` : '';
       const allEx = g.flatMap(b => Array.isArray(b.extra) ? b.extra : []);
       const sharedStr = allEx.length ? ` + Shared: ${allEx.map(x => `${x.flight} (${x.pax} Pax)`).join(', ')}` : '';
-      
       lines.push(`Flight: ${f.flight} | Dep: ${f.time} | Pax: ${basePax}${paxBreakdown}${sharedStr}`);
     }
   }
-
   lines.push(
-    '',
-    '🟢 Drop off Behind the Mosuq : Normal',
-    '🟢 The Mosuq: Normal',
-    '',
-    '',
-    '🟢 Curbside-1( Departure): Normal',
-    '🟢 Curbside-2 ( Arrival): Normal',
-    '🟢 GCIF : Normal',
-    '',
-    '',
-    '🟢 Arrival Corridor ( West): Normal',
-    '🟢 Curbside -3 ( Arrival  west): Normal',
-    '',
-    '',
-    '',
+    '', '🟢 Drop off Behind the Mosuq : Normal', '🟢 The Mosuq: Normal', '', '',
+    '🟢 Curbside-1( Departure): Normal', '🟢 Curbside-2 ( Arrival): Normal', '🟢 GCIF : Normal', '', '',
+    '🟢 Arrival Corridor ( West): Normal', '🟢 Curbside -3 ( Arrival  west): Normal', '', '', '',
     'All landside teams have been deployed to their assigned locations and are fully prepared to provide the necessary support.'
   );
-
   return lines.join('\n');
 }
 
-// 2. التقرير الثاني تحت: النسخ النصي الأول لرحلات الموقع (Landside Ops Report)
 function generateSiteFlightsText(shiftBuses){
   const a = shiftBuses.filter(b => !b.done), groups = groupBy(a);
   const d = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Riyadh',dateStyle:'short',timeStyle:'short',hour12:false}).format(new Date());
-  
   const lines = [
-    `Landside Ops Report (T4) - ${activeShift}`,
-    'Time: ' + d,
-    '-------------------------',
-    'Active Buses: ' + a.length,
-    'Total Pax: ' + a.reduce((n,b)=>n+total(b),0),
-    '-------------------------'
+    `Landside Ops Report (T4) - ${activeShift}`, 'Time: ' + d, '-------------------------',
+    'Active Buses: ' + a.length, 'Total Pax: ' + a.reduce((n,b)=>n+total(b),0), '-------------------------'
   ];
-  if (!groups.length) { 
-    lines.push('No active buses in staging.'); 
-  } else {
+  if (!groups.length) lines.push('No active buses in staging.');
+  else {
     for (const g of groups) {
       const f = g[0], hasShared = g.some(b => b.extra && b.extra.length > 0);
       lines.push('Flight: ' + f.flight, 'Dep Time: ' + f.time);
-      if (g.length === 1 && !hasShared) { 
-        lines.push('Pax: ' + f.pax); 
-      } else if (!hasShared) { 
-        lines.push('Buses: ' + g.length, 'Pax: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`); 
-      } else {
+      if (g.length === 1 && !hasShared) lines.push('Pax: ' + f.pax);
+      else if (!hasShared) lines.push('Buses: ' + g.length, 'Pax: ' + g.reduce((sum,b)=>sum+b.pax,0) + ` (${g.map(b=>b.pax).join(' + ')})`);
+      else {
         lines.push('Buses: ' + g.length);
         g.forEach((b, i) => {
           const ex = Array.isArray(b.extra) ? b.extra : [];
@@ -1036,147 +1001,77 @@ function generateSiteFlightsText(shiftBuses){
   return lines.join('\n');
 }
 
-// أزرار التقرير الأول (Status Report)
 window.copyStatusReport = async function() {
-  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  try { await navigator.clipboard.writeText(generateStatusReportText(shiftBuses)); showToast('تم نسخ التقرير الأساسي (Status) بنجاح ✓'); } 
-  catch(e) { prompt('Copy Report:', generateStatusReportText(shiftBuses)); }
+  const sb = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  try { await navigator.clipboard.writeText(generateStatusReportText(sb)); showToast('تم نسخ التقرير الأساسي ✓'); } catch(e) { prompt('Copy:', generateStatusReportText(sb)); }
 };
-
 window.shareStatusWhatsApp = function() {
-  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  window.open('https://wa.me/?text=' + encodeURIComponent(generateStatusReportText(shiftBuses)), '_blank');
+  const sb = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  window.open('https://wa.me/?text=' + encodeURIComponent(generateStatusReportText(sb)), '_blank');
 };
-
-// أزرار التقرير الثاني (رحلات الموقع النصي)
 window.copySiteFlightsReport = async function() {
-  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  try { await navigator.clipboard.writeText(generateSiteFlightsText(shiftBuses)); showToast('تم نسخ تقرير رحلات الموقع بنجاح ✓'); } 
-  catch(e) { prompt('Copy Flights Report:', generateSiteFlightsText(shiftBuses)); }
+  const sb = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  try { await navigator.clipboard.writeText(generateSiteFlightsText(sb)); showToast('تم نسخ تقرير رحلات الموقع ✓'); } catch(e) { prompt('Copy:', generateSiteFlightsText(sb)); }
 };
-
 window.shareSiteFlightsWhatsApp = function() {
-  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  window.open('https://wa.me/?text=' + encodeURIComponent(generateSiteFlightsText(shiftBuses)), '_blank');
+  const sb = buses.filter(b => (b.shift || 'Shift A') === activeShift);
+  window.open('https://wa.me/?text=' + encodeURIComponent(generateSiteFlightsText(sb)), '_blank');
 };
 
-// ----------------- ميزة رفع ودمج الصور وإرسالها مع التقرير للواتساب -----------------
+// ----------------- دمج الصور وإرسالها للواتساب -----------------
 let selectedStatusImages = [];
-
 window.handleStatusPhotos = function(e) {
   const files = Array.from(e.target.files || []);
-  if (!files.length) return;
-
   files.forEach(file => {
     const reader = new FileReader();
     reader.onload = (ev) => {
       const img = new Image();
-      img.onload = () => {
-        selectedStatusImages.push({ src: ev.target.result, img: img });
-        renderStatusThumbs();
-      };
+      img.onload = () => { selectedStatusImages.push({ src: ev.target.result, img }); renderStatusThumbs(); };
       img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
   });
   e.target.value = '';
 };
-
-window.removeStatusPhoto = function(idx) {
-  selectedStatusImages.splice(idx, 1);
-  renderStatusThumbs();
-};
-
+window.removeStatusPhoto = function(idx) { selectedStatusImages.splice(idx, 1); renderStatusThumbs(); };
 function renderStatusThumbs() {
-  const container = $('status-thumbs');
-  const mergeBtn = $('btn-merge-share');
-  if (!selectedStatusImages.length) {
-    container.innerHTML = '';
-    mergeBtn.style.display = 'none';
-    return;
-  }
+  const container = $('status-thumbs'), mergeBtn = $('btn-merge-share');
+  if (!selectedStatusImages.length) { container.innerHTML = ''; mergeBtn.style.display = 'none'; return; }
   mergeBtn.style.display = 'block';
   mergeBtn.textContent = `🚀 دمج (${selectedStatusImages.length}) صور وإرسالها مع التقرير للواتساب`;
-  container.innerHTML = selectedStatusImages.map((item, idx) => `
-    <div class="thumb-item">
-      <img src="${item.src}">
-      <div class="thumb-del" onclick="removeStatusPhoto(${idx})">✕</div>
-    </div>
-  `).join('');
+  container.innerHTML = selectedStatusImages.map((item, idx) => `<div class="thumb-item"><img src="${item.src}"><div class="thumb-del" onclick="removeStatusPhoto(${idx})">✕</div></div>`).join('');
 }
-
 window.mergePhotosAndShareStatus = async function() {
-  if (!selectedStatusImages.length) {
-    showToast('الرجاء اختيار الصور أولاً');
-    return;
-  }
+  if (!selectedStatusImages.length) return;
   showToast('جاري دمج الصور وتجهيز التقرير...');
-
-  const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
-  const reportText = generateStatusReportText(shiftBuses);
-
-  try {
-    await navigator.clipboard.writeText(reportText);
-  } catch (e) {}
-
-  const count = selectedStatusImages.length;
-  const cols = count === 1 ? 1 : 2;
-  const rows = Math.ceil(count / cols);
-  const cellW = 800;
-  const cellH = 600;
-  const pad = 16;
-
+  const reportText = generateStatusReportText(buses.filter(b => (b.shift || 'Shift A') === activeShift));
+  try { await navigator.clipboard.writeText(reportText); } catch (e) {}
+  const count = selectedStatusImages.length, cols = count === 1 ? 1 : 2, rows = Math.ceil(count / cols);
+  const cellW = 800, cellH = 600, pad = 16;
   const canvas = document.createElement('canvas');
-  canvas.width = cols * cellW + (cols + 1) * pad;
-  canvas.height = rows * cellH + (rows + 1) * pad;
+  canvas.width = cols * cellW + (cols + 1) * pad; canvas.height = rows * cellH + (rows + 1) * pad;
   const ctx = canvas.getContext('2d');
-
-  ctx.fillStyle = '#0f172a';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+  ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
   selectedStatusImages.forEach((item, index) => {
-    const r = Math.floor(index / cols);
-    const c = index % cols;
+    const r = Math.floor(index / cols), c = index % cols;
     const isLastOdd = (count % 2 !== 0 && index === count - 1 && cols === 2);
-    
-    const x = isLastOdd ? pad : pad + c * (cellW + pad);
-    const y = pad + r * (cellH + pad);
+    const x = isLastOdd ? pad : pad + c * (cellW + pad), y = pad + r * (cellH + pad);
     const currentCellW = isLastOdd ? (cellW * 2 + pad) : cellW;
-
-    const img = item.img;
-    const scale = Math.max(currentCellW / img.width, cellH / img.height);
-    const nw = img.width * scale;
-    const nh = img.height * scale;
-    const cx = x + (currentCellW - nw) / 2;
-    const cy = y + (cellH - nh) / 2;
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.roundRect(x, y, currentCellW, cellH, 16);
-    ctx.clip();
-    ctx.drawImage(img, cx, cy, nw, nh);
-    ctx.restore();
+    const img = item.img, scale = Math.max(currentCellW / img.width, cellH / img.height);
+    const nw = img.width * scale, nh = img.height * scale;
+    ctx.save(); ctx.beginPath(); ctx.roundRect(x, y, currentCellW, cellH, 16); ctx.clip();
+    ctx.drawImage(img, x + (currentCellW - nw) / 2, y + (cellH - nh) / 2, nw, nh); ctx.restore();
   });
-
   canvas.toBlob(async (blob) => {
-    if (!blob) { showToast('حدث خطأ أثناء دمج الصور'); return; }
+    if (!blob) return;
     const file = new File([blob], `T4_Landside_Report.jpg`, { type: 'image/jpeg' });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({
-          files: [file],
-          text: reportText
-        });
-        showToast('تم تجهيز الصور والتقرير للواتساب ✓');
-      } catch (err) {}
-    } else {
-      window.open(URL.createObjectURL(blob), '_blank');
-      showToast('تم نسخ التقرير! احفظ الصورة المدمجة وأرسلها ✓');
-    }
+      try { await navigator.share({ files: [file], text: reportText }); } catch (err) {}
+    } else { window.open(URL.createObjectURL(blob), '_blank'); showToast('تم نسخ التقرير! احفظ الصورة وأرسلها ✓'); }
   }, 'image/jpeg', 0.9);
 };
-// -------------------------------------------------------------------------
 
+// ----------------- مزامنة السحابة -----------------
 const notifiedBusIds = new Set();
 let initialLoad = true;
 
@@ -1185,9 +1080,8 @@ db.ref('buses').on('value', (snapshot) => {
   snapshot.forEach((childSnapshot) => {
     const b = childSnapshot.val();
     incoming.push(b);
-    if (initialLoad) {
-      notifiedBusIds.add(String(b.id));
-    } else if (!notifiedBusIds.has(String(b.id))) {
+    if (initialLoad) notifiedBusIds.add(String(b.id));
+    else if (!notifiedBusIds.has(String(b.id))) {
       notifiedBusIds.add(String(b.id));
       if ((b.shift || 'Shift A') === activeShift && b.addedBy !== mySessionId) {
         sendNativeNotification(`New Bus (${activeShift}): ${b.flight}`, `Pax: ${b.pax} | Dep: ${b.time}`);
@@ -1200,15 +1094,20 @@ db.ref('buses').on('value', (snapshot) => {
   initialLoad = false;
 });
 
+db.ref('shift_history').on('value', (snapshot) => {
+  shiftHistory = [];
+  snapshot.forEach(c => shiftHistory.push(c.val()));
+  shiftHistory.sort((a, b) => (a.savedAt || 0) - (b.savedAt || 0));
+  renderHistory();
+});
+
 $('entry').addEventListener('submit',e=>{
-  e.preventDefault();
-  startBackgroundKeepAlive();
-  if(!activeShift){ $('shift-modal').style.display='flex'; return; }
+  e.preventDefault(); startBackgroundKeepAlive();
   const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
   if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){ showToast('تأكد من صحة البيانات المدخلة'); return; }
   const newBus = {id:newId(), flight, time, pax, departure:departure(time,Date.now()), createdAt:Date.now(), done:false, extra:[], addedBy: mySessionId, shift: activeShift};
   notifiedBusIds.add(String(newBus.id));
-  db.ref('buses/' + newBus.id).set(newBus).then(() => showToast('تم تسجيل باص الرحلة ' + flight + ' (' + pax + ' راكب) بنجاح ✓')).catch(() => showToast('خطأ في الاتصال بالسحابة'));
+  db.ref('buses/' + newBus.id).set(newBus).then(() => showToast('تم تسجيل باص ' + flight + ' (' + pax + ' راكب) ✓')).catch(() => showToast('خطأ في الاتصال'));
   e.target.reset();
 });
 
@@ -1229,9 +1128,7 @@ function action(e){
   else if(a==='permit'){ generatePermit(b); return; }
   else if(a==='delete'){
     if(!confirm('تأكيد الحذف النهائي للباص؟'))return;
-    db.ref('buses/' + b.id).remove();
-    showToast('تم حذف الباص نهائياً ✓');
-    return;
+    db.ref('buses/' + b.id).remove(); showToast('تم حذف الباص نهائياً ✓'); return;
   }
   else if(a==='addsame'){
     const val=prompt('باص إضافي للرحلة '+b.flight+'\nأدخل عدد الركاب:');
@@ -1240,9 +1137,7 @@ function action(e){
     if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح');return;}
     const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[], addedBy: mySessionId, shift: activeShift};
     notifiedBusIds.add(String(newBus.id));
-    db.ref('buses/' + newBus.id).set(newBus);
-    showToast('تم إضافة باص للرحلة ' + b.flight + ' (' + pax + ' راكب) ✓');
-    return;
+    db.ref('buses/' + newBus.id).set(newBus); showToast('تم إضافة باص للرحلة ' + b.flight + ' ✓'); return;
   }
   if(a==='addextra'){
     const f=prompt('رقم الرحلة المشتركة:');if(f===null)return;
@@ -1255,28 +1150,20 @@ function action(e){
     if(!Number.isInteger(pax)||pax<1||pax>150){showToast('عدد غير صحيح');return;}
     if(!b.extra) b.extra = [];
     b.extra.push({flight,time:time.trim(),pax,departure:departure(time.trim(),created(b)),createdAt:Date.now()});
-    showToast('تمت إضافة الرحلة المشتركة بنجاح ✓');
+    showToast('تمت إضافة الرحلة المشتركة ✓');
   }
-  else if(a==='removeextra'){
-    if(!confirm('حذف الرحلة المشتركة؟'))return;
-    b.extra.splice(Number(btn.dataset.index),1);
-    showToast('تم حذف المشترك ✓');
-  }
+  else if(a==='removeextra'){ if(!confirm('حذف الرحلة المشتركة؟'))return; b.extra.splice(Number(btn.dataset.index),1); showToast('تم حذف المشترك ✓'); }
   else if(a==='done'){ pendingDoneBusId = b.id; $('dest-modal').style.display = 'flex'; return; }
-  else if(a==='restore'){ b.done=false; delete b.doneAt; delete b.destination; showToast('تم إرجاع باص الرحلة ' + b.flight + ' للفرز ✓'); }
+  else if(a==='restore'){ b.done=false; delete b.doneAt; delete b.destination; showToast('تم إرجاع ' + b.flight + ' للفرز ✓'); }
   else if(a==='edit-entry'){
     const t = prompt('أدخل وقت الدخول الصحيح (مثال 14:30):');
-    if(t && /^([01]\d|2[0-3]):[0-5]\d$/.test(t.trim())){
-      const [h, m] = t.trim().split(':').map(Number);
-      const d = new Date(created(b)); d.setHours(h, m, 0, 0); b.createdAt = d.getTime(); showToast('تم تعديل وقت الدخول بنجاح ✓');
-    } else if(t!==null) { showToast('تنسيق الوقت غير صحيح'); return; }
+    if(t && /^([01]\d|2[0-3]):[0-5]\d$/.test(t.trim())){ const [h, m] = t.trim().split(':').map(Number); const d = new Date(created(b)); d.setHours(h, m, 0, 0); b.createdAt = d.getTime(); showToast('تم تعديل وقت الدخول ✓'); }
+    else if(t!==null) { showToast('تنسيق الوقت غير صحيح'); return; }
   }
   else if(a==='edit-exit'){
     const t = prompt('أدخل وقت الخروج الصحيح (مثال 14:30):');
-    if(t && /^([01]\d|2[0-3]):[0-5]\d$/.test(t.trim())){
-      const [h, m] = t.trim().split(':').map(Number);
-      const d = new Date(b.doneAt || Date.now()); d.setHours(h, m, 0, 0); b.doneAt = d.getTime(); showToast('تم تعديل وقت الخروج بنجاح ✓');
-    } else if(t!==null) { showToast('تنسيق الوقت غير صحيح'); return; }
+    if(t && /^([01]\d|2[0-3]):[0-5]\d$/.test(t.trim())){ const [h, m] = t.trim().split(':').map(Number); const d = new Date(b.doneAt || Date.now()); d.setHours(h, m, 0, 0); b.doneAt = d.getTime(); showToast('تم تعديل وقت الخروج ✓'); }
+    else if(t!==null) { showToast('تنسيق الوقت غير صحيح'); return; }
   }
   db.ref('buses/' + b.id).set(b);
 }
