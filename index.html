@@ -370,13 +370,15 @@ const pageLoadTime = Date.now();
 
 const $=id=>document.getElementById(id);
 
-// ----------------- محرك GPS المطور والمضاد لتشتت أبراج 4G -----------------
+// ----------------- محرك GPS بنطاق 2000 متر + محاولات التقاط تلقائية متكررة -----------------
 const GEOFENCE_LAT = 21.6610403;
 const GEOFENCE_LNG = 39.1550750;
-const GEOFENCE_RADIUS_M = 350;
+const GEOFENCE_RADIUS_M = 2000;
 
 let gpsState = { inside: false, distance: null, accuracy: null, status: 'wait', lastGoodTs: 0 };
 let gpsWatchId = null;
+let gpsRetryTimer = null;
+let gpsRetryCount = 0;
 
 function calcDistanceMeters(lat1, lon1, lat2, lon2) {
   const R = 6371000;
@@ -393,53 +395,69 @@ function updateGpsBadgeUI() {
   if (gpsState.status === 'ok') {
     el.className = 'gps-pill ok';
     el.textContent = `📍 داخل الفرز (${gpsState.distance}م)`;
-  } else if (gpsState.status === 'weak') {
-    el.className = 'gps-pill wait';
-    el.textContent = `⚠️ دقة ضعيفة (±${gpsState.accuracy}م) اضغط تحديث`;
   } else if (gpsState.status === 'out') {
     el.className = 'gps-pill out';
     el.textContent = `🚫 خارج الفرز (${gpsState.distance}م)`;
   } else if (gpsState.status === 'denied') {
     el.className = 'gps-pill out';
-    el.textContent = '🚫 فعّل الـ GPS';
+    el.textContent = '🚫 فعّل الـ GPS (اضغط هنا)';
   } else {
     el.className = 'gps-pill wait';
-    el.textContent = '📡 جاري تحديد الموقع...';
+    el.textContent = gpsRetryCount > 0 ? `📡 محاولة تحديد الموقع (${gpsRetryCount})...` : '📡 جاري تحديد الموقع...';
   }
+}
+
+function scheduleGpsRetry() {
+  if (gpsRetryTimer) clearTimeout(gpsRetryTimer);
+  if (gpsRetryCount >= 6) return;
+  gpsRetryTimer = setTimeout(() => {
+    gpsRetryCount++;
+    updateGpsBadgeUI();
+    navigator.geolocation.getCurrentPosition(onGpsSuccess, onGpsError, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 10000
+    });
+  }, 2500);
 }
 
 function onGpsSuccess(pos) {
   const dist = calcDistanceMeters(pos.coords.latitude, pos.coords.longitude, GEOFENCE_LAT, GEOFENCE_LNG);
   const acc = Math.round(pos.coords.accuracy || 0);
 
-  // تجاهل القراءات الضعيفة المفاجئة من أبراج 4G إذا كان لدينا قراءة دقيقة حديثة خلال آخر دقيقتين
-  if (acc > 300 && gpsState.inside && (Date.now() - gpsState.lastGoodTs) < 120000) {
+  // تجاهل القراءات الضعيفة المفاجئة من أبراج الشبكة إذا التقطنا موقعاً داخل النطاق خلال آخر 3 دقائق
+  if (acc > 1000 && gpsState.inside && (Date.now() - gpsState.lastGoodTs) < 180000) {
     return;
   }
 
   gpsState.distance = dist;
   gpsState.accuracy = acc;
 
-  // تعويض ذكي لانحراف GPS البسيط داخل الصالة (بحد أقصى 150م إضافية)
-  const allowedMargin = GEOFENCE_RADIUS_M + Math.min(acc, 150);
-
-  if (dist <= allowedMargin && acc <= 500) {
+  if (dist <= GEOFENCE_RADIUS_M) {
     gpsState.inside = true;
     gpsState.status = 'ok';
     gpsState.lastGoodTs = Date.now();
-  } else if (acc > 500) {
-    // القراءة من برج شبكة 4G أو الموقع الدقيق مقفل في الآيفون
-    gpsState.inside = false;
-    gpsState.status = 'weak';
+    gpsRetryCount = 0;
+    if (gpsRetryTimer) clearTimeout(gpsRetryTimer);
   } else {
     gpsState.inside = false;
     gpsState.status = 'out';
+    // إذا كانت الدقة ضعيفة أو المسافة قريبة من الحد، نعيد المحاولة تلقائياً لالتقاط قراءة أدق
+    if (acc > 300 || dist <= GEOFENCE_RADIUS_M + 800) {
+      scheduleGpsRetry();
+    }
   }
   updateGpsBadgeUI();
 }
 
 function onGpsError() {
-  if (gpsState.inside && (Date.now() - gpsState.lastGoodTs) < 120000) return;
+  if (gpsState.inside && (Date.now() - gpsState.lastGoodTs) < 180000) return;
+  if (gpsRetryCount < 6) {
+    gpsState.status = 'wait';
+    updateGpsBadgeUI();
+    scheduleGpsRetry();
+    return;
+  }
   gpsState.inside = false;
   gpsState.status = 'denied';
   updateGpsBadgeUI();
@@ -451,12 +469,14 @@ window.refreshGPS = function(showFeedback = false) {
     updateGpsBadgeUI();
     return;
   }
+  gpsRetryCount = 0;
+  if (gpsRetryTimer) clearTimeout(gpsRetryTimer);
   if (showFeedback) {
     gpsState.status = 'wait';
     updateGpsBadgeUI();
-    showToast('جاري التقاط إشارة GPS دقيقة...');
+    showToast('جاري التقاط إشارة GPS...');
   }
-  const opts = { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 };
+  const opts = { enableHighAccuracy: true, maximumAge: 0, timeout: 12000 };
   navigator.geolocation.getCurrentPosition(onGpsSuccess, onGpsError, opts);
   if (gpsWatchId !== null) navigator.geolocation.clearWatch(gpsWatchId);
   gpsWatchId = navigator.geolocation.watchPosition(onGpsSuccess, onGpsError, opts);
@@ -465,14 +485,12 @@ window.refreshGPS = function(showFeedback = false) {
 function requireInsideGeofence() {
   if (gpsState.inside) return true;
   refreshGPS(false);
-  if (gpsState.status === 'weak') {
-    showToast(`⚠️ دقة الموقع ضعيفة (±${gpsState.accuracy}م) — تأكد من تفعيل "الموقع الدقيق" وافتح الرابط في سفاري`, true);
-  } else if (gpsState.status === 'out') {
-    showToast(`🚫 أنت خارج نطاق الفرز (${gpsState.distance}م / المسموح ${GEOFENCE_RADIUS_M}م)`, true);
+  if (gpsState.status === 'out') {
+    showToast(`🚫 أنت خارج نطاق الفرز (${gpsState.distance}م / المسموح ${GEOFENCE_RADIUS_M}م) — جاري إعادة المحاولة...`, true);
   } else if (gpsState.status === 'denied') {
-    showToast('🚫 يرجى السماح بصلاحية الموقع (GPS) لتأكيد تواجدك في الفرز', true);
+    showToast('🚫 يرجى السماح بصلاحية الموقع (GPS) من إعدادات المتصفح', true);
   } else {
-    showToast('📡 جاري التحقق من موقعك داخل الفرز، حاول بعد ثوانٍ...', true);
+    showToast('📡 جاري التحقق من موقعك داخل النطاق، حاول بعد ثوانٍ...', true);
   }
   return false;
 }
