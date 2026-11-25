@@ -287,7 +287,6 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
     <div id="active"></div>
   </section>
 
-  <!-- سجل المغادرة مقفل افتراضياً ويفتح عند الضغط مع زر حذف الكل -->
   <details class="panel">
     <summary class="panel-header">
       <h2>سجل المغادرة (الأحدث في الأعلى)</h2>
@@ -302,7 +301,6 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
   <details class="panel">
     <summary class="panel-header"><h2>التقارير اليومية الرسمية</h2></summary>
 
-    <!-- 1. التقرير الأساسي فوق: Status Report مع دمج الصور -->
     <div class="status-box">
       <div class="status-box-header">
         <h3>📋 T4 Landside Status Report</h3>
@@ -325,7 +323,6 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
       </div>
     </div>
 
-    <!-- 2. التقرير الثاني تحت: التقرير النصي لرحلات الموقع -->
     <div class="status-box" style="margin-top:16px;">
       <div class="status-box-header">
         <h3>🚌 تقرير رحلات الموقع (Landside Ops Report)</h3>
@@ -373,12 +370,12 @@ const pageLoadTime = Date.now();
 
 const $=id=>document.getElementById(id);
 
-// ----------------- إعدادات النطاق الجغرافي (GPS Geofencing - 350م) -----------------
+// ----------------- محرك GPS المطور والمضاد لتشتت أبراج 4G -----------------
 const GEOFENCE_LAT = 21.6610403;
 const GEOFENCE_LNG = 39.1550750;
 const GEOFENCE_RADIUS_M = 350;
 
-let gpsState = { inside: false, distance: null, status: 'wait' };
+let gpsState = { inside: false, distance: null, accuracy: null, status: 'wait', lastGoodTs: 0 };
 let gpsWatchId = null;
 
 function calcDistanceMeters(lat1, lon1, lat2, lon2) {
@@ -396,6 +393,9 @@ function updateGpsBadgeUI() {
   if (gpsState.status === 'ok') {
     el.className = 'gps-pill ok';
     el.textContent = `📍 داخل الفرز (${gpsState.distance}م)`;
+  } else if (gpsState.status === 'weak') {
+    el.className = 'gps-pill wait';
+    el.textContent = `⚠️ دقة ضعيفة (±${gpsState.accuracy}م) اضغط تحديث`;
   } else if (gpsState.status === 'out') {
     el.className = 'gps-pill out';
     el.textContent = `🚫 خارج الفرز (${gpsState.distance}م)`;
@@ -410,13 +410,36 @@ function updateGpsBadgeUI() {
 
 function onGpsSuccess(pos) {
   const dist = calcDistanceMeters(pos.coords.latitude, pos.coords.longitude, GEOFENCE_LAT, GEOFENCE_LNG);
+  const acc = Math.round(pos.coords.accuracy || 0);
+
+  // تجاهل القراءات الضعيفة المفاجئة من أبراج 4G إذا كان لدينا قراءة دقيقة حديثة خلال آخر دقيقتين
+  if (acc > 300 && gpsState.inside && (Date.now() - gpsState.lastGoodTs) < 120000) {
+    return;
+  }
+
   gpsState.distance = dist;
-  gpsState.inside = dist <= GEOFENCE_RADIUS_M;
-  gpsState.status = gpsState.inside ? 'ok' : 'out';
+  gpsState.accuracy = acc;
+
+  // تعويض ذكي لانحراف GPS البسيط داخل الصالة (بحد أقصى 150م إضافية)
+  const allowedMargin = GEOFENCE_RADIUS_M + Math.min(acc, 150);
+
+  if (dist <= allowedMargin && acc <= 500) {
+    gpsState.inside = true;
+    gpsState.status = 'ok';
+    gpsState.lastGoodTs = Date.now();
+  } else if (acc > 500) {
+    // القراءة من برج شبكة 4G أو الموقع الدقيق مقفل في الآيفون
+    gpsState.inside = false;
+    gpsState.status = 'weak';
+  } else {
+    gpsState.inside = false;
+    gpsState.status = 'out';
+  }
   updateGpsBadgeUI();
 }
 
 function onGpsError() {
+  if (gpsState.inside && (Date.now() - gpsState.lastGoodTs) < 120000) return;
   gpsState.inside = false;
   gpsState.status = 'denied';
   updateGpsBadgeUI();
@@ -431,20 +454,20 @@ window.refreshGPS = function(showFeedback = false) {
   if (showFeedback) {
     gpsState.status = 'wait';
     updateGpsBadgeUI();
-    showToast('جاري تحديث الموقع الجغرافي...');
+    showToast('جاري التقاط إشارة GPS دقيقة...');
   }
+  const opts = { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 };
+  navigator.geolocation.getCurrentPosition(onGpsSuccess, onGpsError, opts);
   if (gpsWatchId !== null) navigator.geolocation.clearWatch(gpsWatchId);
-  gpsWatchId = navigator.geolocation.watchPosition(onGpsSuccess, onGpsError, {
-    enableHighAccuracy: true,
-    maximumAge: 4000,
-    timeout: 12000
-  });
+  gpsWatchId = navigator.geolocation.watchPosition(onGpsSuccess, onGpsError, opts);
 };
 
 function requireInsideGeofence() {
   if (gpsState.inside) return true;
   refreshGPS(false);
-  if (gpsState.status === 'out') {
+  if (gpsState.status === 'weak') {
+    showToast(`⚠️ دقة الموقع ضعيفة (±${gpsState.accuracy}م) — تأكد من تفعيل "الموقع الدقيق" وافتح الرابط في سفاري`, true);
+  } else if (gpsState.status === 'out') {
     showToast(`🚫 أنت خارج نطاق الفرز (${gpsState.distance}م / المسموح ${GEOFENCE_RADIUS_M}م)`, true);
   } else if (gpsState.status === 'denied') {
     showToast('🚫 يرجى السماح بصلاحية الموقع (GPS) لتأكيد تواجدك في الفرز', true);
@@ -637,7 +660,7 @@ window.showToast = function(msg, isError = false) {
   t.classList.toggle('err', isError);
   t.classList.add('show');
   if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.remove('show'), 3600);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 4200);
 };
 
 window.toggleTheme = function() {
@@ -681,7 +704,6 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// بث تنبيه فوري عبر القناة الخفيفة عند تسجيل أي باص جديد
 function broadcastInstantBusAlert(bus) {
   db.ref('last_bus_alert').set({
     id: String(bus.id),
@@ -834,7 +856,6 @@ function render(){
   const allActive = shiftBuses.filter(b=>!b.done);
   const done = shiftBuses.filter(b=>b.done).sort((a,b) => (Number(b.doneAt)||0) - (Number(a.doneAt)||0));
 
-  // تحديث شارة "آخر تحديث" بوقت تسجيل آخر باص في الشفت
   const lub = $('last-update-badge');
   if (lub) {
     if (shiftBuses.length) {
@@ -1096,7 +1117,6 @@ window.shareSiteFlightsWhatsApp = function() {
   window.open('https://wa.me/?text=' + encodeURIComponent(generateSiteFlightsText(sb)), '_blank');
 };
 
-// ----------------- دمج الصور وإرسالها للواتساب -----------------
 let selectedStatusImages = [];
 window.handleStatusPhotos = function(e) {
   const files = Array.from(e.target.files || []);
@@ -1149,11 +1169,9 @@ window.mergePhotosAndShareStatus = async function() {
   }, 'image/jpeg', 0.9);
 };
 
-// ----------------- مزامنة السحابة + قناة التنبيهات اللحظية الفائقة -----------------
 const notifiedBusIds = new Set();
 let initialLoad = true;
 
-// 1. قناة التنبيه الفوري (حجم صغير جداً لتصل في أجزاء من الثانية)
 db.ref('last_bus_alert').on('value', (snap) => {
   const alert = snap.val();
   if (!alert || !alert.id) return;
@@ -1166,7 +1184,6 @@ db.ref('last_bus_alert').on('value', (snap) => {
   }
 });
 
-// 2. مزامنة قائمة الباصات الكاملة
 db.ref('buses').on('value', (snapshot) => {
   const incoming = [];
   snapshot.forEach((childSnapshot) => {
