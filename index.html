@@ -39,20 +39,28 @@ svg { width: 18px; height: 18px; fill: currentColor; vertical-align: middle; mar
 
 header {
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-  padding: calc(env(safe-area-inset-top, 20px) + 38px) 20px 20px;
+  padding: calc(env(safe-area-inset-top, 20px) + 38px) 20px 18px;
   color: #fff;
   border-radius: 0 0 24px 24px;
   box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
   margin-bottom: 15px;
 }
-.header-content { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
+.header-content { max-width: 800px; margin: auto; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .right-titles h1 { font-size: 17px; font-weight: 900; margin: 0 0 6px 0; color: #f8fafc; line-height: 1.4; }
-.right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.right-titles p { font-size: 13px; font-weight: 700; color: #34d399; margin: 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .shift-badge-header { background: #2563eb; color: #fff; padding: 3px 10px; border-radius: 8px; font-size: 12px; font-weight: 900; direction: ltr; display: inline-block; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); }
+.last-update-pill { background: rgba(255,255,255,0.14); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.22); padding: 3px 8px; border-radius: 8px; font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; }
 .overlap-pill { background: #f59e0b; color: #0f172a; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 900; display: none; }
-.theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; backdrop-filter: blur(5px); }
-#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.85); text-align: left; max-width: 800px; margin: 12px auto 0; direction: ltr; display: flex; justify-content: space-between; align-items: center; }
-.live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px #10b981; animation: pulse-live 1.5s infinite; }
+.theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; backdrop-filter: blur(5px); flex-shrink: 0; }
+
+#clock { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.85); text-align: left; max-width: 800px; margin: 12px auto 0; direction: ltr; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.status-chips { display: flex; align-items: center; gap: 8px; direction: rtl; }
+.gps-pill { font-size: 11px; font-weight: 900; padding: 3px 9px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s; }
+.gps-pill.ok { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.4); }
+.gps-pill.out { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.5); }
+.gps-pill.wait { background: rgba(245, 158, 11, 0.22); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.45); }
+
+.live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-left: 4px; box-shadow: 0 0 8px #10b981; animation: pulse-live 1.5s infinite; }
 @keyframes pulse-live { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
 main { max-width: 800px; margin: 0 auto; padding: 0 16px; }
@@ -145,7 +153,8 @@ details.bus-card.normal { border-right: 5px solid var(--normal); }
 
 .empty-msg { text-align: center; padding: 25px 10px; color: var(--text-muted); font-size: 14px; font-weight: 800; }
 
-.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981 !important; color: #ffffff !important; padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 15px; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); pointer-events: none; text-align: center; width: max-content; max-width: 90%; border: 2px solid #059669; }
+.toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%) translateY(100px); background: #10b981 !important; color: #ffffff !important; padding: 14px 28px; border-radius: 30px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); pointer-events: none; text-align: center; width: max-content; max-width: 92%; border: 2px solid #059669; }
+.toast.err { background: #dc2626 !important; border-color: #991b1b !important; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4); }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
 .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(15, 23, 42, 0.85); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(8px); }
@@ -217,6 +226,7 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
       <p>
         منطقة الفرز صالة 4
         <span id="active-shift-badge" class="shift-badge-header" onclick="openShiftModalManual()" title="اضغط لتغيير الشفت">تحديد الشفت</span>
+        <span id="last-update-badge" class="last-update-pill" title="وقت تسجيل آخر باص">آخر تحديث: --:--</span>
         <span id="overlap-badge" class="overlap-pill">ساعة تسليم</span>
       </p>
     </div>
@@ -228,7 +238,10 @@ body.dark-theme .btn-shift-select { background: #1e3a8a !important; color: #ffff
   </div>
   <div id="clock">
     <span id="clock-time">جاري التحميل...</span>
-    <span style="font-size:11px; color:#34d399; direction:rtl;"><i class="live-dot"></i>متصل لحظياً</span>
+    <div class="status-chips">
+      <span id="gps-badge" class="gps-pill wait" onclick="refreshGPS(true)" title="اضغط لتحديث الموقع الجغرافي">📡 جاري تحديد الموقع...</span>
+      <span style="font-size:11px; color:#34d399;"><i class="live-dot"></i>متصل</span>
+    </div>
   </div>
 </header>
 
@@ -356,13 +369,95 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const mySessionId = String(Date.now()) + Math.random().toString(36).slice(2);
+const pageLoadTime = Date.now();
 
 const $=id=>document.getElementById(id);
+
+// ----------------- إعدادات النطاق الجغرافي (GPS Geofencing - 350م) -----------------
+const GEOFENCE_LAT = 21.6610403;
+const GEOFENCE_LNG = 39.1550750;
+const GEOFENCE_RADIUS_M = 350;
+
+let gpsState = { inside: false, distance: null, status: 'wait' };
+let gpsWatchId = null;
+
+function calcDistanceMeters(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const toRad = v => v * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
+
+function updateGpsBadgeUI() {
+  const el = $('gps-badge');
+  if (!el) return;
+  if (gpsState.status === 'ok') {
+    el.className = 'gps-pill ok';
+    el.textContent = `📍 داخل الفرز (${gpsState.distance}م)`;
+  } else if (gpsState.status === 'out') {
+    el.className = 'gps-pill out';
+    el.textContent = `🚫 خارج الفرز (${gpsState.distance}م)`;
+  } else if (gpsState.status === 'denied') {
+    el.className = 'gps-pill out';
+    el.textContent = '🚫 فعّل الـ GPS';
+  } else {
+    el.className = 'gps-pill wait';
+    el.textContent = '📡 جاري تحديد الموقع...';
+  }
+}
+
+function onGpsSuccess(pos) {
+  const dist = calcDistanceMeters(pos.coords.latitude, pos.coords.longitude, GEOFENCE_LAT, GEOFENCE_LNG);
+  gpsState.distance = dist;
+  gpsState.inside = dist <= GEOFENCE_RADIUS_M;
+  gpsState.status = gpsState.inside ? 'ok' : 'out';
+  updateGpsBadgeUI();
+}
+
+function onGpsError() {
+  gpsState.inside = false;
+  gpsState.status = 'denied';
+  updateGpsBadgeUI();
+}
+
+window.refreshGPS = function(showFeedback = false) {
+  if (!('geolocation' in navigator)) {
+    gpsState.status = 'denied';
+    updateGpsBadgeUI();
+    return;
+  }
+  if (showFeedback) {
+    gpsState.status = 'wait';
+    updateGpsBadgeUI();
+    showToast('جاري تحديث الموقع الجغرافي...');
+  }
+  if (gpsWatchId !== null) navigator.geolocation.clearWatch(gpsWatchId);
+  gpsWatchId = navigator.geolocation.watchPosition(onGpsSuccess, onGpsError, {
+    enableHighAccuracy: true,
+    maximumAge: 4000,
+    timeout: 12000
+  });
+};
+
+function requireInsideGeofence() {
+  if (gpsState.inside) return true;
+  refreshGPS(false);
+  if (gpsState.status === 'out') {
+    showToast(`🚫 أنت خارج نطاق الفرز (${gpsState.distance}م / المسموح ${GEOFENCE_RADIUS_M}م)`, true);
+  } else if (gpsState.status === 'denied') {
+    showToast('🚫 يرجى السماح بصلاحية الموقع (GPS) لتأكيد تواجدك في الفرز', true);
+  } else {
+    showToast('📡 جاري التحقق من موقعك داخل الفرز، حاول بعد ثوانٍ...', true);
+  }
+  return false;
+}
+// -------------------------------------------------------------------------
 
 const fmt=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
 function parts(d){return Object.fromEntries(fmt.formatToParts(d).filter(x=>x.type!=='literal').map(x=>[x.type,Number(x.value)]))}
 
-// تحديد الشفت تلقائياً حسب جدول صالة 4 (A: 05:30-14:30, B: 13:30-22:30, C: 21:30-06:30)
 function detectSmartShift() {
   const p = parts(new Date());
   const tm = p.hour * 60 + p.minute;
@@ -382,7 +477,7 @@ let lastPromptMinute = -1;
 let lastPreEndAlertMin = -1;
 let lastOverlapAlertMin = -1;
 
-// ----------------- محرك منع تجميد الجوال والإشعارات اللحظية -----------------
+// ----------------- محرك الإشعارات اللحظية الفائقة ومنع التجميد -----------------
 let audioCtx = null;
 let keepAliveStarted = false;
 
@@ -399,7 +494,7 @@ function startBackgroundKeepAlive() {
   } catch (e) {}
 
   try {
-    const blob = new Blob([`setInterval(()=>postMessage('ping'), 4000);`], {type: 'application/javascript'});
+    const blob = new Blob([`setInterval(()=>postMessage('ping'), 3000);`], {type: 'application/javascript'});
     const worker = new Worker(URL.createObjectURL(blob));
     worker.onmessage = () => {
       if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
@@ -423,18 +518,19 @@ function playInstantAlertSound() {
     const gain = audioCtx.createGain();
     osc.type = 'sine';
     osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-    osc.frequency.setValueAtTime(1046.5, audioCtx.currentTime + 0.12);
-    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+    osc.frequency.setValueAtTime(1046.5, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.28, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
-    if (navigator.vibrate) navigator.vibrate([250, 100, 250]);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+    if (navigator.vibrate) navigator.vibrate([250, 80, 250]);
   } catch(e){}
 }
 
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') {
     db.goOnline();
+    refreshGPS(false);
     if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
   }
 });
@@ -466,6 +562,7 @@ window.setShift = function(s) {
 };
 
 window.carryOverAndSwitch = function() {
+  if (!requireInsideGeofence()) return;
   const nextShift = getNextShiftName(activeShift);
   const activeInCurrent = buses.filter(b => (b.shift || 'Shift A') === activeShift && !b.done);
   activeInCurrent.forEach(b => {
@@ -486,6 +583,7 @@ window.openShiftModalManual = function() {
 document.addEventListener('DOMContentLoaded', () => {
   localStorage.setItem('activeShift', activeShift);
   $('active-shift-badge').textContent = activeShift;
+  refreshGPS(false);
   checkNotificationPermission();
 });
 
@@ -497,6 +595,7 @@ function checkNotificationPermission() {
 
 window.requestNotificationPermission = function() {
   startBackgroundKeepAlive();
+  refreshGPS(false);
   if ('Notification' in window) {
     Notification.requestPermission().then(permission => {
       $('notif-modal').style.display = 'none';
@@ -512,6 +611,7 @@ window.requestNotificationPermission = function() {
 
 window.skipNotifications = function() {
   startBackgroundKeepAlive();
+  refreshGPS(false);
   $('notif-modal').style.display = 'none';
 };
 
@@ -530,9 +630,14 @@ const svgDepart = '<svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 1
 const svgDel = '<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
 const svgPrint = '<svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>';
 
-window.showToast = function(msg) {
-  const t = $('toast'); t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3800);
+let toastTimer = null;
+window.showToast = function(msg, isError = false) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.toggle('err', isError);
+  t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3600);
 };
 
 window.toggleTheme = function() {
@@ -563,7 +668,6 @@ function dep(b){return Number(b.departure)||departure(b.time,created(b))}
 function mins(ms){const n=Math.max(0,Math.floor(ms/60000));return Math.floor(n/60)+'س '+(n%60)+'د'}
 function until(b){const d=dep(b)-Date.now();return d<=0?'إقلاع':mins(d)}
 
-// تحت 4 ساعات متأخر، فوق 6 ساعات مبكر
 function classification(b){
   const d = dep(b) - created(b);
   if(d < 14400000) return 'late';
@@ -577,8 +681,21 @@ function newId(){return String(Date.now())+Math.random().toString(36).slice(2)}
 function groupKey(b){return String(b.flight).toUpperCase()+'|'+String(b.time)}
 function groupBy(a){const m=new Map();for(const b of a){const k=groupKey(b);if(!m.has(k))m.set(k,[]);m.get(k).push(b)}return [...m.values()]}
 
-// زر حذف كل الباصات في سجل المغادرة للشفت الحالي (مع تأكيد مزدوج)
+// بث تنبيه فوري عبر القناة الخفيفة عند تسجيل أي باص جديد
+function broadcastInstantBusAlert(bus) {
+  db.ref('last_bus_alert').set({
+    id: String(bus.id),
+    flight: bus.flight,
+    pax: bus.pax,
+    time: bus.time,
+    shift: bus.shift,
+    addedBy: mySessionId,
+    ts: Date.now()
+  });
+}
+
 window.clearAllDeparted = function() {
+  if (!requireInsideGeofence()) return;
   const doneInShift = buses.filter(b => (b.shift || 'Shift A') === activeShift && b.done);
   if (!doneInShift.length) { showToast('سجل المغادرة فارغ بالفعل'); return; }
   if (!confirm(`هل تريد حذف جميع الباصات (${doneInShift.length}) من سجل المغادرة لـ ${activeShift}؟`)) return;
@@ -587,10 +704,10 @@ window.clearAllDeparted = function() {
   showToast('تم تفريغ سجل المغادرة بالكامل ✓');
 };
 
-// ----------------- نافذة تعديل بيانات الرحلة والوقت المباشرة -----------------
 let editingFlightContext = null;
 
 window.openEditFlightModal = function(busId, isSingleBus = false) {
+  if (!requireInsideGeofence()) return;
   const b = buses.find(x => String(x.id) === String(busId));
   if (!b) return;
   editingFlightContext = { oldFlight: b.flight, oldTime: b.time, busId: b.id, isSingleBus: isSingleBus, doneState: !!b.done };
@@ -602,15 +719,15 @@ window.openEditFlightModal = function(busId, isSingleBus = false) {
 };
 
 window.saveFlightEdit = function() {
-  if (!editingFlightContext) return;
+  if (!requireInsideGeofence() || !editingFlightContext) return;
   const newFlight = $('edit-flight-input').value.trim().toUpperCase().replace(/\s+/g, '');
   const newTime = $('edit-time-input').value.trim();
   if (!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(newFlight) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(newTime)) {
-    showToast('تأكد من صحة رقم الرحلة أو وقت الإقلاع'); return;
+    showToast('تأكد من صحة رقم الرحلة أو وقت الإقلاع', true); return;
   }
   if (editingFlightContext.isSingleBus) {
     const newPax = Number($('edit-pax-input').value);
-    if (!Number.isInteger(newPax) || newPax < 1 || newPax > 150) { showToast('تأكد من عدد الركاب'); return; }
+    if (!Number.isInteger(newPax) || newPax < 1 || newPax > 150) { showToast('تأكد من عدد الركاب', true); return; }
     const b = buses.find(x => String(x.id) === String(editingFlightContext.busId));
     if (b) { b.flight = newFlight; b.time = newTime; b.pax = newPax; b.departure = departure(newTime, created(b)); db.ref('buses/' + b.id).set(b); }
   } else {
@@ -627,7 +744,7 @@ $('btn-dest-1').onclick = () => confirmDeparture('01 خلف المسجد');
 $('btn-dest-2').onclick = () => confirmDeparture('02 مبنى المجموعات');
 
 function confirmDeparture(dest) {
-  if(!pendingDoneBusId) return;
+  if (!requireInsideGeofence() || !pendingDoneBusId) return;
   const b = buses.find(x => String(x.id) === pendingDoneBusId);
   if(b) {
     b.done = true; b.doneAt = Date.now(); b.destination = dest;
@@ -664,7 +781,7 @@ async function generatePermit(b) {
       } else { window.open(URL.createObjectURL(blob), '_blank'); showToast('اضغط مطولاً على الصورة لحفظها ✓'); }
     }, 'image/png');
   };
-  img.onerror = () => showToast('تأكد من الاتصال بالإنترنت');
+  img.onerror = () => showToast('تأكد من الاتصال بالإنترنت', true);
 }
 
 function busCard(b,i){
@@ -715,8 +832,19 @@ function render(){
   if(!activeShift) return;
   const shiftBuses = buses.filter(b => (b.shift || 'Shift A') === activeShift);
   const allActive = shiftBuses.filter(b=>!b.done);
-  // ترتيب المغادرة دائماً بحيث يكون الأحدث خروجاً في الأعلى تماماً
   const done = shiftBuses.filter(b=>b.done).sort((a,b) => (Number(b.doneAt)||0) - (Number(a.doneAt)||0));
+
+  // تحديث شارة "آخر تحديث" بوقت تسجيل آخر باص في الشفت
+  const lub = $('last-update-badge');
+  if (lub) {
+    if (shiftBuses.length) {
+      const latestMs = Math.max(...shiftBuses.map(b => created(b)));
+      const latestTime = new Intl.DateTimeFormat('en-GB', { hour:'2-digit', minute:'2-digit', timeZone:'Asia/Riyadh', hour12:false }).format(new Date(latestMs));
+      lub.textContent = `آخر تحديث: ${latestTime}`;
+    } else {
+      lub.textContent = 'آخر تحديث: --:--';
+    }
+  }
 
   $('flight-list').innerHTML = [...new Set(allActive.map(b=>b.flight))].map(f=>`<option value="${esc(f)}">`).join('');
 
@@ -737,8 +865,6 @@ function render(){
     const basePax = g.reduce((a,x)=>a+Number(x.pax||0),0);
     const allExtras = g.flatMap(x => Array.isArray(x.extra) ? x.extra : []);
     const headerSharedHtml = allExtras.map(x => `<span class="shared-mini-pill">+ ${esc(x.flight)} (${x.pax})</span>`).join(' ');
-
-    // ميزة 6: تمييز الرحلات القريبة من الإقلاع (أقل من ساعتين)
     const remMs = dep(b) - Date.now();
     const isUrgent = remMs > 0 && remMs <= 7200000;
 
@@ -763,7 +889,6 @@ function render(){
     </div>`;
   }).join('') : '<div class="empty-msg">لا توجد باصات مسجلة حالياً في هذا الشفت.</div>';
 
-  // سجل المغادرة: الأحدث في الأعلى + نبض لمدة 60 ثانية كاملة (دقيقة)
   $('done').innerHTML=done.length?done.map(b=>{
     let dTime = '--:--';
     if (b.doneAt) {
@@ -815,26 +940,22 @@ function tick(){
   const p = parts(new Date());
   const tm = p.hour * 60 + p.minute;
 
-  // إظهار شارة ساعة التداخل (05:30-06:30, 13:30-14:30, 21:30-22:30)
   const isOverlap = (tm >= 330 && tm < 390) || (tm >= 810 && tm < 870) || (tm >= 1290 && tm < 1350);
   const ob = $('overlap-badge');
   if (ob) ob.style.display = isOverlap ? 'inline-block' : 'none';
 
-  // ميزة 3: إشعار دخول ساعة التداخل والتسليم (05:30=330, 13:30=810, 21:30=1290)
   if ((tm === 330 || tm === 810 || tm === 1290) && lastOverlapAlertMin !== tm && activeShift) {
     lastOverlapAlertMin = tm;
     sendNativeNotification('بداية ساعة التسليم والتداخل 🔄', `بدأت فترة تسليم واستلام النوبة بين ${activeShift} و ${getNextShiftName(activeShift)}.`);
     showToast('🔄 بدأت ساعة التسليم والتداخل بين الشفتين');
   }
 
-  // ميزة 2: تنبيه قبل نهاية الشفت بـ 15 دقيقة (06:15=375, 14:15=855, 22:15=1335)
   if ((tm === 375 || tm === 855 || tm === 1335) && lastPreEndAlertMin !== tm && activeShift) {
     lastPreEndAlertMin = tm;
     sendNativeNotification(`تنبيه نهاية ${activeShift} ⏳`, 'متبقي 15 دقيقة على انتهاء النوبة، يرجى تجهيز التسليم.');
     showToast(`⏳ متبقي 15 دقيقة على نهاية ${activeShift}`);
   }
 
-  // تنبيه تسليم الشفت تلقائياً عند نهاية النوبة (06:30=390, 14:30=870, 22:30=1350)
   if ((tm === 390 || tm === 870 || tm === 1350) && lastPromptMinute !== tm && activeShift) {
       lastPromptMinute = tm;
       playInstantAlertSound();
@@ -864,7 +985,6 @@ function tick(){
     }
   });
 
-  // تحديث عدّاد الدقيقة للباصات المغادرة حديثاً وإزالة التمييز بعد 60 ثانية
   document.querySelectorAll('.recent-depart').forEach(el => {
     const doneTime = Number(el.dataset.doneTime);
     const elapsedSec = Math.floor((Date.now() - doneTime) / 1000);
@@ -1029,10 +1149,24 @@ window.mergePhotosAndShareStatus = async function() {
   }, 'image/jpeg', 0.9);
 };
 
-// ----------------- مزامنة السحابة -----------------
+// ----------------- مزامنة السحابة + قناة التنبيهات اللحظية الفائقة -----------------
 const notifiedBusIds = new Set();
 let initialLoad = true;
 
+// 1. قناة التنبيه الفوري (حجم صغير جداً لتصل في أجزاء من الثانية)
+db.ref('last_bus_alert').on('value', (snap) => {
+  const alert = snap.val();
+  if (!alert || !alert.id) return;
+  if (Number(alert.ts || 0) < pageLoadTime - 2000) return;
+  if (notifiedBusIds.has(String(alert.id))) return;
+  notifiedBusIds.add(String(alert.id));
+  if ((alert.shift || 'Shift A') === activeShift && alert.addedBy !== mySessionId) {
+    sendNativeNotification(`New Bus (${activeShift}): ${alert.flight}`, `Pax: ${alert.pax} | Dep: ${alert.time}`);
+    showToast(`🔔 باص جديد: رحلة ${alert.flight} (${alert.pax} راكب)`);
+  }
+});
+
+// 2. مزامنة قائمة الباصات الكاملة
 db.ref('buses').on('value', (snapshot) => {
   const incoming = [];
   snapshot.forEach((childSnapshot) => {
@@ -1054,10 +1188,10 @@ db.ref('buses').on('value', (snapshot) => {
 
 $('entry').addEventListener('submit',e=>{
   e.preventDefault(); startBackgroundKeepAlive();
+  if (!requireInsideGeofence()) return;
   const flight=$('flight').value.trim().toUpperCase().replace(/\s+/g,''),time=$('time').value,pax=Number($('pax').value);
-  if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){ showToast('تأكد من صحة البيانات المدخلة'); return; }
+  if(!/^[A-Z0-9-\u0600-\u06FF]{2,14}$/.test(flight)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)||!Number.isInteger(pax)||pax<1||pax>150){ showToast('تأكد من صحة البيانات المدخلة', true); return; }
 
-  // ميزة 7: تنبيه منع تكرار الباص بالغلط (خلال آخر 5 دقائق)
   const isDuplicate = buses.some(b =>
     !b.done &&
     (b.shift || 'Shift A') === activeShift &&
@@ -1071,7 +1205,8 @@ $('entry').addEventListener('submit',e=>{
 
   const newBus = {id:newId(), flight, time, pax, departure:departure(time,Date.now()), createdAt:Date.now(), done:false, extra:[], addedBy: mySessionId, shift: activeShift};
   notifiedBusIds.add(String(newBus.id));
-  db.ref('buses/' + newBus.id).set(newBus).then(() => showToast('تم تسجيل باص ' + flight + ' (' + pax + ' راكب) ✓')).catch(() => showToast('خطأ في الاتصال'));
+  broadcastInstantBusAlert(newBus);
+  db.ref('buses/' + newBus.id).set(newBus).then(() => showToast('تم تسجيل باص ' + flight + ' (' + pax + ' راكب) ✓')).catch(() => showToast('خطأ في الاتصال', true));
   e.target.reset();
 });
 
@@ -1087,9 +1222,11 @@ function action(e){
   const a=btn.dataset.action,b=buses.find(b=>String(b.id)===btn.dataset.id);
   if(!b)return;
 
+  if(a==='permit'){ generatePermit(b); return; }
+  if (!requireInsideGeofence()) return;
+
   if(a==='edit-flight-group'){ openEditFlightModal(b.id, false); return; }
   else if(a==='edit-bus'){ openEditFlightModal(b.id, true); return; }
-  else if(a==='permit'){ generatePermit(b); return; }
   else if(a==='delete'){
     if(!confirm('تأكيد الحذف النهائي للباص؟'))return;
     db.ref('buses/' + b.id).remove(); showToast('تم حذف الباص نهائياً ✓'); return;
@@ -1098,20 +1235,21 @@ function action(e){
     const val=prompt('باص إضافي للرحلة '+b.flight+'\nأدخل عدد الركاب:');
     if(val===null)return;
     const pax=Number(val.trim());
-    if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح');return;}
+    if(!Number.isInteger(pax)||pax<1||pax>150){showToast('رقم غير صحيح', true);return;}
     const newBus = {id:newId(),flight:b.flight,time:b.time,pax,departure:dep(b),createdAt:Date.now(),done:false,extra:[], addedBy: mySessionId, shift: activeShift};
     notifiedBusIds.add(String(newBus.id));
+    broadcastInstantBusAlert(newBus);
     db.ref('buses/' + newBus.id).set(newBus); showToast('تم إضافة باص للرحلة ' + b.flight + ' ✓'); return;
   }
   if(a==='addextra'){
     const f=prompt('رقم الرحلة المشتركة:');if(f===null)return;
     const flight=f.trim().toUpperCase().replace(/\s+/g,'');
-    if(!/^[A-Z0-9-\u0600-\u06FF]{2,18}$/.test(flight)){showToast('رقم غير صحيح');return;}
+    if(!/^[A-Z0-9-\u0600-\u06FF]{2,18}$/.test(flight)){showToast('رقم غير صحيح', true);return;}
     const time=prompt('وقت إقلاع الرحلة المشتركة (مثال 15:30):');if(time===null)return;
-    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){showToast('وقت غير صحيح');return;}
+    if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time.trim())){showToast('وقت غير صحيح', true);return;}
     const val=prompt('عدد الركاب للرحلة المشتركة:');if(val===null)return;
     const pax=Number(val.trim());
-    if(!Number.isInteger(pax)||pax<1||pax>150){showToast('عدد غير صحيح');return;}
+    if(!Number.isInteger(pax)||pax<1||pax>150){showToast('عدد غير صحيح', true);return;}
     if(!b.extra) b.extra = [];
     b.extra.push({flight,time:time.trim(),pax,departure:departure(time.trim(),created(b)),createdAt:Date.now()});
     showToast('تمت إضافة الرحلة المشتركة ✓');
@@ -1122,12 +1260,12 @@ function action(e){
   else if(a==='edit-entry'){
     const t = prompt('أدخل وقت الدخول الصحيح (مثال 14:30):');
     if(t && /^([01]\d|2[0-3]):[0-5]\d$/.test(t.trim())){ const [h, m] = t.trim().split(':').map(Number); const d = new Date(created(b)); d.setHours(h, m, 0, 0); b.createdAt = d.getTime(); showToast('تم تعديل وقت الدخول ✓'); }
-    else if(t!==null) { showToast('تنسيق الوقت غير صحيح'); return; }
+    else if(t!==null) { showToast('تنسيق الوقت غير صحيح', true); return; }
   }
   else if(a==='edit-exit'){
     const t = prompt('أدخل وقت الخروج الصحيح (مثال 14:30):');
     if(t && /^([01]\d|2[0-3]):[0-5]\d$/.test(t.trim())){ const [h, m] = t.trim().split(':').map(Number); const d = new Date(b.doneAt || Date.now()); d.setHours(h, m, 0, 0); b.doneAt = d.getTime(); showToast('تم تعديل وقت الخروج ✓'); }
-    else if(t!==null) { showToast('تنسيق الوقت غير صحيح'); return; }
+    else if(t!==null) { showToast('تنسيق الوقت غير صحيح', true); return; }
   }
   db.ref('buses/' + b.id).set(b);
 }
