@@ -370,7 +370,7 @@ const pageLoadTime = Date.now();
 
 const $=id=>document.getElementById(id);
 
-// ----------------- محرك GPS بنطاق 2000 متر + محاولات التقاط تلقائية متكررة -----------------
+// ----------------- محرك GPS بنطاق 2000 متر (بدون إظهار أرقام المسافة) -----------------
 const GEOFENCE_LAT = 21.6610403;
 const GEOFENCE_LNG = 39.1550750;
 const GEOFENCE_RADIUS_M = 2000;
@@ -394,16 +394,16 @@ function updateGpsBadgeUI() {
   if (!el) return;
   if (gpsState.status === 'ok') {
     el.className = 'gps-pill ok';
-    el.textContent = `📍 داخل الفرز (${gpsState.distance}م)`;
+    el.textContent = '📍 داخل الفرز';
   } else if (gpsState.status === 'out') {
     el.className = 'gps-pill out';
-    el.textContent = `🚫 خارج الفرز (${gpsState.distance}م)`;
+    el.textContent = '🚫 خارج الفرز';
   } else if (gpsState.status === 'denied') {
     el.className = 'gps-pill out';
     el.textContent = '🚫 فعّل الـ GPS (اضغط هنا)';
   } else {
     el.className = 'gps-pill wait';
-    el.textContent = gpsRetryCount > 0 ? `📡 محاولة تحديد الموقع (${gpsRetryCount})...` : '📡 جاري تحديد الموقع...';
+    el.textContent = '📡 جاري تحديد الموقع...';
   }
 }
 
@@ -442,7 +442,6 @@ function onGpsSuccess(pos) {
   } else {
     gpsState.inside = false;
     gpsState.status = 'out';
-    // إذا كانت الدقة ضعيفة أو المسافة قريبة من الحد، نعيد المحاولة تلقائياً لالتقاط قراءة أدق
     if (acc > 300 || dist <= GEOFENCE_RADIUS_M + 800) {
       scheduleGpsRetry();
     }
@@ -474,7 +473,7 @@ window.refreshGPS = function(showFeedback = false) {
   if (showFeedback) {
     gpsState.status = 'wait';
     updateGpsBadgeUI();
-    showToast('جاري التقاط إشارة GPS...');
+    showToast('جاري التحقق من الموقع...');
   }
   const opts = { enableHighAccuracy: true, maximumAge: 0, timeout: 12000 };
   navigator.geolocation.getCurrentPosition(onGpsSuccess, onGpsError, opts);
@@ -486,7 +485,7 @@ function requireInsideGeofence() {
   if (gpsState.inside) return true;
   refreshGPS(false);
   if (gpsState.status === 'out') {
-    showToast(`🚫 أنت خارج نطاق الفرز (${gpsState.distance}م / المسموح ${GEOFENCE_RADIUS_M}م) — جاري إعادة المحاولة...`, true);
+    showToast('🚫 أنت خارج نطاق الفرز حالياً — جاري إعادة التحقق...', true);
   } else if (gpsState.status === 'denied') {
     showToast('🚫 يرجى السماح بصلاحية الموقع (GPS) من إعدادات المتصفح', true);
   } else {
